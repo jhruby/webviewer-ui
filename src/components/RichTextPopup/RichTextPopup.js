@@ -19,17 +19,18 @@ import selectors from 'selectors';
 import './RichTextPopup.scss';
 
 const RichTextPopup = () => {
-  const [isDisabled, isOpen, isPaletteDisabled, customColors, isInDesktopOnlyMode] = useSelector(
+  const [isDisabled, isOpen, isPaletteDisabled, customColors, isInDesktopOnlyMode, isSymbolsOpen] = useSelector(
     state => [
       selectors.isElementDisabled(state, 'richTextPopup'),
       selectors.isElementOpen(state, 'richTextPopup'),
       selectors.isElementDisabled(state, 'colorPalette'),
       selectors.getCustomColors(state, 'customColors'),
-      selectors.isInDesktopOnlyMode(state)
+      selectors.isInDesktopOnlyMode(state),
+      selectors.isElementOpen(state, "mathSymbols")
     ],
     shallowEqual,
   );
-  const [symbolsVisible, setSymbolsVisible] = useState(false);
+
   const [cssPosition, setCssPosition] = useState({ left: 0, top: 0 });
   const [draggablePosition, setDraggablePosition] = useState({ x: 0, y: 0 });
   const [format, setFormat] = useState({});
@@ -115,7 +116,7 @@ const RichTextPopup = () => {
       );
       setCssPosition(position);
     }
-  }, [symbolsVisible]);
+  }, [isSymbolsOpen]);
 
   const getFormat = range => {
     if (!range) {
@@ -144,7 +145,11 @@ const RichTextPopup = () => {
   };
 
   const handleSymbolsClick = () => {
-    setSymbolsVisible(!symbolsVisible);
+    if (isSymbolsOpen) {
+      dispatch(actions.closeElements(["mathSymbols"]));
+    } else {
+      dispatch(actions.openElements(["mathSymbols"]));
+    }
   };
 
   const handleColorChange = (_, color) => {
@@ -240,7 +245,7 @@ const RichTextPopup = () => {
           <Button
             dataElement="mathSymbolsButton"
             onClick={handleSymbolsClick}
-            img="ic_thumbnails_grid_black_24px"
+            img="calculator-alt"
             title="option.mathSymbols"
           />
         </Element>
@@ -264,7 +269,7 @@ const RichTextPopup = () => {
             )}
           </>
         )}
-        {symbolsVisible && <MathSymbolsPicker onClickHandler={insertSymbols} maxHeight={symbolsAreaHeight} />}
+        {isSymbolsOpen && <MathSymbolsPicker onClickHandler={insertSymbols} maxHeight={symbolsAreaHeight} />}
       </div>
     </Draggable>
   );

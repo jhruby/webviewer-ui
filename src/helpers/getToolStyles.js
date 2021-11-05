@@ -1,6 +1,10 @@
 import core from 'core';
 
 export default toolName => {
+  if (toolName === "AnnotationCreateFreeTextMath") {
+    toolName = "AnnotationCreateFreeText";
+  }
+
   const tool = core.getTool(toolName);
   const ToolNames = window.Core.Tools.ToolNames;
 

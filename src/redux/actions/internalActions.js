@@ -170,6 +170,10 @@ export const setActiveToolGroup = toolGroup => (dispatch, getState) => {
     return;
   }
 
+  if (toolGroup === "freeTextToolsMath") {
+    toolGroup = "freeTextToolsMath";
+  }
+
   dispatch({
     type: 'SET_ACTIVE_TOOL_GROUP',
     payload: { toolGroup, toolbarGroup },

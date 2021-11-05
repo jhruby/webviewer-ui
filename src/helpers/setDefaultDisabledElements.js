@@ -112,10 +112,10 @@ export default store => {
         'wildCardSearchOption',
         'readerPageTransitionButton',
         'editTextButton',
-        'mathSymbolsButton',
+        /*'mathSymbolsButton',*/
         'threeDToolGroupButton',
-        // disable it by default as PDFTron server side SDK currently can't handle this
-        'richTextPopup'
+        /*// disable it by default as PDFTron server side SDK currently can't handle this
+        'richTextPopup'*/
       ],
       PRIORITY_ONE,
     ),

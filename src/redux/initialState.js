@@ -116,6 +116,7 @@ export default {
         { type: 'toolGroupButton', toolGroup: 'squigglyTools', dataElement: 'squigglyToolGroupButton', title: 'annotation.squiggly' },
         { type: 'toolGroupButton', toolGroup: 'stickyTools', dataElement: 'stickyToolGroupButton', title: 'annotation.stickyNote' },
         { type: 'toolGroupButton', toolGroup: 'freeTextTools', dataElement: 'freeTextToolGroupButton', title: 'annotation.freetext' },
+        { type: 'toolGroupButton', toolGroup: 'freeTextToolsMath', dataElement: 'freeTextToolGroupMathButton', title: 'annotation.freetextMath' },
         { type: 'toolGroupButton', toolGroup: 'rectangleTools', dataElement: 'shapeToolGroupButton', title: 'annotation.rectangle' },
         { type: 'toolGroupButton', toolGroup: 'freeHandTools', dataElement: 'freeHandToolGroupButton', title: 'annotation.freehand' },
         { type: 'toolGroupButton', toolGroup: 'freeHandHighlightTools', dataElement: 'freeHandHighlightToolGroupButton', title: 'annotation.freeHandHighlight' },
@@ -393,6 +394,7 @@ export default {
       { dataElement: 'freeHandToolButton' },
       { dataElement: 'freeHandHighlightToolButton' },
       { dataElement: 'freeTextToolButton' },
+      { dataElement: 'freeTextToolMathButton' },
     ],
     menuOverlay: [
       { dataElement: 'filePickerButton' },
@@ -461,6 +463,7 @@ export default {
       AnnotationCreateTextStrikeout2: { dataElement: 'strikeoutToolButton2', title: 'annotation.strikeout', img: 'icon-tool-text-manipulation-strikethrough', group: 'strikeoutTools', showColor: 'always' },
       AnnotationCreateTextStrikeout3: { dataElement: 'strikeoutToolButton3', title: 'annotation.strikeout', img: 'icon-tool-text-manipulation-strikethrough', group: 'strikeoutTools', showColor: 'always' },
       AnnotationCreateTextStrikeout4: { dataElement: 'strikeoutToolButton4', title: 'annotation.strikeout', img: 'icon-tool-text-manipulation-strikethrough', group: 'strikeoutTools', showColor: 'always' },
+      AnnotationCreateFreeTextMath: { dataElement: 'freeTextToolMathButton', title: 'annotation.freetextMath', img: 'calculator-alt', group: 'freeTextToolsMath', showColor: 'always' },
       AnnotationCreateFreeText: { dataElement: 'freeTextToolButton', title: 'annotation.freetext', img: 'icon-tool-text-free-text', group: 'freeTextTools', showColor: 'always' },
       AnnotationCreateFreeText2: { dataElement: 'freeTextToolButton2', title: 'annotation.freetext', img: 'icon-tool-text-free-text', group: 'freeTextTools', showColor: 'always' },
       AnnotationCreateFreeText3: { dataElement: 'freeTextToolButton3', title: 'annotation.freetext', img: 'icon-tool-text-free-text', group: 'freeTextTools', showColor: 'always' },

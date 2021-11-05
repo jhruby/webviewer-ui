@@ -137,6 +137,14 @@ const ContextMenuPopup = () => {
           img="icon-tool-text-free-text"
           onClick={() => setToolModeAndGroup(store, 'AnnotationCreateFreeText')}
         />
+        <ActionButton
+          dataElement="freeTextToolMathButton"
+          title="annotation.freetextMath"
+          img="calculator-alt"
+          onClick={() => setToolModeAndGroup(store, 'AnnotationCreateFreeText')
+
+          }
+        />
       </CustomizablePopup>
     </div>
   );
