@@ -165,7 +165,7 @@ if (window.CanvasRenderingContext2D) {
       tool?.setSaveViewState(true);
     }
 
-    setupDocViewer();
+    setupDocViewer(store);
     setupI18n(state);
     setUserPermission(state);
     setAutoSwitch();

@@ -166,12 +166,10 @@ export const setActiveToolGroup = toolGroup => (dispatch, getState) => {
   const currentActiveToolGroup = selectors.getActiveToolGroup(getState());
   const toolbarGroup = selectors.getCurrentToolbarGroup(getState());
 
+
+
   if (currentActiveToolGroup === toolGroup) {
     return;
-  }
-
-  if (toolGroup === "freeTextToolsMath") {
-    toolGroup = "freeTextToolsMath";
   }
 
   dispatch({

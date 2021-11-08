@@ -1,5 +1,7 @@
 import core from 'core';
 
+import { openElements } from "../apis";
+
 const setupDocViewer = () => {
   const docViewer = core.getDocumentViewer();
 
@@ -7,6 +9,8 @@ const setupDocViewer = () => {
   docViewer.DEFAULT_MARGIN = 10;
   addToolsToDocViewer(docViewer);
 };
+
+
 
 const addToolsToDocViewer = docViewer => {
   const toolModeMap = core.getToolModeMap();
@@ -21,6 +25,10 @@ const addToolsToDocViewer = docViewer => {
   toolModeMap.AnnotationCreateFreeHandHighlight2 = new window.Core.Tools.FreeHandHighlightCreateTool(docViewer, ToolNames.FREEHAND_HIGHLIGHT2);
   toolModeMap.AnnotationCreateFreeHandHighlight3 = new window.Core.Tools.FreeHandHighlightCreateTool(docViewer, ToolNames.FREEHAND_HIGHLIGHT3);
   toolModeMap.AnnotationCreateFreeHandHighlight4 = new window.Core.Tools.FreeHandHighlightCreateTool(docViewer, ToolNames.FREEHAND_HIGHLIGHT4);
+  toolModeMap.AnnotationCreateFreeTextMath = new window.Core.Tools.FreeTextCreateTool(docViewer, ToolNames.FREETEXT);
+  toolModeMap.AnnotationCreateFreeTextMath2 = new window.Core.Tools.FreeTextCreateTool(docViewer, ToolNames.FREETEXT2);
+  toolModeMap.AnnotationCreateFreeTextMath3 = new window.Core.Tools.FreeTextCreateTool(docViewer, ToolNames.FREETEXT3);
+  toolModeMap.AnnotationCreateFreeTextMath4 = new window.Core.Tools.FreeTextCreateTool(docViewer, ToolNames.FREETEXT4);
   toolModeMap.AnnotationCreateFreeText2 = new window.Core.Tools.FreeTextCreateTool(docViewer, ToolNames.FREETEXT2);
   toolModeMap.AnnotationCreateFreeText3 = new window.Core.Tools.FreeTextCreateTool(docViewer, ToolNames.FREETEXT3);
   toolModeMap.AnnotationCreateFreeText4 = new window.Core.Tools.FreeTextCreateTool(docViewer, ToolNames.FREETEXT4);

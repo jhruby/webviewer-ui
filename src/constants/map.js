@@ -63,6 +63,22 @@ const map = {
       annotation.getIntent() ===
       window.Annotations.FreeTextAnnotation.Intent.FreeText,
   },
+  freeTextMath: {
+    icon: 'calculator-alt',
+    iconColor: 'TextColor',
+    currentPalette: 'TextColor',
+    availablePalettes: ['TextColor', 'StrokeColor', 'FillColor'],
+    toolNames: [
+      'AnnotationCreateFreeTextMath',
+      'AnnotationCreateFreeTextMath2',
+      'AnnotationCreateFreeTextMath3',
+      'AnnotationCreateFreeTextMath4',
+    ],
+    annotationCheck: annotation =>
+      annotation instanceof window.Annotations.FreeTextAnnotation &&
+      annotation.getIntent() ===
+      window.Annotations.FreeTextAnnotation.Intent.FreeText,
+  },
   distanceMeasurement: {
     icon: 'ic_annotation_distance_black_24px',
     iconColor: 'StrokeColor',

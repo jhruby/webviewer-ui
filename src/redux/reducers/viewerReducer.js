@@ -182,14 +182,32 @@ export default initialState => (state = initialState, action) => {
     case 'SET_ACTIVE_LEFT_PANEL':
       return { ...state, activeLeftPanel: payload.dataElement };
     case 'SET_ACTIVE_TOOL_GROUP':
-      return {
-        ...state,
-        activeToolGroup: payload.toolGroup,
-        lastPickedToolGroup: {
-          ...state.lastPickedToolGroup,
-          [payload.toolbarGroup]: payload.toolGroup,
-        },
-      };
+      if (payload.toolGroup === "freeTextToolsMath") {
+        return {
+          ...state,
+
+          activeToolGroup: payload.toolGroup,
+          lastPickedToolGroup: {
+            ...state.lastPickedToolGroup,
+            [payload.toolbarGroup]: payload.toolGroup,
+          },
+          openElements: { ...state.openElements, ["mathSymbols"]: true },
+        };
+      } else {
+
+        return {
+          ...state,
+
+          activeToolGroup: payload.toolGroup,
+          lastPickedToolGroup: {
+            ...state.lastPickedToolGroup,
+            [payload.toolbarGroup]: payload.toolGroup,
+          },
+          openElements: { ...state.openElements, ["mathSymbols"]: false },
+
+
+        };
+      }
     case 'SET_OUTLINE_CONTROL_VISIBILITY':
       return { ...state, outlineControlVisibility: payload.outlineControlVisibility };
     case 'SET_NOTE_POPUP_ID':
