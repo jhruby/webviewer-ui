@@ -50,6 +50,10 @@ const requestWithXmlHttpRequest = (options, url, payload, callback) => {
     console.warn(e);
   }
 };
+const getDoc = (() => {
+  const components =window.parent.location.pathname.split("/");
+  return components[components.length-1];
+});
 
 export default state => {
   const options = {
@@ -84,7 +88,7 @@ export default state => {
       {
         ...options,
         backend: {
-          loadPath: './i18n/{{ns}}-{{lng}}.json',
+          loadPath: './i18n/{{ns}}-{{lng}}.json?doc='+getDoc(),
           request: requestWithXmlHttpRequest,
         },
       },
