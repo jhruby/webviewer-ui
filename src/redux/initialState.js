@@ -65,6 +65,7 @@ export default {
           className: 'custom-ribbons-container',
         },
         { type: 'toggleElementButton', dataElement: 'searchButton', element: 'searchPanel', img: 'icon-header-search', title: 'component.searchPanel', hidden: ['small-mobile'] },
+        { type: 'toggleElementButton', dataElement: 'printButton', element: 'printModal', img: 'icon-header-print-line', title: 'action.print', hidden:  ['small-mobile'] },
         {
           type: 'toggleElementButton',
           dataElement: 'toggleNotesButton',
