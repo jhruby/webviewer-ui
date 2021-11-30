@@ -78,7 +78,7 @@ export default {
           },
           hidden: ['small-mobile']
         },
-        { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-header-settings-line', title: 'component.menuOverlay', hidden: ['small-mobile'] },
+        { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-tools-more', title: 'component.menuOverlay', hidden: ['small-mobile'] },
         {
           type: 'actionButton',
           dataElement: 'moreButton',
@@ -94,7 +94,7 @@ export default {
       'small-mobile-more-buttons': [
         { type: 'toggleElementButton', dataElement: 'searchButton', element: 'searchPanel', img: 'icon-header-search', title: 'component.searchPanel' },
         { type: 'toggleElementButton', dataElement: 'toggleNotesButton', element: 'notesPanel', img: 'icon-header-chat-line', title: 'component.notesPanel' },
-        { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-header-settings-line', title: 'component.menuOverlay' },
+        { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-tools-more', title: 'component.menuOverlay' },
         { type: 'spacer' },
         {
           type: 'actionButton',
