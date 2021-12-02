@@ -8,6 +8,7 @@ import OutlinesPanel from 'components/OutlinesPanel';
 import BookmarksPanel from 'components/BookmarksPanel';
 import LayersPanel from 'components/LayersPanel';
 import NotesPanel from 'components/NotesPanel';
+import FileAttachmentPanel from 'components/FileAttachmentPanel';
 import SignaturePanel from 'components/SignaturePanel';
 import CustomElement from 'components/CustomElement';
 import ResizeBar from 'components/ResizeBar';
@@ -20,6 +21,7 @@ import useMedia from 'hooks/useMedia';
 import { isIE } from 'helpers/device';
 
 import './LeftPanel.scss';
+import LeftPanelPageTabs from "components/LeftPanelPageTabs";
 
 const LeftPanel = () => {
   const isMobile = useMedia(
@@ -48,7 +50,8 @@ const LeftPanel = () => {
     customPanels,
     currentWidth,
     notesInLeftPanel,
-    isInDesktopOnlyMode
+    isInDesktopOnlyMode,
+    isThumbnailSelectingPages
   ] = useSelector(
     state => [
       selectors.getCurrentToolbarGroup(state),
@@ -60,7 +63,8 @@ const LeftPanel = () => {
       selectors.getCustomPanels(state),
       selectors.getLeftPanelWidth(state),
       selectors.getNotesInLeftPanel(state),
-      selectors.isInDesktopOnlyMode(state)
+      selectors.isInDesktopOnlyMode(state),
+      selectors.isThumbnailSelectingPages(state),
     ],
     shallowEqual,
   );
@@ -123,13 +127,14 @@ const LeftPanel = () => {
             </div>
           </div>}
         <div className="left-panel-header">
-          <LeftPanelTabs />
+          {isThumbnailSelectingPages ? <LeftPanelPageTabs /> : <LeftPanelTabs />}
         </div>
         {activePanel === 'thumbnailsPanel' && <ThumbnailsPanel/>}
         {activePanel === 'outlinesPanel' && <OutlinesPanel />}
         {activePanel === 'bookmarksPanel' && <BookmarksPanel />}
         {activePanel === 'layersPanel' && <LayersPanel />}
         {core.isFullPDFEnabled() && activePanel === 'signaturePanel' && <SignaturePanel />}
+        {activePanel === 'attachmentPanel' && <FileAttachmentPanel />}
         {notesInLeftPanel && activePanel === 'notesPanel' && <NotesPanel currentLeftPanelWidth={currentWidth} />}
         {customPanels.map(({ panel }, index) => (
           <CustomElement

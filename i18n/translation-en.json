@@ -2,6 +2,7 @@
   "action": {
     "apply": "Apply",
     "applyAll": "Apply all",
+    "calendar": "Calendar",
     "calibrate": "Calibrate",
     "cancel": "Cancel",
     "clear": "Clear",
@@ -9,7 +10,7 @@
     "undo": "Undo",
     "redo": "Redo",
     "comment": "Comment",
-    "reply": "Reply",
+    "reply": "Add reply",
     "copy": "Copy",
     "delete": "Delete",
     "group": "Group",
@@ -69,7 +70,16 @@
     "insertBlankPageAbove": "Insert blank page above",
     "insertBlankPageBelow": "Insert blank page below",
     "pageManipulation": "Page Manipulation",
-    "replace": "Replace"
+    "replace": "Replace",
+    "showLess": "show less",
+    "showMore": "...more",
+    "chooseFile": "Choose a file",
+    "selectYourOption": "Select your option",
+    "open": "Open",
+    "deselectAll": "Deselect All",
+    "select": "Select",
+    "moveToTop": "Move to top",
+    "moveToBottom": "Move to bottom"
   },
   "annotation": {
     "areaMeasurement": "Area",
@@ -77,6 +87,7 @@
     "callout": "Callout",
     "crop": "Crop Page",
     "caret": "Caret",
+    "dateFreeText": "Calendar",
     "formFillCheckmark": "Tick",
     "formFillCross": "Cross",
     "distanceMeasurement": "Distance",
@@ -142,6 +153,7 @@
     "SBRejected": "Rejected"
   },
   "component": {
+    "attachmentPanel": "Attachments",
     "leftPanel": "Panel",
     "toolsHeader": "Tools",
     "searchOverlay": "Search",
@@ -162,7 +174,9 @@
     "zoomOverlay": "Zoom Overlay",
     "textPopup": "Text Popup",
     "createStampButton": "Create New Stamp",
-    "filter": "Filter"
+    "filter": "Filter",
+    "pageReplaceModalTitle": "Replace Page",
+    "files": "Files"
   },
   "message": {
     "toolsOverlayNoPresets": "No Presets",
@@ -176,6 +190,7 @@
     "noAnnotationsReadOnly": "This document has no annotations.",
     "noAnnotationsFilter": "Start making annotations and filters will appear here.",
     "noOutlines": "This document has no outline.",
+    "noAttachments": "This document has no attachments.",
     "noResults": "No results found.",
     "numResultsFound": "results found",
     "notSupported": "That file type is not supported.",
@@ -196,14 +211,45 @@
     "errorEnterMeasurement": "The number you have entered is invalid, you can enter values like 7.5 or 7 1/2",
     "linkURLorPage": "Link URL or a Page",
     "enterReplacementText": "Enter the text you want to replace",
-    "sortBy": "Sort by",
+    "sortBy": "Sort",
     "emptyCustomStampInput": "Stamp text cannot be empty",
     "unpostedComment": "Unposted Comment",
     "lockedLayer": "Layer is locked",
     "layerVisibililtyNoChange": "Layer visibililty can't be changed",
-    "untitled": "Untitled"
+    "untitled": "Untitled",
+    "selectHowToLoadFile": "Select how to load your document",
+    "openFileByUrl": "Open file by URL:",
+    "enterUrlHere": "Enter URL here",
+    "openLocalFile": "Open local file:",
+    "selectFile": "Select file",
+    "selectPageToReplace": "Select the pages in the document you would like to replace with.",
+    "embeddedFiles": "Embedded Files",
+    "pageNum": "Page Number"
   },
   "option": {
+    "type": {
+      "caret": "Caret",
+      "custom": "Custom",
+      "ellipse": "Ellipse",
+      "fileattachment": "File Attachment",
+      "freehand": "Free Hand",
+      "callout": "Callout",
+      "freetext": "Free Text",
+      "line": "Line",
+      "polygon": "Polygon",
+      "polyline": "Polyline",
+      "rectangle": "Rectangle",
+      "redact": "Redact",
+      "signature": "Signature",
+      "stamp": "Stamp",
+      "stickyNote": "Sticky Note",
+      "highlight": "Highlight",
+      "strikeout": "Strikeout",
+      "underline": "Underline",
+      "squiggly": "Squiggly",
+      "3D": "3D",
+      "other": "Other"
+    },
     "notesOrder": {
       "dropdownLabel": "Sort Order List",
       "position": "Position",
@@ -211,8 +257,10 @@
       "status": "Status",
       "author": "Author",
       "type": "Type",
-      "color": "Color"
-    },
+      "color": "Color",
+      "createDate": "Created Date",
+      "modifiedDate": "Modified Date"
+  },
     "toolbarGroup": {
       "dropdownLabel": "Toolbar Groups",
       "toolbarGroup-View": "View",
@@ -237,7 +285,9 @@
       "pageTransition": "Page Transition"
     },
     "documentControls": {
-      "placeholder": "1, 3, 5-10"
+      "placeholder": "1, 3, 5-10",
+      "selectTooltip": "Select multiple pages",
+      "closeTooltip": "Close multiselect"
     },
     "outlineControls": {
       "add": "Add item",
@@ -307,6 +357,11 @@
       "or": "Or",
       "pickImage": "Choose a signature"
     },
+    "pageReplacementModal": {
+      "dragAndDrop": "Drag & Drop your file here",
+      "or": "Or",
+      "chooseFile": "Choose a file"
+    },
     "filterAnnotModal": {
       "commentBy": "Comment by",
       "types": "Types",
@@ -342,6 +397,11 @@
     },
     "measurementOption": {
       "scale": "Scale"
+    },
+    "stylePopup": {
+      "textStyle": "Text Style",
+      "colorStyle": "Colors",
+      "invalidFontSize": "Font size must be less than "
     },
     "styleOption": {
       "style": "Style",
@@ -380,11 +440,21 @@
       "rotateClockwise": "Clockwise",
       "rotateCounterClockwise": "Counterclockwise"
     },
+    "thumbnailsControlOverlay": {
+      "move": "Move pages"
+    },
     "richText": {
       "bold": "Bold",
       "italic": "Italic",
       "underline": "Underline",
-      "strikeout": "Strikeout"
+      "strikeout": "Strikeout",
+      "alignLeft": "Text align left",
+      "alignRight": "Text align right",
+      "alignCenter": "Text align center",
+      "justifyCenter": "Text justify center",
+      "alignTop": "Align top",
+      "alignMiddle": "Align middle",
+      "alignBottom": "Align bottom"
     },
     "customStampModal": {
       "stampText": "Stamp text:",
@@ -404,8 +474,8 @@
     "extractPage": {
       "title": "Extract Page",
       "message": "Are you sure you want to extract the selected page(s)?",
-      "confirmBtn": "Extract pages",
-      "secondaryBtn": "Extract and remove page(s)"
+      "confirmBtn": "Extract",
+      "secondaryBtn": "Extract and Delete"
     },
     "redaction": {
       "applyTile": "Apply Redaction",

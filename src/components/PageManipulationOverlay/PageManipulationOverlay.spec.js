@@ -9,6 +9,8 @@ const TestPageManipulationOverlay = withProviders(PageManipulationOverlay);
 const basicProps = {
   pageNumbers: [],
   pageManipulationOverlayItems: [
+    { dataElement: 'pageAdditionalControls' },
+    { type: 'divider' },
     { dataElement: 'pageRotationControls' },
     { type: 'divider' },
     { dataElement: 'pageInsertionControls' },
@@ -21,11 +23,11 @@ describe('PageManipulationOverlay', () => {
   describe('Component', () => {
     it('Story should not throw any errors', () => {
       expect(() => {
-        render(<BasicPageManipulationOverlayStory {...basicProps} />)
+        render(<BasicPageManipulationOverlayStory {...basicProps} />);
       }).not.toThrow();
     });
 
-    it('Renders as a default 7 rows for each of the operations currently supported in the overlay', () => {
+    it('Renders as a default 9 rows for each of the operations currently supported in the overlay', () => {
       /**
        * - Rotate Clockwise
        * - Rotate CounterClockwise
@@ -34,8 +36,12 @@ describe('PageManipulationOverlay', () => {
        * - Replace Page// NOT SUPPORTED RIGHT NOW
        * - Extract page
        * - Delete Page
+       * - Move Page to top
+       * - Move Page to bottom
        */
-      const supportedOperations = 6;
+
+      const supportedOperations = 9;
+
       const { container } = render(
         <TestPageManipulationOverlay {...basicProps} />
       );
@@ -55,7 +61,7 @@ describe('PageManipulationOverlay', () => {
       const { container } = render(
         <TestPageManipulationOverlay {...testProps} />
       );
-      expect(container.querySelectorAll('.row')).toHaveLength(4);
+      expect(container.querySelectorAll('.row')).toHaveLength(5);
     });
 
     it('I can customize the page manipulation overlay with custom operations', () => {
@@ -71,7 +77,7 @@ describe('PageManipulationOverlay', () => {
               {
                 title: 'Alert me',
                 img: '/path-to-image',
-                onClick: (pageNumbers) => {
+                onClick: pageNumbers => {
                   alert(`Selected thumbnail pages: ${pageNumbers}`);
                 },
                 dataElement: 'customPageOperationButton',
@@ -79,7 +85,7 @@ describe('PageManipulationOverlay', () => {
               {
                 title: 'Alert me again',
                 img: '/path-to-image',
-                onClick: (pageNumbers) => {
+                onClick: pageNumbers => {
                   alert(`Selected thumbnail pages: ${pageNumbers}`);
                 },
                 dataElement: 'customPageOperationButtonTwo',
@@ -100,9 +106,9 @@ describe('PageManipulationOverlay', () => {
     it('When I add a custom page operation, my handler gets called with an array of thumbnail pages that are selected', () => {
       //Add my custom section with one operation
       const myOnClickHandler = jest.fn();
-      const selectedThumbnails = [1, 2];
+      const pages = [1, 2];
       const customOperationProps = {
-        pageNumbers: selectedThumbnails,
+        pageNumbers: pages,
         pageManipulationOverlayItems: [
           {
             type: 'customPageOperation',
@@ -127,7 +133,7 @@ describe('PageManipulationOverlay', () => {
       //Click the button
       const customOperationButton = container.querySelectorAll('div[data-element="customPageOperationButton"]')[0];
       fireEvent.click(customOperationButton);
-      expect(myOnClickHandler).toBeCalledWith(selectedThumbnails)
+      expect(myOnClickHandler).toBeCalledWith(pages);
     });
-  })
-})
+  });
+});

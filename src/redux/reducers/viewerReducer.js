@@ -4,6 +4,11 @@ export default initialState => (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case 'SET_THUMBNAIL_PAGE_SELECT':
+      return {
+        ...state,
+        thumbnailSelectingPages: payload.isSelecting
+      };
     case 'SET_HIGH_CONTRAST_MODE':
       return {
         ...state,
@@ -354,6 +359,9 @@ export default initialState => (state = initialState, action) => {
       return { ...state, tab: { ...state.tab, [payload.id]: payload.dataElement } };
     case 'SET_CUSTOM_ELEMENT_OVERRIDES':
       return { ...state, customElementOverrides: { ...state.customElementOverrides, [payload.dataElement]: payload.overrides } };
+    case 'SET_PAGE_REPLACEMENT_FILE_LIST':
+      return { ...state, pageReplacementFileList: payload.list };
+
     case 'SET_NOTE_TRANSFORM_FUNCTION':
       return { ...state, noteTransformFunction: payload.noteTransformFunction };
     case 'SET_CUSTOM_NOTE_SELECTION_FUNCTION':
@@ -428,6 +436,8 @@ export default initialState => (state = initialState, action) => {
         ...state,
         pageManipulationOverlay: payload.items,
       };
+    case 'SET_WATERMARK_MODAL_OPTIONS':
+      return { ...state, watermarkModalOptions: payload.watermarkModalOptions };
     default:
       return state;
   }

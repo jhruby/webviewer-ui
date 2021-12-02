@@ -1,24 +1,44 @@
 import React from 'react';
-import core from 'core';
-import PageRotationControls from './PageRotationControls'
+import PageRotationControls from './PageRotationControls';
+import { noPagesSelectedWarning, rotateClockwise, rotateCounterClockwise } from "helpers/pageManipulationFunctions";
+import { useDispatch } from "react-redux";
+import PropTypes from 'prop-types';
+import actions from 'actions';
+import { isMobile } from 'helpers/device';
+
+const propTypes = {
+  pageNumbers: PropTypes.arrayOf(PropTypes.number),
+  warn: PropTypes.bool,
+};
 
 function PageRotationControlsContainer(props) {
-  const { pageNumbers } = props;
+  const dispatch = useDispatch();
+  const { pageNumbers, warn } = props;
 
-  const rotateClockwise = () => {
-    core.rotatePages(pageNumbers, window.Core.PageRotation.e_90);
+  const onRotateCounterClockwise = () => {
+    if (warn) {
+      !noPagesSelectedWarning(pageNumbers, dispatch) && rotateCounterClockwise(pageNumbers);
+    } else {
+      rotateCounterClockwise(pageNumbers);
+    }
+    isMobile() && dispatch(actions.closeElement("pageManipulationOverlay"));
   };
-
-  const rotateCounterClockwise = () => {
-    core.rotatePages(pageNumbers, window.Core.PageRotation.e_270);
+  const onRotateClockwise = () => {
+    if (warn) {
+      !noPagesSelectedWarning(pageNumbers, dispatch) && rotateClockwise(pageNumbers);
+    } else {
+      rotateClockwise(pageNumbers);
+    }
+    isMobile() && dispatch(actions.closeElement("pageManipulationOverlay"));
   };
-
   return (
     <PageRotationControls
-      rotateClockwise={rotateClockwise}
-      rotateCounterClockwise={rotateCounterClockwise}
+      rotateCounterClockwise={onRotateCounterClockwise}
+      rotateClockwise={onRotateClockwise}
     />
-  )
+  );
 }
+
+PageRotationControlsContainer.propTypes = propTypes;
 
 export default PageRotationControlsContainer;

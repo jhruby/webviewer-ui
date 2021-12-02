@@ -8,22 +8,20 @@ import classNames from 'classnames';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 
 import NoteTextarea from 'components/NoteTextarea';
-import NotePopup from 'components/NotePopup';
-import NoteState from 'components/NoteState';
 import NoteContext from 'components/Note/Context';
-import Icon from 'components/Icon';
-import NoteUnpostedCommentIndicator from 'components/NoteUnpostedCommentIndicator';
 
 import core from 'core';
 import mentionsManager from 'helpers/MentionsManager';
+import getLatestActivityDate from "helpers/getLatestActivityDate";
 import { getDataWithKey, mapAnnotationToKey } from 'constants/map';
-import getColor from 'helpers/getColor';
 import useDidUpdate from 'hooks/useDidUpdate';
 import actions from 'actions';
 import selectors from 'selectors';
 
 import './NoteContent.scss';
-import getLatestActivityDate from "helpers/getLatestActivityDate";
+import NoteHeader from 'components/NoteHeader';
+import NoteTextPreview from 'src/components/NoteTextPreview';
+import isString from 'lodash/isString';
 
 dayjs.extend(LocalizedFormat);
 
@@ -31,11 +29,11 @@ const propTypes = {
   annotation: PropTypes.object.isRequired,
 };
 
-const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextChange, isUnread, isNonReplyNoteRead, onReplyClicked, }) => {
+const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextChange, isUnread, isNonReplyNoteRead, onReplyClicked }) => {
   const [
     noteDateFormat,
     iconColor,
-    isStateDisabled,
+    isNoteStateDisabled,
     language,
     notesShowLastUpdatedDate
   ] = useSelector(
@@ -49,7 +47,7 @@ const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextCha
     shallowEqual,
   );
 
-  const { isSelected, searchInput, resize, pendingEditTextMap, onTopNoteContentClicked } = useContext(
+  const { isSelected, searchInput, resize, pendingEditTextMap, onTopNoteContentClicked, sortStrategy } = useContext(
     NoteContext,
   );
 
@@ -80,7 +78,7 @@ const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextCha
   );
 
   const renderContents = useCallback(
-    contents => {
+    (contents, richTextStyle) => {
       const autolinkerContent = [];
       Autolinker.link(contents, {
         stripPrefix: false,
@@ -89,6 +87,10 @@ const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextCha
           const href = match.getAnchorHref();
           const anchorText = match.getAnchorText();
           const offset = match.getOffset();
+          if (anchorText !== match.getMatchedText()) {
+            // If not match, the 'highlightSearchInput()' function below will not work properly
+            throw new Error("anchorText and matchedText are different");
+          }
           switch (match.getType()) {
             case 'url':
             case 'email':
@@ -97,14 +99,24 @@ const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextCha
                 href,
                 text: anchorText,
                 start: offset,
-                end: offset + anchorText.length,
+                end: offset + anchorText.length
               });
               return;
           }
-        },
+        }
       });
       if (!autolinkerContent.length) {
-        return highlightSearchInput(contents, searchInput);
+        const highlightResult = highlightSearchInput(contents, searchInput, richTextStyle);
+        if (isString(highlightResult)) {
+          // Only support preview for pure text contents
+          return (
+            <NoteTextPreview linesToBreak={3} comment>
+              {highlightResult}
+            </NoteTextPreview>
+          )
+        } else {
+          return highlightResult;
+        }
       }
       const contentToRender = [];
       let strIdx = 0;
@@ -112,14 +124,17 @@ const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextCha
       // before the current link in a span tag, and wrap the current link
       // in our own anchor tag
       autolinkerContent.forEach((anchorData, forIdx) => {
-        const { start, end, href, text } = anchorData;
+        const { start, end, href } = anchorData;
         if (strIdx < start) {
           contentToRender.push(
             <span key={`span_${forIdx}`}>
               {
                 highlightSearchInput(
-                  contents.slice(strIdx, start),
+                  contents,
                   searchInput,
+                  richTextStyle,
+                  strIdx,
+                  start
                 )
               }
             </span>
@@ -134,8 +149,11 @@ const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextCha
           >
             {
               highlightSearchInput(
-                text,
+                contents,
                 searchInput,
+                richTextStyle,
+                start,
+                end
               )
             }
           </a>
@@ -144,16 +162,19 @@ const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextCha
       });
       // Ensure any content after the last link is accounted for
       if (strIdx < contents.length - 1) {
-        contentToRender.push(highlightSearchInput(contents.slice(strIdx), searchInput));
+        contentToRender.push(highlightSearchInput(
+          contents,
+          searchInput,
+          richTextStyle,
+          strIdx
+        ));
       }
       return contentToRender;
     },
-    [searchInput],
+    [searchInput]
   );
 
   const icon = getDataWithKey(mapAnnotationToKey(annotation)).icon;
-  const color = annotation[iconColor]?.toHexString?.();
-  const fillColor = getColor(annotation.FillColor);
   let customData;
   try {
     customData = JSON.parse(annotation.getCustomData('trn-mention'));
@@ -162,8 +183,8 @@ const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextCha
   }
   const contents = customData?.contents || annotation.getContents();
   const contentsToRender = annotation.getContents();
-  const numberOfReplies = annotation.getReplies().length;
-  const formatNumberOfReplies = Math.min(numberOfReplies, 9);
+  const richTextStyle = annotation.getRichTextStyle();
+  const textColor = annotation['TextColor'];
   // This is the text placeholder passed to the ContentArea
   // It ensures that if we try and edit, we get the right placeholder
   // depending on whether the comment has been saved to the annotation or not
@@ -198,79 +219,84 @@ const NoteContent = ({ annotation, isEditing, setIsEditing, noteIndex, onTextCha
     clicked: isNonReplyNoteRead, //The top note content is read
   });
 
-  const date = notesShowLastUpdatedDate ? getLatestActivityDate(annotation) : annotation.DateCreated;
+  const content = useMemo(
+    () => {
+      const contentStyle = {};
+      if (textColor) {
+        contentStyle.color = textColor.toHexString();
+      }
+
+      return (
+        <React.Fragment>
+          {isEditing && isSelected ? (
+            <ContentArea
+              annotation={annotation}
+              noteIndex={noteIndex}
+              setIsEditing={setIsEditing}
+              textAreaValue={textAreaValue}
+              onTextAreaValueChange={onTextChange}
+            />
+          ) : (
+            contentsToRender && (
+                <div className={classNames('container', { 'reply-content': isReply })} onClick={handleContentsClicked} style={contentStyle}>
+                {renderContents(contentsToRender, richTextStyle)}
+              </div>
+            )
+          )}
+        </React.Fragment>
+      );
+    },
+    [annotation, isSelected, isEditing, setIsEditing, contents, renderContents, textAreaValue, onTextChange]
+  );
+
+  const text = annotation.getCustomData('trn-annot-preview');
+  const textPreview = useMemo(
+    () => {
+      if (text === '') {
+        return null;
+      }
+
+      return (
+        <div className="selected-text-preview">
+          <NoteTextPreview linesToBreak={1}>
+            {`"${text}"`}
+          </NoteTextPreview>
+        </div>
+
+      )
+    }, [text])
 
   const header = useMemo(
     () => {
       return (
-        <React.Fragment>
-          {!isReply &&
-            <div className="type-icon-container">
-              {isUnread &&
-                <div className="unread-notification"></div>
-              }
-              <Icon className="type-icon" glyph={icon} color={color} fillColor={fillColor} />
-            </div>
-          }
-          <div className="author-and-date">
-            <div className="author-and-overflow">
-              <div className="author-and-time">
-                {renderAuthorName(annotation)}
-                <div className="date-and-num-replies">
-                  <div className="date-and-time">
-                    {date ? dayjs(date).locale(language).format(noteDateFormat) : t('option.notesPanel.noteContent.noDate')}
-                  </div>
-                  {numberOfReplies > 0 &&
-                    <div className="num-replies-container">
-                      <Icon className="num-reply-icon" glyph={"icon-chat-bubble"} />
-                      <div className="num-replies">{numberOfReplies}</div>
-                    </div>}
-                </div>
-              </div>
-              <div className="state-and-overflow">
-                <NoteUnpostedCommentIndicator annotationId={annotation.Id} />
-                {!isStateDisabled && !isReply &&
-                  <NoteState
-                    annotation={annotation}
-                    isSelected={isSelected}
-                  />
-                }
-                {!isEditing && isSelected &&
-                  <NotePopup
-                    noteIndex={noteIndex}
-                    annotation={annotation}
-                    setIsEditing={setIsEditing}
-                  />}
-              </div>
-            </div>
-            {isEditing && isSelected ? (
-              <ContentArea
-                annotation={annotation}
-                noteIndex={noteIndex}
-                setIsEditing={setIsEditing}
-                textAreaValue={textAreaValue}
-                onTextAreaValueChange={onTextChange}
-              />
-            ) : (
-              contentsToRender && (
-                <div className="container" onClick={handleContentsClicked}>{renderContents(contentsToRender)}</div>
-              )
-            )}
-          </div>
-        </React.Fragment>
-      );
-    },
-    [isReply, numberOfReplies, formatNumberOfReplies, icon, color, renderAuthorName, annotation, noteDateFormat, isStateDisabled, isSelected, isEditing, setIsEditing, contents, renderContents, textAreaValue, onTextChange, language, isUnread, date]
+        <NoteHeader
+          icon={icon}
+          iconColor={iconColor}
+          annotation={annotation}
+          language={language}
+          noteDateFormat={noteDateFormat}
+          isSelected={isSelected}
+          setIsEditing={setIsEditing}
+          notesShowLastUpdatedDate={notesShowLastUpdatedDate}
+          isReply={isReply}
+          isUnread={isUnread}
+          renderAuthorName={renderAuthorName}
+          isNoteStateDisabled={isNoteStateDisabled}
+          isEditing={isEditing}
+          noteIndex={noteIndex}
+          sortStrategy={sortStrategy}
+        />
+      )
+    }, [icon, iconColor, annotation, language, noteDateFormat, isSelected, setIsEditing, notesShowLastUpdatedDate, isReply, isUnread, renderAuthorName, isNoteStateDisabled, isEditing, noteIndex, getLatestActivityDate(annotation), sortStrategy]
   );
 
-  return useMemo(
-    () => (
-      <div className={noteContentClass} onClick={handleNoteContentClicked}>
-        {header}
-      </div>
-    ),
-    [header],
-  );
+  return (
+    <div className={noteContentClass} onClick={handleNoteContentClicked}>
+      {header}
+      {textPreview}
+      {content}
+    </div>
+  )
 };
 
 NoteContent.propTypes = propTypes;
@@ -291,6 +317,7 @@ const ContentArea = ({
   ]);
   const [t] = useTranslation();
   const textareaRef = useRef();
+  const isReply = annotation.isReply();
 
   useEffect(() => {
     // on initial mount, focus the last character of the textarea
@@ -336,8 +363,10 @@ const ContentArea = ({
     }
   };
 
+  const contentClassName = classNames('edit-content', { 'reply-content': isReply })
+
   return (
-    <div className="edit-content">
+    <div className={contentClassName}>
       <NoteTextarea
         ref={el => {
           textareaRef.current = el;
@@ -383,12 +412,59 @@ ContentArea.propTypes = {
   onTextAreaValueChange: PropTypes.func.isRequired,
 };
 
-const highlightSearchInput = (text, searchInput) => {
+const getRichTextSpan = (text, richTextStyle, key) => {
+  const style = {
+    fontWeight: richTextStyle['font-weight'],
+    fontStyle: richTextStyle['font-style'],
+    textDecoration: richTextStyle['text-decoration'],
+    color: richTextStyle['color']
+  };
+  if (style.textDecoration) {
+    style.textDecoration = style.textDecoration.replace('word', 'underline');
+  }
+  return (
+    <span style={style} key={key}>{text}</span>
+  );
+};
+
+const renderRichText = (text, richTextStyle, start) => {
+  if (!richTextStyle || !text) return text;
+
+  const styles = {};
+  const indices = Object.keys(richTextStyle).map(Number).sort((a, b) => a - b);
+  for (let i = 0; i < indices.length; i++) {
+    let index = indices[i] - start;
+    index = Math.min(Math.max(index, 0), text.length);
+    styles[index] = richTextStyle[indices[i]];
+    if (index === text.length) {
+      break;
+    }
+  }
+
+  const contentToRender = [];
+  const styleIndices = Object.keys(styles).map(Number).sort((a, b) => a - b);
+  for (let i = 1; i < styleIndices.length; i++) {
+    contentToRender.push(getRichTextSpan(
+      text.slice(styleIndices[i - 1], styleIndices[i]),
+      styles[styleIndices[i - 1]],
+      `richtext_span_${i}`
+    ));
+  }
+
+  return contentToRender;
+};
+
+const highlightSearchInput = (fullText, searchInput, richTextStyle, start = 0, end = fullText.length) => {
+  const text = fullText.slice(start, end);
   const loweredText = text.toLowerCase();
   const loweredSearchInput = searchInput.toLowerCase();
+  if (richTextStyle) {
+    richTextStyle['0'] = richTextStyle['0'] || {};
+    richTextStyle[fullText.length] = richTextStyle[fullText.length] || {};
+  }
   let lastFoundInstance = loweredText.indexOf(loweredSearchInput);
   if (!loweredSearchInput.trim() || lastFoundInstance === -1) {
-    return text;
+    return renderRichText(text, richTextStyle, start);
   }
   const contentToRender = [];
   const allFoundPositions = [lastFoundInstance];
@@ -406,22 +482,29 @@ const highlightSearchInput = (text, searchInput) => {
     // Account for any content at the beginning of the string before the first
     // instance of the searchInput
     if (idx === 0 && position !== 0) {
-      contentToRender.push(text.substring(0, position));
+      contentToRender.push(renderRichText(text.substring(0, position), richTextStyle, start));
     }
     contentToRender.push(
       <span className="highlight" key={`highlight_span_${idx}`}>
-        {text.substring(position, position + loweredSearchInput.length)}
+        {
+          renderRichText(
+            text.substring(position, position + loweredSearchInput.length),
+            richTextStyle,
+            start + position)
+        }
       </span>
     );
     if (
       // Ensure that we do not try to make an out-of-bounds access
       position + loweredSearchInput.length < loweredText.length
       // Ensure that this is the end of the allFoundPositions array
-      && position + loweredSearchInput.length !== allFoundPositions[idx+1]
+      && position + loweredSearchInput.length !== allFoundPositions[idx + 1]
     ) {
-      contentToRender.push(
-        text.substring(position + loweredSearchInput.length, allFoundPositions[idx+1])
-      );
+      contentToRender.push(renderRichText(
+        text.substring(position + loweredSearchInput.length, allFoundPositions[idx + 1]),
+        richTextStyle,
+        start + position + loweredSearchInput.length
+      ));
     }
   });
   return contentToRender;

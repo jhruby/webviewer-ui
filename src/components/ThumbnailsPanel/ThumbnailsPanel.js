@@ -1,22 +1,22 @@
 import { debounce } from 'lodash';
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { List } from 'react-virtualized';
 import Measure from 'react-measure';
 import classNames from 'classnames';
-import { isMobile } from "helpers/device";
-
-import { isIE11 } from 'helpers/device';
+import { isIE11 } from "helpers/device";
 
 import Thumbnail from 'components/Thumbnail';
 import DocumentControls from 'components/DocumentControls';
 import Button from 'components/Button';
 
 import core from 'core';
-import { extractPagesToMerge, mergeExternalWebViewerDocument, mergeDocument } from 'helpers/pageManipulation';
+import { extractPagesToMerge, mergeDocument, mergeExternalWebViewerDocument } from 'helpers/pageManipulation';
 import { workerTypes } from 'constants/types';
 import selectors from 'selectors';
 import actions from 'actions';
+import Events from 'constants/events';
+import fireEvent from 'helpers/fireEvent';
 
 import './ThumbnailsPanel.scss';
 
@@ -184,7 +184,7 @@ const ThumbnailsPanel = () => {
 
     const onDocumentLoaded = () => {
       const doc = core.getDocument();
-      if (doc.type === workerTypes.PDF || (doc.type === workerTypes.WEBVIEWER_SERVER && !doc.isWebViewerServerDocument())) {
+      if (doc.type === workerTypes.PDF || doc.type === workerTypes.XOD || (doc.type === workerTypes.WEBVIEWER_SERVER && !doc.isWebViewerServerDocument())) {
         setAllowPageOperations(true);
       } else {
         setAllowPageOperations(false);
@@ -339,7 +339,7 @@ const ThumbnailsPanel = () => {
     setIsDragging(true);
     const draggingSelectedPage = selectedPageIndexes.some(i => i === index);
     const pagesToMove = draggingSelectedPage ? selectedPageIndexes.map(index => index + 1) : [index + 1];
-
+    fireEvent(Events.THUMBNAIL_DRAGGED);
     // need to set 'text' to empty for drag to work in FireFox and mobile
     e.dataTransfer.setData('text', '');
 
@@ -366,7 +366,6 @@ const ThumbnailsPanel = () => {
     e.preventDefault();
     const { files } = e.dataTransfer;
     const insertTo = isDraggingToPreviousPage ? draggingOverPageIndex + 1 : draggingOverPageIndex + 2;
-
     let externalPageWebViewerFrameId;
     if (!isIE11) {
       // at this time of writing, IE11 does not really have support for getData
@@ -380,7 +379,7 @@ const ThumbnailsPanel = () => {
       if (externalPageWebViewerFrameId && window.frameElement.id !== externalPageWebViewerFrameId) {
         dispatch(mergeExternalWebViewerDocument(externalPageWebViewerFrameId, insertTo));
       } else if (files.length) {
-        files.forEach(file => {
+        Array.from(files).forEach(file => {
           dispatch(mergeDocument(file, insertTo));
         });
       }
@@ -391,6 +390,11 @@ const ThumbnailsPanel = () => {
         const pageNumbersToMove = draggingSelectedPage ? selectedPageIndexes.map(i => i + 1) : [currentPage];
         afterMovePageNumber.current = targetPageNumber - pageNumbersToMove.filter(p => p < targetPageNumber).length;
         core.movePages(pageNumbersToMove, targetPageNumber);
+        const updatedPagesNumbers = [];
+        for (let offset = 0; offset < pageNumbersToMove.length; offset++) {
+          updatedPagesNumbers.push(afterMovePageNumber.current + offset);
+        }
+        fireEvent(Events.THUMBNAIL_DROPPED, { pageNumbersBeforeMove:pageNumbersToMove, pagesNumbersAfterMove:updatedPagesNumbers, numberOfPagesMoved:updatedPagesNumbers.length });
       }
     }
     setDraggingOverPageIndex(null);
@@ -467,21 +471,21 @@ const ThumbnailsPanel = () => {
             <>
               {(numberOfColumns > 1 || thumbIndex === 0) && showPlaceHolder && isDraggingToPreviousPage && <div key={`placeholder1-${thumbIndex}`} className="thumbnailPlaceholder" />}
               <div key={thumbIndex} role="cell" onDragEnd={onDragEnd} className="cellThumbContainer">
-              <Thumbnail
-                isDraggable={allowDragAndDrop}
-                isSelected={selectedPageIndexes.includes(thumbIndex)}
-                index={thumbIndex}
-                canLoad={canLoad}
-                onLoad={onLoad}
-                onCancel={onCancel}
-                onRemove={onRemove}
-                onDragStart={onDragStart}
-                onDragOver={onDragOver}
-                onFinishLoading={removeFromPendingThumbs}
-                updateAnnotations={updateAnnotations}
-                shouldShowControls={allowPageOperationsUI}
-                thumbnailSize={thumbnailSize}
-              />
+                <Thumbnail
+                  isDraggable={allowDragAndDrop}
+                  isSelected={selectedPageIndexes.includes(thumbIndex)}
+                  index={thumbIndex}
+                  canLoad={canLoad}
+                  onLoad={onLoad}
+                  onCancel={onCancel}
+                  onRemove={onRemove}
+                  onDragStart={onDragStart}
+                  onDragOver={onDragOver}
+                  onFinishLoading={removeFromPendingThumbs}
+                  updateAnnotations={updateAnnotations}
+                  shouldShowControls={allowPageOperationsUI}
+                  thumbnailSize={thumbnailSize}
+                />
               </div>
               {showPlaceHolder && !isDraggingToPreviousPage && <div key={`placeholder2-${thumbIndex}`} className="thumbnailPlaceholder" />}
             </>
@@ -570,7 +574,6 @@ const ThumbnailsPanel = () => {
                 style={{ outline: 'none' }}
                 // Ensure we show the current page in the thumbnails when we open the panel
                 scrollToIndex={Math.floor((currentPage - 1) / numberOfColumns)}
-                scrollToAlignment={isMobile() ? "start" : "auto"}
               />
               {isDragging ?
                 <div className="thumbnailAutoScollArea" onDragOver={scrollDown} style={{ ...thumbnailAutoScrollAreaStyle, 'bottom': '70px' }}></div> : ""

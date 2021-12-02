@@ -1,34 +1,44 @@
 import React from 'react';
-import core from 'core';
 import PageInsertionControls from './PageInsertionControls';
+import { insertAbove, insertBelow, noPagesSelectedWarning } from "helpers/pageManipulationFunctions";
+import { useDispatch } from "react-redux";
+import PropTypes from 'prop-types';
+import actions from 'actions';
+import { isMobile } from 'helpers/device';
+
+const propTypes = {
+  pageNumbers: PropTypes.arrayOf(PropTypes.number),
+  warn: PropTypes.bool,
+};
 
 function PageInsertionControlsContainer(props) {
-  const { pageNumbers } = props;
+  const dispatch = useDispatch();
+  const { pageNumbers, warn } = props;
 
-  const getPageDimensions = () => {
-    return {
-      width: core.getPageWidth(pageNumbers[0]),
-      height: core.getPageHeight(pageNumbers[0])
+  const onInsertAbove = () => {
+    if (warn) {
+      !noPagesSelectedWarning(pageNumbers, dispatch) && insertAbove(pageNumbers);
+    } else {
+      insertAbove(pageNumbers);
     }
+    isMobile() && dispatch(actions.closeElement("pageManipulationOverlay"));
   };
-
-  const insertAbove = () => {
-    let pageDimensions = getPageDimensions()
-    core.insertBlankPages(pageNumbers, pageDimensions.width, pageDimensions.height);
+  const onInsertBelow = () => {
+    if (warn) {
+      !noPagesSelectedWarning(pageNumbers, dispatch) && insertBelow(pageNumbers);
+    } else {
+      insertBelow(pageNumbers);
+    }
+    isMobile() && dispatch(actions.closeElement("pageManipulationOverlay"));
   };
-
-  const insertBelow = () => {
-    let pageDimensions = getPageDimensions()
-    let newPageNumbers = pageNumbers.map((page)=> page + 1)
-    core.insertBlankPages(newPageNumbers, pageDimensions.width, pageDimensions.height);
-  };
-
   return (
-    <PageInsertionControls 
-      insertAbove={insertAbove}
-      insertBelow={insertBelow}
+    <PageInsertionControls
+      insertAbove={onInsertAbove}
+      insertBelow={onInsertBelow}
     />
-  )
-};
+  );
+}
+
+PageInsertionControlsContainer.propTypes = propTypes;
 
 export default PageInsertionControlsContainer;

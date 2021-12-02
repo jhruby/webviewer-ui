@@ -2,6 +2,7 @@
   "action": {
     "apply": "適用",
     "applyAll": "すべて適用",
+    "calendar": "カレンダー",
     "calibrate": "調整する",
     "cancel": "キャンセル",
     "clear": "クリア",
@@ -69,7 +70,16 @@
     "insertBlankPageAbove": "上に空白のページを挿入",
     "insertBlankPageBelow": "下に空白のページを挿入",
     "pageManipulation": "ページ操作",
-    "replace": "交換"
+    "replace": "交換",
+    "showLess": "表示を減らす",
+    "showMore": "...もっと",
+    "chooseFile": "ファイルを選択してください",
+    "selectYourOption": "オプションを選択してください",
+    "open": "開ける",
+    "deselectAll": "すべての選択を解除",
+    "select": "選択する",
+    "moveToTop": "上に移動",
+    "moveToBottom": "下に移動"
   },
   "annotation": {
     "areaMeasurement": "面積測定",
@@ -77,6 +87,7 @@
     "callout": "吹き出し",
     "crop": "ページをトリミング",
     "caret": "キャレット",
+    "dateFreeText": "カレンダー",
     "formFillCheckmark": "ダニ",
     "formFillCross": "クロス",
     "distanceMeasurement": "距離測定",
@@ -142,6 +153,7 @@
     "SBRejected": "拒否"
   },
   "component": {
+    "attachmentPanel": "添付ファイル",
     "leftPanel": "パネル",
     "toolsHeader": "ツール",
     "searchOverlay": "検索",
@@ -162,7 +174,9 @@
     "zoomOverlay": "ズームオーバーレイ",
     "textPopup": "テキストポップアップ",
     "createStampButton": "新しいスタンプを作成",
-    "filter": "フィルター"
+    "filter": "フィルター",
+    "pageReplaceModalTitle": "ページを置き換える",
+    "files": "ファイル"
   },
   "message": {
     "toolsOverlayNoPresets": "プリセットなし",
@@ -176,6 +190,7 @@
     "noAnnotationsReadOnly": "このドキュメントには注釈がありません。",
     "noAnnotationsFilter": "注釈を追加すると、フィルターがここに表示されます。",
     "noOutlines": "このドキュメントには概要がありません。",
+    "noAttachments": "このドキュメントには添付ファイルはありません。",
     "noResults": "結果が見つかりませんでした。",
     "numResultsFound": "結果が見つかりました",
     "notSupported": "このファイル形式はサポートされていません。",
@@ -201,9 +216,40 @@
     "unpostedComment": "未投稿コメント",
     "lockedLayer": "レイヤーがロックされています",
     "layerVisibililtyNoChange": "レイヤーの可視性は変更できません",
-    "untitled": "無題"
+    "untitled": "無題",
+    "selectHowToLoadFile": "ドキュメントの読み込み方法を選択します",
+    "openFileByUrl": "URLでファイルを開く：",
+    "enterUrlHere": "ここにURLを入力してください",
+    "openLocalFile": "ローカルファイルを開く：",
+    "selectFile": "ファイルを選ぶ",
+    "selectPageToReplace": "置き換えるドキュメント内のページを選択します。",
+    "embeddedFiles": "埋め込みファイル",
+    "pageNum": "ページ番号"
   },
   "option": {
+    "type": {
+      "caret": "欠けている",
+      "custom": "カスタム",
+      "ellipse": "楕円",
+      "fileattachment": "添付ファイル",
+      "freehand": "フリーハンド",
+      "callout": "叫ぶ",
+      "freetext": "フリーテキスト",
+      "line": "ライン",
+      "polygon": "ポリゴン",
+      "polyline": "ポリライン",
+      "rectangle": "矩形",
+      "redact": "墨消し",
+      "signature": "サイン",
+      "stamp": "スタンプ",
+      "stickyNote": "付箋",
+      "highlight": "ハイライト",
+      "strikeout": "三振",
+      "underline": "下線を引く",
+      "squiggly": "波打つ",
+      "3D": "3D",
+      "other": "他の"
+    },
     "notesOrder": {
       "dropdownLabel": "ソート順リスト",
       "position": "位置",
@@ -211,7 +257,9 @@
       "status": "状態",
       "author": "作成者",
       "type": "種類",
-      "color": "色"
+      "color": "色",
+      "createDate": "作成日",
+      "modifiedDate": "変更日"
     },
     "toolbarGroup": {
       "dropdownLabel": "ツールバー・グループ",
@@ -237,7 +285,9 @@
       "pageTransition": "ページ移動"
     },
     "documentControls": {
-      "placeholder": "1, 3, 5-10"
+      "placeholder": "1, 3, 5-10",
+      "selectTooltip": "複数のページを選択",
+      "closeTooltip": "複数選択を閉じる"
     },
     "outlineControls": {
       "add": "アイテムを追加",
@@ -307,6 +357,11 @@
       "or": "または",
       "pickImage": "署名画像を選択"
     },
+    "pageReplacementModal": {
+      "dragAndDrop": "ここにファイルをドラッグアンドドロップします",
+      "or": "また",
+      "chooseFile": "ファイルを選択してください"
+    },
     "filterAnnotModal": {
       "commentBy": "によるコメント",
       "types": "タイプ",
@@ -342,6 +397,11 @@
     },
     "measurementOption": {
       "scale": "縮尺"
+    },
+    "stylePopup": {
+      "textStyle": "テキストスタイル",
+      "colorStyle": "色",
+      "invalidFontSize": "フォントサイズは以下でなければなりません"
     },
     "styleOption": {
       "style": "スタイル",
@@ -380,11 +440,21 @@
       "rotateClockwise": "右90°回転",
       "rotateCounterClockwise": "左90°回転"
     },
+    "thumbnailsControlOverlay": {
+      "move": "ページを移動する"
+    },
     "richText": {
       "bold": "太字",
       "italic": "斜体",
       "underline": "下線",
-      "strikeout": "取り消し線"
+      "strikeout": "取り消し線",
+      "alignLeft": "テキストを左揃え",
+      "alignRight": "テキストを右揃え",
+      "alignCenter": "テキストを中央に揃える",
+      "justifyCenter": "テキスト正当化センター",
+      "alignTop": "上を揃える",
+      "alignMiddle": "中央に揃える",
+      "alignBottom": "底を揃える"
     },
     "customStampModal": {
       "stampText": "スタンプのテキスト：",

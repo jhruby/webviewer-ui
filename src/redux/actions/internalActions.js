@@ -273,6 +273,10 @@ export const setReaderMode = isReaderMode => ({
   type: 'SET_READER_MODE',
   payload: { isReaderMode },
 });
+export const setThumbnailSelectingPages = (isSelecting = true) => ({
+  type: "SET_THUMBNAIL_PAGE_SELECT",
+  payload: { isSelecting },
+});
 export const setPageManipulationOverlayItems = items => ({
   type: 'SET_PAGE_MANIPULATION_OVERLAY_ITEMS',
   payload: {
@@ -409,4 +413,9 @@ export const setEnableSnapMode = enable => ({
 export const setLanguage = language => ({
   type: 'SET_LANGUAGE',
   payload: { language },
+});
+
+export const setProcessingSearchResults = isProcessingSearchResults => ({
+  type: 'SET_PROCESSING_SEARCH_RESULTS',
+  payload: { isProcessingSearchResults },
 });

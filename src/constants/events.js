@@ -10,11 +10,15 @@
  * @property {string} DROP_OUTLINE {@link UI#event:dragOutline UI.Events.dragOutline}
  * @property {string} PANEL_RESIZED {@link UI#event:panelResized UI.Events.panelResized}
  * @property {string} THEME_CHANGED {@link UI#event:themeChanged UI.Events.themeChanged}
- * @property {string} TOOLBAR_GROUP_CHANGED  {@link UI#event:toolbarGroupChanged UI.Events.toolbarGroupChanged}
+ * @property {string} TOOLBAR_GROUP_CHANGED {@link UI#event:event:toolbarGroupChanged UI.Events.event:toolbarGroupChanged}
  * @property {string} SELECTED_THUMBNAIL_CHANGED {@link UI#event:selectedThumbnailChanged UI.Events.selectedThumbnailChanged}
+ * @property {string} THUMBNAIL_DRAGGED {@link UI#event:thumbnailDragged UI.Events.thumbnailDragged}
+ * @property {string} THUMBNAIL_DROPPED {@link UI#event:thumbnailDropped UI.Events.thumbnailDropped}
  * @property {string} USER_BOOKMARKS_CHANGED {@link UI#event:userBookmarksChanged UI.Events.userBookmarksChanged}
+ * @property {string} OUTLINE_BOOKMARKS_CHANGED {@link UI#event:outlineBookmarksChanged UI.Events.outlineBookmarksChanged}
  * @property {string} VIEWER_LOADED {@link UI#event:viewerLoaded UI.Events.viewerLoaded}
  * @property {string} VISIBILITY_CHANGED {@link UI#event:visibilityChanged UI.Events.visibilityChanged}
+ * @property {string} FULLSCREEN_MODE_TOGGLED {@link UI#event:fullscreenModeToggled UI.Events.fullscreenModeToggled}
  * @example
   WebViewer(...).then(function(instance) {
     const UIEvents = instance.UI.Events;
@@ -37,9 +41,13 @@ export default {
   'THEME_CHANGED': 'themeChanged',
   'TOOLBAR_GROUP_CHANGED': 'toolbarGroupChanged',
   'SELECTED_THUMBNAIL_CHANGED':'selectedThumbnailChanged',
+  'THUMBNAIL_DRAGGED':'thumbnailDragged',
+  'THUMBNAIL_DROPPED':'thumbnailDropped',
   'USER_BOOKMARKS_CHANGED': 'userBookmarksChanged',
+  'OUTLINE_BOOKMARKS_CHANGED': 'outlineBookmarksChanged',
   'VIEWER_LOADED': 'viewerLoaded',
-  'VISIBILITY_CHANGED': 'visibilityChanged'
+  'VISIBILITY_CHANGED': 'visibilityChanged',
+  'FULLSCREEN_MODE_TOGGLED': 'fullscreenModeToggled'
 };
 
 /**
@@ -125,10 +133,33 @@ export default {
 */
 
 /**
+* Triggered when thumbnail(s) are dragged in the thumbnail panel
+* @name UI#thumbnailDragged
+* @event
+*/
+
+/**
+* Triggered when dragged thumbnail(s) are dropped to a new location in the thumbnail panel
+* @name UI#thumbnailDropped
+* @event
+* @type {object}
+* @property {Array<number>} pageNumbersBeforeMove The array of page numbers to be moved
+* @property {Array<number>} pageNumbersAfterMove The array of page numbers of where thumbnails being dropped
+* @property {number} numberOfPagesMoved Number of page(s) being moved
+*/
+
+/**
 * Triggered when user bookmarks have changed.
 * @name UI#userBookmarksChanged
 * @event
 * @param {object} bookmarks The new bookmarks
+*/
+
+/**
+* Triggered when outline bookmarks have changed.
+* @name UI#outlineBookmarksChanged
+* @event
+* @param {object} bookmark The changed bookmark
 */
 
 /**
@@ -144,4 +175,12 @@ export default {
 * @type {object}
 * @property {string} element DataElement name
 * @property {boolean} isVisible The new visibility
+*/
+
+/**
+* Triggered when fullscreen mode is toggled.
+* @name UI#fullscreenModeToggled
+* @event
+* @type {object}
+* @property {boolean} isInFullscreen Whether in fullscreen mode or not.
 */

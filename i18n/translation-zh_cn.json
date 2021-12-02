@@ -2,6 +2,7 @@
   "action": {
     "apply": "应用",
     "applyAll": "全部申请",
+    "calendar": "日历",
     "calibrate": "校准",
     "cancel": "取消",
     "clear": "清除",
@@ -69,7 +70,16 @@
     "insertBlankPageAbove": "在上方插入空白页",
     "insertBlankPageBelow": "在下方插入空白页",
     "pageManipulation": "页面操作",
-    "replace": "代替"
+    "replace": "代替",
+    "showLess": "显示较少",
+    "showMore": "...更多的",
+    "chooseFile": "选择一个文件",
+    "selectYourOption": "选择您的选项",
+    "open": "打开",
+    "deselectAll": "取消全选",
+    "select": "选择",
+    "moveToTop": "移到顶部",
+    "moveToBottom": "移到底部"
   },
   "annotation": {
     "areaMeasurement": "面积测量",
@@ -77,6 +87,7 @@
     "callout": "标注",
     "crop": "裁剪页面",
     "caret": "插入符号",
+    "dateFreeText": "日历",
     "formFillCheckmark": "打钩",
     "formFillCross": "叉",
     "distanceMeasurement": "距离测量",
@@ -142,6 +153,7 @@
     "SBRejected": "拒绝"
   },
   "component": {
+    "attachmentPanel": "附件",
     "leftPanel": "面板",
     "toolsHeader": "工具类",
     "searchOverlay": "搜索",
@@ -162,7 +174,9 @@
     "zoomOverlay": "缩放叠加",
     "textPopup": "文字弹出",
     "createStampButton": "创建新图章",
-    "filter": "过滤"
+    "filter": "过滤",
+    "pageReplaceModalTitle": "替换页面",
+    "files": "文件"
   },
   "message": {
     "toolsOverlayNoPresets": "无预设",
@@ -176,6 +190,7 @@
     "noAnnotationsReadOnly": "此文档没有注释。",
     "noAnnotationsFilter": "开始制作注释，过滤器将显示在此处。",
     "noOutlines": "此文档没有大纲。",
+    "noAttachments": "本文档没有附件。",
     "noResults": "未找到结果。",
     "numResultsFound": "找到结果",
     "notSupported": "不支持该文件类型。",
@@ -201,9 +216,40 @@
     "unpostedComment": "未发布评论",
     "lockedLayer": "图层已锁定",
     "layerVisibililtyNoChange": "图层可见性无法更改",
-    "untitled": "无标题"
+    "untitled": "无标题",
+    "selectHowToLoadFile": "选择如何加载文档",
+    "openFileByUrl": "通过 URL 打开文件：",
+    "enterUrlHere": "在此输入网址",
+    "openLocalFile": "打开本地文件：",
+    "selectFile": "选择文件",
+    "selectPageToReplace": "选择文档中要替换的页面。",
+    "embeddedFiles": "嵌入文件",
+    "pageNum": "页码"
   },
   "option": {
+    "type": {
+      "caret": "缺乏",
+      "custom": "风俗",
+      "ellipse": "椭圆",
+      "fileattachment": "文件附件",
+      "freehand": "空手",
+      "callout": "大喊",
+      "freetext": "自由文本",
+      "line": "线",
+      "polygon": "多边形",
+      "polyline": "折线",
+      "rectangle": "长方形",
+      "redact": "纂",
+      "signature": "签名",
+      "stamp": "邮票",
+      "stickyNote": "粘滞便笺",
+      "highlight": "强调",
+      "strikeout": "三振",
+      "underline": "强调",
+      "squiggly": "弯弯曲曲的",
+      "3D": "3D",
+      "other": "其他"
+    },
     "notesOrder": {
       "dropdownLabel": "排序订单清单",
       "position": "位置",
@@ -211,7 +257,9 @@
       "status": "状态",
       "author": "作者",
       "type": "类型",
-      "color": "颜色"
+      "color": "颜色",
+      "createDate": "创建日期",
+      "modifiedDate": "修改日期"
     },
     "toolbarGroup": {
       "dropdownLabel": "工具栏组",
@@ -237,7 +285,9 @@
       "pageTransition": "页面转换"
     },
     "documentControls": {
-      "placeholder": "1, 3, 5-10"
+      "placeholder": "1, 3, 5-10",
+      "selectTooltip": "选择多个页面",
+      "closeTooltip": "关闭多选"
     },
     "outlineControls": {
       "add": "添加项目",
@@ -307,6 +357,11 @@
       "or": "要么",
       "pickImage": "选择签名图像"
     },
+    "pageReplacementModal": {
+      "dragAndDrop": "将您的文件拖放到此处",
+      "or": "或者",
+      "chooseFile": "选择一个文件"
+    },
     "filterAnnotModal": {
       "commentBy": "评论者",
       "types": "种类",
@@ -342,6 +397,11 @@
     },
     "measurementOption": {
       "scale": "比例"
+    },
+    "stylePopup": {
+      "textStyle": "文字样式",
+      "colorStyle": "颜色",
+      "invalidFontSize": "字体大小必须小于"
     },
     "styleOption": {
       "style": "样式",
@@ -380,11 +440,21 @@
       "rotateClockwise": "顺时针",
       "rotateCounterClockwise": "逆时针方向"
     },
+    "thumbnailsControlOverlay": {
+      "move": "移动页面"
+    },
     "richText": {
       "bold": "粗体",
       "italic": "斜体",
       "underline": "下划线",
-      "strikeout": "删除线"
+      "strikeout": "删除线",
+      "alignLeft": "文字左对齐",
+      "alignRight": "文字右对齐",
+      "alignCenter": "文字居中对齐",
+      "justifyCenter": "文本对齐中心",
+      "alignTop": "顶部对齐",
+      "alignMiddle": "居中对齐",
+      "alignBottom": "底部对齐"
     },
     "customStampModal": {
       "stampText": "印章文字：",

@@ -376,6 +376,7 @@ export const setActiveLeftPanel = dataElement => (dispatch, getState) => {
       'bookmarksPanel',
       'notesPanel',
       'signaturePanel',
+      'attachmentPanel',
     ].join(', ');
     console.warn(
       `${dataElement} is not recognized by the left panel. Please use one of the following options: ${panelDataElements}`,
@@ -488,6 +489,10 @@ export const setCustomElementOverrides = (dataElement, overrides) => ({
   type: 'SET_CUSTOM_ELEMENT_OVERRIDES',
   payload: { dataElement, overrides },
 });
+export const setPageReplacementModalFileList = (list) => ({
+  type: 'SET_PAGE_REPLACEMENT_FILE_LIST',
+  payload: { list },
+});
 export const setActiveTheme = theme => {
   fireEvent(Events.THEME_CHANGED, theme);
 
@@ -542,4 +547,9 @@ export const enablePageDeletionConfirmationModal = () => ({
 export const disablePageDeletionConfirmationModal = () => ({
   type: "PAGE_DELETION_CONFIRMATION_MODAL_POPUP",
   payload: { pageDeletionConfirmationModalEnabled: false }
+});
+
+export const setWatermarkModalOptions = watermarkModalOptions => ({
+  type: 'SET_WATERMARK_MODAL_OPTIONS',
+  payload: { watermarkModalOptions }
 });

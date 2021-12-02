@@ -2,6 +2,7 @@
   "action": {
     "apply": "Aplicar",
     "applyAll": "Aplicar todo",
+    "calendar": "Calandrar",
     "calibrate": "Calibrar",
     "cancel": "Cancelar",
     "clear": "Borrar",
@@ -69,7 +70,16 @@
     "insertBlankPageAbove": "Insertar página en blanco arriba",
     "insertBlankPageBelow": "Insertar una página en blanco debajo",
     "pageManipulation": "Manipulación de página",
-    "replace": "Reemplazar"
+    "replace": "Reemplazar",
+    "showLess": "Muestra menos",
+    "showMore": "...más",
+    "chooseFile": "Escoge un archivo",
+    "selectYourOption": "Seleccione su opción",
+    "open": "Abrir",
+    "deselectAll": "Deseleccionar todo",
+    "select": "Seleccione",
+    "moveToTop": "Mover al principio",
+    "moveToBottom": "Mover al final"
   },
   "annotation": {
     "areaMeasurement": "Medición del área",
@@ -77,6 +87,7 @@
     "callout": "Llamada",
     "crop": "Recortar página",
     "caret": "Circunflejo",
+    "dateFreeText": "Calendario",
     "formFillCheckmark": "Garrapata",
     "formFillCross": "Cruzar",
     "distanceMeasurement": "Medición de distancia",
@@ -142,6 +153,7 @@
     "SBRejected": "Rechazado"
   },
   "component": {
+    "attachmentPanel": "Archivos adjuntos",
     "leftPanel": "Panel",
     "toolsHeader": "Herramientas",
     "searchOverlay": "Buscar",
@@ -162,7 +174,9 @@
     "zoomOverlay": "Superposición de zoom",
     "textPopup": "Ventana emergente de texto",
     "createStampButton": "Crear nuevo sello",
-    "filter": "Filtrar"
+    "filter": "Filtrar",
+    "pageReplaceModalTitle": "Reemplazar página",
+    "files": "Archivos"
   },
   "message": {
     "toolsOverlayNoPresets": "Sin preajustes",
@@ -176,6 +190,7 @@
     "noAnnotationsReadOnly": "Este documento no tiene anotaciones.",
     "noAnnotationsFilter": "Empiece a hacer anotaciones y los filtros aparecerán aquí.",
     "noOutlines": "Este documento no tiene esquema.",
+    "noAttachments": "Este documento no tiene anexos.",
     "noResults": "No se han encontrado resultados.",
     "numResultsFound": "resultados encontrados",
     "notSupported": "Ese tipo de archivo no es compatible.",
@@ -201,9 +216,40 @@
     "unpostedComment": "Comentario no publicado",
     "lockedLayer": "La capa está bloqueada",
     "layerVisibililtyNoChange": "La visibilidad de la capa no se puede cambiar",
-    "untitled": "Intitulado"
+    "untitled": "Intitulado",
+    "selectHowToLoadFile": "Seleccione cómo cargar su documento",
+    "openFileByUrl": "Abrir archivo por URL:",
+    "enterUrlHere": "Ingrese dirección URL aquí",
+    "openLocalFile": "Abrir archivo local:",
+    "selectFile": "Seleccione Archivo",
+    "selectPageToReplace": "Seleccione las páginas del documento por las que le gustaría reemplazar.",
+    "embeddedFiles": "Archivos incrustados",
+    "pageNum": "Número de página"
   },
   "option": {
+    "type": {
+      "caret": "carece",
+      "custom": "Personalizado",
+      "ellipse": "Elipse",
+      "fileattachment": "Archivo adjunto",
+      "freehand": "A mano",
+      "callout": "Gritar",
+      "freetext": "Texto libre",
+      "line": "Línea",
+      "polygon": "Polígono",
+      "polyline": "Polilínea",
+      "rectangle": "Rectángulo",
+      "redact": "Redactar",
+      "signature": "Firma",
+      "stamp": "Sello",
+      "stickyNote": "Nota adhesiva",
+      "highlight": "Destacar",
+      "strikeout": "Tachar",
+      "underline": "Subrayar",
+      "squiggly": "Serpenteante",
+      "3D": "3D",
+      "other": "Otro"
+    },
     "notesOrder": {
       "dropdownLabel": "Lista de orden de clasificación",
       "position": "Posición",
@@ -211,7 +257,9 @@
       "status": "Estado",
       "author": "Autor",
       "type": "Tipo",
-      "color": "Color"
+      "color": "Color",
+      "createDate": "Fecha de creación",
+      "modifiedDate": "Fecha de modificación"
     },
     "toolbarGroup": {
       "dropdownLabel": "Grupos de barras de herramientas",
@@ -237,7 +285,9 @@
       "pageTransition": "Transición de página"
     },
     "documentControls": {
-      "placeholder": "1, 3, 5-10"
+      "placeholder": "1, 3, 5-10",
+      "selectTooltip": "Seleccionar varias páginas",
+      "closeTooltip": "Cerrar selección múltiple"
     },
     "outlineControls": {
       "add": "Añadir artículo",
@@ -307,6 +357,11 @@
       "or": "O",
       "pickImage": "Elegir imagen de firma"
     },
+    "pageReplacementModal": {
+      "dragAndDrop": "Arrastra y suelta tu archivo aquí",
+      "or": "O",
+      "chooseFile": "Escoge un archivo"
+    },
     "filterAnnotModal": {
       "commentBy": "Comentario de",
       "types": "Tipos",
@@ -342,6 +397,11 @@
     },
     "measurementOption": {
       "scale": "Escala"
+    },
+    "stylePopup": {
+      "textStyle": "Estilo de texto",
+      "colorStyle": "Colores",
+      "invalidFontSize": "El tamaño de la fuente debe ser menor que"
     },
     "styleOption": {
       "style": "Estilo",
@@ -380,11 +440,21 @@
       "rotateClockwise": "Agujas del reloj",
       "rotateCounterClockwise": "Sinistrórsum"
     },
+    "thumbnailsControlOverlay": {
+      "move": "Mover páginas"
+    },
     "richText": {
       "bold": "Negrita",
       "italic": "Cursiva",
       "underline": "Subrayar",
-      "strikeout": "Tachado"
+      "strikeout": "Tachado",
+      "alignLeft": "El texto se alinea a la izquierda",
+      "alignRight": "El texto se alinea a la derecha",
+      "alignCenter": "Centro de alineación de texto",
+      "justifyCenter": "Centro de justificación de texto",
+      "alignTop": "Alinear la parte superior",
+      "alignMiddle": "Alinear en el medio",
+      "alignBottom": "Alinear la parte inferior"
     },
     "customStampModal": {
       "stampText": "Texto de sello:",

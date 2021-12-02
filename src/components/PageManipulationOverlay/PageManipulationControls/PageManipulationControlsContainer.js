@@ -1,97 +1,58 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux';
 import selectors from 'selectors';
-import actions from 'actions';
-import core from 'core';
 import PageManipulationControls from './PageManipulationControls';
-import extractPagesWithAnnotations from '../../../helpers/extractPagesWithAnnotations';
-import { saveAs } from 'file-saver';
+import { deletePages, extractPages, noPagesSelectedWarning, replace } from "helpers/pageManipulationFunctions";
+import PropTypes from 'prop-types';
+import actions from 'actions';
+import { isMobile } from 'helpers/device';
+
+const propTypes = {
+  pageNumbers: PropTypes.arrayOf(PropTypes.number),
+  warn: PropTypes.bool,
+};
 
 function PageManipulationControlsContainer(props) {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const { pageNumbers } = props;
-
+  const { pageNumbers, warn } = props;
   const [isPageDeletionConfirmationModalEnabled] = useSelector(state => [
     selectors.pageDeletionConfirmationModalEnabled(state),
   ]);
 
-  const handleDelete = () => {
-    if (isPageDeletionConfirmationModalEnabled) {
-      let message = t('warning.deletePage.deleteMessage');
-      const title = t('warning.deletePage.deleteTitle');
-      const confirmButtonText = t('action.ok');
-
-      let warning = {
-        message,
-        title,
-        confirmButtonText,
-        onConfirm: () => core.removePages(pageNumbers).then(() => {
-          const currentPage = core.getCurrentPage();
-          console.log({ currentPage })
-          dispatch(actions.setSelectedPageThumbnails([]));
-        }),
-      };
-
-      if (core.getDocumentViewer().getPageCount() === 1) {
-        message = t('warning.deletePage.deleteLastPageMessage');
-
-        warning = {
-          message,
-          title,
-          confirmButtonText,
-          onConfirm: () => Promise.resolve(),
-        };
-      }
-
-      dispatch(actions.showWarningMessage(warning));
+  const onReplace = () => {
+    if (warn) {
+      !noPagesSelectedWarning(pageNumbers, dispatch) && replace(dispatch);
     } else {
-      core.removePages(pageNumbers)
+      replace(dispatch);
     }
+    isMobile() && dispatch(actions.closeElement("pageManipulationOverlay"));
   };
-
-  const extractPages = () => {
-    if (pageNumbers.length === 0) {
-      noPagesSelectedWarning();
-      return;
+  const onExtract = () => {
+    if (warn) {
+      !noPagesSelectedWarning(pageNumbers, dispatch) && extractPages(pageNumbers, dispatch);
+    } else {
+      extractPages(pageNumbers, dispatch);
     }
-
-    const message = t('warning.extractPage.message');
-    const title = t('warning.extractPage.title');
-    const confirmBtnText = t('warning.extractPage.confirmBtn');
-    const secondaryBtnText = t('warning.extractPage.secondaryBtn');
-
-    let warning = {
-      message,
-      title,
-      confirmBtnText,
-      onConfirm: () =>
-        extractPagesWithAnnotations(pageNumbers).then(file => {
-          saveAs(file, 'extractedDocument.pdf');
-        }),
-      secondaryBtnText,
-      onSecondary: () => {
-        extractPagesWithAnnotations(pageNumbers).then(file => {
-          saveAs(file, 'extractedDocument.pdf');
-          core.removePages(pageNumbers).then(() => {
-            dispatch(actions.setSelectedPageThumbnails([]));
-          });
-        });
-      },
-    };
-
-    dispatch(actions.showWarningMessage(warning));
+    isMobile() && dispatch(actions.closeElement("pageManipulationOverlay"));
   };
-
+  const onDelete = () => {
+    if (warn) {
+      !noPagesSelectedWarning(pageNumbers, dispatch) && deletePages(pageNumbers, dispatch, isPageDeletionConfirmationModalEnabled);
+    } else {
+      deletePages(pageNumbers, dispatch, isPageDeletionConfirmationModalEnabled);
+    }
+    isMobile() && dispatch(actions.closeElement("pageManipulationOverlay"));
+  };
 
   return (
     <PageManipulationControls
-      deletePages={handleDelete}
-      extractPages={extractPages}
+      deletePages={onDelete}
+      extractPages={onExtract}
+      replacePages={onReplace}
     />
-  )
+  );
+}
 
-};
+PageManipulationControlsContainer.propTypes = propTypes;
 
 export default PageManipulationControlsContainer;

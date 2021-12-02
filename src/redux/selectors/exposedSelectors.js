@@ -295,6 +295,10 @@ export const getValidationModalWidgetName = state => state.viewer.validationModa
 
 export const getVerificationResult = (state, fieldName) => state.viewer.verificationResult[fieldName] || {};
 
+export const isThumbnailSelectingPages = state => state.viewer.thumbnailSelectingPages;
+
+export const getWatermarkModalOptions = state => state.viewer.watermarkModalOptions;
+
 // warning message
 export const getWarningMessage = state => state.viewer.warning?.message || '';
 
@@ -357,6 +361,8 @@ export const isAmbientString = state => state.search.isAmbientString;
 
 export const isRegex = state => state.search.isRegex;
 
+export const isProcessingSearchResults = state => state.search.isProcessingSearchResults;
+
 export const getNoteTransformFunction = state => state.viewer.noteTransformFunction;
 
 export const getCustomNoteSelectionFunction = state => state.viewer.customNoteFunction;
@@ -374,6 +380,8 @@ export const getFeatureFlags = state => state.featureFlags;
 export const isInDesktopOnlyMode = state => state.viewer.isInDesktopOnlyMode;
 
 export const pageDeletionConfirmationModalEnabled = state => state.viewer.pageDeletionConfirmationModalEnabled;
+
+export const getPageReplacementFileList = state => state.viewer.pageReplacementFileList;
 
 export const getPageManipulationOverlayItems = state => state.viewer.pageManipulationOverlay;
 

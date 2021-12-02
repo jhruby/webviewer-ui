@@ -37,6 +37,7 @@ import PrintHandler from 'components/PrintHandler';
 import FontHandler from 'components/FontHandler';
 import ZoomOverlay from 'components/ZoomOverlay';
 import CreateStampModal from 'components/CreateStampModal';
+import PageReplacementModal from 'src/components/PageReplacementModal';
 import CustomModal from 'components/CustomModal';
 import Model3DModal from 'components/Model3DModal';
 import FormFieldEditPopup from 'components/FormFieldEditPopup';
@@ -44,15 +45,16 @@ import ColorPickerModal from 'components/ColorPickerModal';
 import PageManipulationOverlay from 'components/PageManipulationOverlay';
 
 import core from 'core';
-import defineWebViewerInstanceUIAPIs from 'src/apis';
 import loadDocument from 'helpers/loadDocument';
 import getHashParams from 'helpers/getHashParams';
 import fireEvent from 'helpers/fireEvent';
 import Events from 'constants/events';
+import overlays from 'constants/overlays';
 
 import actions from 'actions';
 
 import './App.scss';
+import LeftPanelOverlayContainer from "components/LeftPanelOverlay";
 
 // TODO: Use constants
 const tabletBreakpoint = window.matchMedia('(min-width: 641px) and (max-width: 900px)');
@@ -71,7 +73,6 @@ const App = ({ removeEventHandlers }) => {
   ]);
 
   useEffect(() => {
-    defineWebViewerInstanceUIAPIs(store);
     fireEvent(Events.VIEWER_LOADED);
 
     function loadInitialDocument() {
@@ -105,6 +106,7 @@ const App = ({ removeEventHandlers }) => {
       }
     }
 
+    window.addEventListener('blur', () => { dispatch(actions.closeElements(overlays)); });
     window.addEventListener('message', messageHandler, false);
 
     // In case WV is used outside of iframe, postMessage will not
@@ -159,6 +161,7 @@ const App = ({ removeEventHandlers }) => {
         <ZoomOverlay />
         <AnnotationContentOverlay />
         <PageManipulationOverlay />
+        <LeftPanelOverlayContainer />
 
         <AnnotationPopup />
         <FormFieldEditPopup />
@@ -174,6 +177,7 @@ const App = ({ removeEventHandlers }) => {
         <ProgressModal />
         <CalibrationModal />
         <CreateStampModal />
+        <PageReplacementModal />
         <LinkModal />
         <EditTextModal />
         <FilterAnnotModal />

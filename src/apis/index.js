@@ -64,6 +64,7 @@ import getToolMode from './getToolMode';
 import getZoomLevel from './getZoomLevel';
 import getMaxZoomLevel from './getMaxZoomLevel';
 import getMinZoomLevel from './getMinZoomLevel';
+import getIsHighContrastMode from './getIsHighContrastMode';
 import goToFirstPage from './goToFirstPage';
 import goToLastPage from './goToLastPage';
 import goToNextPage from './goToNextPage';
@@ -77,6 +78,7 @@ import isHighContrastModeEnabled from './isHighContrastModeEnabled';
 import isMobileDevice from './isMobileDevice';
 import isReadOnly from './isReadOnly';
 import isToolDisabled from './isToolDisabled';
+import isFullscreen from './isFullscreen';
 import loadDocument from './loadDocument';
 import mentions from './mentions';
 import settingsMenuOverlay from './menuOverlay';
@@ -98,8 +100,8 @@ import setAdminUser from './setAdminUser';
 import setAnnotationUser from './setAnnotationUser';
 import setActivePalette from './setActivePalette';
 import setColorPalette from './setColorPalette';
+import setPageReplacementModalFileList from './setPageReplacementModalFileList';
 import setHighContrastMode from './setHighContrastMode';
-import getIsHighContrastMode from './getIsHighContrastMode';
 import setCurrentPageNumber from './setCurrentPageNumber';
 import setCustomModal from './setCustomModal';
 import setCustomNoteFilter from './setCustomNoteFilter';
@@ -132,6 +134,7 @@ import setZoomList from './setZoomList';
 import showErrorMessage from './showErrorMessage';
 import showOutlineControl from './showOutlineControl';
 import showWarningMessage from './showWarningMessage';
+import syncNamespaces from './syncNamespaces';
 import textPopup from './textPopup';
 import toggleElement from './toggleElement';
 import toggleFullScreen from './toggleFullScreen';
@@ -178,6 +181,7 @@ import enableDesktopOnlyMode from './enableDesktopOnlyMode';
 import disableDesktopOnlyMode from './disableDesktopOnlyMode';
 import isInDesktopOnlyMode from './isInDesktopOnlyMode';
 import pageManipulationOverlay from './pageManipulationOverlay';
+import getWatermarkModalOptions from './getWatermarkModalOptions';
 
 export default store => {
   const CORE_NAMESPACE = 'Core';
@@ -226,6 +230,7 @@ export default store => {
     isElementOpen: isElementOpen(store),
     isToolDisabled: isToolDisabled(store),
     isHighContrastModeEnabled: isHighContrastModeEnabled(store),
+    isFullscreen,
     loadDocument: loadDocument(store),
     settingsMenuOverlay: settingsMenuOverlay(store),
     pageManipulationOverlay: pageManipulationOverlay(store),
@@ -291,6 +296,7 @@ export default store => {
     VerificationOptions: {
       addTrustedCertificates: addTrustedCertificates(store),
     },
+    getWatermarkModalOptions: getWatermarkModalOptions(store),
     // undocumented and deprecated, to be removed in 7.0
     disableAnnotations: disableAnnotations(store),
     disableDownload: disableDownload(store),
@@ -325,6 +331,7 @@ export default store => {
     setNotesPanelSort: setNotesPanelSort(store),
     setActivePalette: setActivePalette(store),
     setColorPalette: setColorPalette(store),
+    setPageReplacementModalFileList: setPageReplacementModalFileList(store),
     disableTool: disableTool(store),
     enableAllElements: enableAllElements(store),
     goToFirstPage,
@@ -348,6 +355,7 @@ export default store => {
     disableToolDefaultStyleUpdateFromAnnotationPopup,
     addEventListener,
     removeEventListener,
+    syncNamespaces,
 
     //deprecated, to be removed in 8.0
     useNativeScroll,
