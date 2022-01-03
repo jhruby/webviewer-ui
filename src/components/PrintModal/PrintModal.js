@@ -388,6 +388,12 @@ class PrintModal extends React.PureComponent {
                   >
                     {t('action.print')}
                   </button>
+                  <button
+                      className="button cancel-button"
+                      onClick={this.closePrintModal}
+                  >
+                    {t('action.cancel')}
+                  </button>
                 </div>
               </div>
             </div>

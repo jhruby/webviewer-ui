@@ -139,6 +139,17 @@
           background: var(--primary-button-hover);
         }
       }
+      
+      .cancel-button {
+        color: var(--secondary-button-text);
+        margin-right: 6px;
+        background: none;
+
+        &:hover {
+          color: var(--secondary-button-hover);
+          background: none;
+        }
+      }
     }
 
     .apply-watermark {
