@@ -35,7 +35,7 @@ import getHashParams from 'helpers/getHashParams';
 import defineWebViewerInstanceUIAPIs from 'src/apis';
 
 import './index.scss';
-import hotkeysManager from "helpers/hotkeysManager";
+import hotkeysManager from './helpers/hotkeysManager';
 
 const middleware = [thunk];
 
@@ -157,32 +157,30 @@ if (window.CanvasRenderingContext2D) {
   window.documentViewer = documentViewer;
   hotkeysManager.initialize(store);
 
-
   defineWebViewerInstanceUIAPIs(store);
+  hotkeysManager.initialize(store);
+
+  setupDocViewer();
+  setupI18n(state);
+  setUserPermission(state);
+  setAutoSwitch();
+  setDefaultToolStyles();
+  core.setToolMode(defaultTool);
 
 
   fullAPIReady.then(() => loadConfig()).then(() => {
     if (preloadWorker) {
       initTransports();
     }
-
     if (getHashParams('enableViewStateAnnotations', false)) {
       const tool = documentViewer.getTool(window.Core.Tools.ToolNames.STICKY);
       tool?.setSaveViewState(true);
     }
 
     const { addEventHandlers, removeEventHandlers } = eventHandler(store);
-    setupDocViewer();
-    setupI18n(state);
-    setUserPermission(state);
-    setAutoSwitch();
 
-    addEventHandlers();
-    setDefaultDisabledElements(store);
     setupLoadAnnotationsFromServer(store);
-    setDefaultToolStyles();
-    core.setToolMode(defaultTool);
-
+    addEventHandlers();
     ReactDOM.render(
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -196,6 +194,7 @@ if (window.CanvasRenderingContext2D) {
       document.getElementById('app'),
     );
   });
+  setDefaultDisabledElements(store);
 }
 
 window.addEventListener('hashchange', () => {
