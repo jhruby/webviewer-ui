@@ -155,8 +155,6 @@ if (window.CanvasRenderingContext2D) {
 
   const documentViewer = new window.Core.DocumentViewer();
   window.documentViewer = documentViewer;
-  hotkeysManager.initialize(store);
-
   defineWebViewerInstanceUIAPIs(store);
   hotkeysManager.initialize(store);
 
@@ -167,17 +165,16 @@ if (window.CanvasRenderingContext2D) {
   setDefaultToolStyles();
   core.setToolMode(defaultTool);
 
-
   fullAPIReady.then(() => loadConfig()).then(() => {
     if (preloadWorker) {
       initTransports();
     }
+    const { addEventHandlers, removeEventHandlers } = eventHandler(store);
+
     if (getHashParams('enableViewStateAnnotations', false)) {
       const tool = documentViewer.getTool(window.Core.Tools.ToolNames.STICKY);
       tool?.setSaveViewState(true);
     }
-
-    const { addEventHandlers, removeEventHandlers } = eventHandler(store);
 
     setupLoadAnnotationsFromServer(store);
     addEventHandlers();
