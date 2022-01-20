@@ -98,6 +98,7 @@ export default {
       ],
       'small-mobile-more-buttons': [
         { type: 'toggleElementButton', dataElement: 'searchButton', element: 'searchPanel', img: 'icon-header-search', title: 'component.searchPanel' },
+        { type: 'toggleElementButton', dataElement: 'printButton', element: 'printModal', img: 'icon-header-print-line', title: 'action.print' },
         { type: 'toggleElementButton', dataElement: 'toggleNotesButton', element: 'notesPanel', img: 'icon-header-chat-line', title: 'component.notesPanel' },
         { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-tools-more', title: 'component.menuOverlay' },
         { type: 'spacer' },
