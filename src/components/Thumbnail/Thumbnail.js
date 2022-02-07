@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-
+import useDidUpdate from 'hooks/useDidUpdate';
 import core from 'core';
 import ThumbnailControls from 'components/ThumbnailControls';
 
 import './Thumbnail.scss';
 import { Choice } from "@pdftron/webviewer-react-toolkit";
 import { workerTypes } from "constants/types";
+
+// adds a delay in ms so thumbs that are only on the screen briefly are not loaded.
+const THUMBNAIL_LOAD_DELAY = 50;
 
 const Thumbnail = ({
   index,
@@ -29,6 +32,8 @@ const Thumbnail = ({
   dispatch,
   actions,
   isMobile,
+  canLoad,
+  onCancel,
   isThumbnailSelectingPages
 }) => {
   const thumbSize = thumbnailSize ? Number(thumbnailSize) : 150;
@@ -37,9 +42,12 @@ const Thumbnail = ({
   // To ensure checkmark loads after thumbnail
   const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    const loadThumbnailAsync = () => {
+  let loadTimeout = null;
+
+  const loadThumbnailAsync = () => {
+    loadTimeout = setTimeout(() => {
       const thumbnailContainer = document.getElementById(`pageThumb${index}`);
+
       const pageNum = index + 1;
       const viewerRotation = core.getRotation(pageNum);
 
@@ -48,7 +56,7 @@ const Thumbnail = ({
       // been deleted. Prevent that by checking if pageInfo exists
 
       if (doc && doc.getPageInfo(pageNum)) {
-        const id = doc.loadCanvasAsync({
+        const id = doc.loadCanvas({
           pageNumber: pageNum,
           width: thumbSize,
           height: thumbSize,
@@ -97,8 +105,10 @@ const Thumbnail = ({
         });
         onLoad(index, thumbnailContainer, id);
       }
-    };
+    }, THUMBNAIL_LOAD_DELAY);
+  };
 
+  useEffect(() => {
     const onLayoutChanged = changes => {
       const { contentChanged, moved, added, removed } = changes;
 
@@ -126,13 +136,24 @@ const Thumbnail = ({
 
     core.addEventListener('layoutChanged', onLayoutChanged);
     core.addEventListener('rotationUpdated', onRotationUpdated);
-    loadThumbnailAsync();
+    if (canLoad) {
+      loadThumbnailAsync();
+    }
     return () => {
       core.removeEventListener('layoutChanged', onLayoutChanged);
       core.removeEventListener('rotationUpdated', onRotationUpdated);
+      clearTimeout(loadTimeout);
       onRemove(index);
     };
   }, []);
+
+  useDidUpdate(() => {
+    if (canLoad) {
+      loadThumbnailAsync();
+    } else {
+      onCancel(index);
+    }
+  }, [canLoad])
 
   const handleClick = e => {
     if (isThumbnailMultiselectEnabled && !isReaderMode) {

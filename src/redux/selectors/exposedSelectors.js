@@ -1,7 +1,9 @@
-import { isChrome, isAndroid } from 'helpers/device';
+import { isAndroid, isChrome } from 'helpers/device';
 import { defaultNoteDateFormat, defaultPrintedNoteDateFormat } from 'constants/defaultTimeFormat';
 
 // viewer
+export const getIsMultiTab = state => state.viewer.isMultiTab;
+export const getTabManager = state => state.viewer.TabManager;
 export const getIsHighContrastMode = state => state.viewer.highContrastMode;
 export const getLastPickedToolForGroup = (state, group) => state.viewer.lastPickedToolForGroup[group];
 export const getStandardStamps = state => state.viewer.standardStamps;

@@ -1,8 +1,8 @@
-export const addEventListener = (event, eventListener) => {
+export const addEventListener = (event, eventListener, options = null) => {
   const eventToObjectMap = getEventToObjectMap();
   const object = eventToObjectMap[event];
 
-  object.addEventListener(event, eventListener);
+  options ? object.addEventListener(event, eventListener, options) : object.addEventListener(event, eventListener);
 };
 
 export const removeEventListener = (event, eventListener) => {
@@ -22,7 +22,6 @@ const getEventToObjectMap = () => {
     signatureSaved: window.documentViewer,
     signatureDeleted: window.documentViewer,
     annotationsLoaded: window.documentViewer,
-    changePage: window.documentViewer,
     click: window.documentViewer,
     dblClick: window.documentViewer,
     displayPageLocation: window.documentViewer,

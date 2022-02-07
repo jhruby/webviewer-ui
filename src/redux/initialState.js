@@ -19,6 +19,8 @@ const { ToolNames } = window.Core.Tools;
 
 export default {
   viewer: {
+    TabManager: null,
+    isMultiTab: false,
     thumbnailSelectingPages: false,
     isInDesktopOnlyMode: false,
     canUndo: false,
@@ -656,7 +658,9 @@ export default {
     useSharedWorker: getHashParams('useSharedWorker', false),
     disableI18n: getHashParams('disableI18n', false),
     pdfWorkerTransportPromise: null,
-    officeWorkerTransportPromise: null
+    officeWorkerTransportPromise: null,
+    disableIndexedDB: getHashParams('disableIndexedDB', false),
   },
-  featureFlags: {}
+  featureFlags: {
+  }
 };
