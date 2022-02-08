@@ -1,1 +1,1 @@
-export default window.Core.getHashParam;
+export default window.Core.getHashParameter;
