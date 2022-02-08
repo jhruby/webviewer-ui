@@ -1,6 +1,6 @@
 import core from 'core';
 import createDisableFeatures from 'src/apis/disableFeatures';
-import getHashParameters from 'helpers/getHashParameters';
+import getHashParams from 'helpers/getHashParams';
 import { isIOS, isMobileDevice } from 'helpers/device';
 import { PRIORITY_THREE, PRIORITY_TWO, PRIORITY_ONE } from 'constants/actionPriority';
 import Feature from 'constants/feature';
@@ -24,7 +24,7 @@ export default store => {
     core.setReadOnly(state.viewer.isReadOnly);
   }
 
-  const notesInLeftPanel = getHashParameters('notesInLeftPanel', false);
+  const notesInLeftPanel = getHashParams('notesInLeftPanel', false);
   if (notesInLeftPanel) {
     dispatch(
       actions.disableElements(
@@ -35,39 +35,39 @@ export default store => {
     );
   }
 
-  const annotationDisabled = !getHashParameters('a', false);
+  const annotationDisabled = !getHashParams('a', false);
   if (annotationDisabled) {
     disableFeatures([Feature.Annotations]);
   }
 
-  const filePickerDisabled = !getHashParameters('filepicker', false);
+  const filePickerDisabled = !getHashParams('filepicker', false);
   if (filePickerDisabled) {
     disableFeatures([Feature.FilePicker]);
   }
 
-  const hideAnnotationPanel = getHashParameters('hideAnnotationPanel', false);
+  const hideAnnotationPanel = getHashParams('hideAnnotationPanel', false);
   if (hideAnnotationPanel) {
     disableFeatures([Feature.NotesPanel]);
   }
 
-  const toolGroupReorderingDisabled = getHashParameters('disableToolGroupReordering', false);
+  const toolGroupReorderingDisabled = getHashParams('disableToolGroupReordering', false);
   if (toolGroupReorderingDisabled) {
     dispatch(actions.setEnableToolGroupReordering(false));
   }
 
-  const measurementsDisabled = !getHashParameters('enableMeasurement', false);
+  const measurementsDisabled = !getHashParams('enableMeasurement', false);
   if (measurementsDisabled) {
     disableFeatures([Feature.Measurement]);
   }
 
   const redactionsDisabled = !(
-    getHashParameters('enableRedaction', false) || core.isCreateRedactionEnabled()
+    getHashParams('enableRedaction', false) || core.isCreateRedactionEnabled()
   );
   if (redactionsDisabled) {
     disableFeatures([Feature.Redaction]);
   }
 
-  const toolBarDisabled = !getHashParameters('toolbar', true);
+  const toolBarDisabled = !getHashParams('toolbar', true);
   if (toolBarDisabled) {
     dispatch(actions.disableElement('header', PRIORITY_ONE));
   }
