@@ -1,7 +1,7 @@
 import core from 'core';
 import createDisableFeatures from 'src/apis/disableFeatures';
 import getHashParams from 'helpers/getHashParams';
-import {isFullScreenSupported, isMobileDevice} from 'helpers/device';
+import { isIOS, isMobileDevice } from 'helpers/device';
 import { PRIORITY_THREE, PRIORITY_TWO, PRIORITY_ONE } from 'constants/actionPriority';
 import Feature from 'constants/feature';
 import actions from 'actions';
@@ -83,7 +83,7 @@ export default store => {
 
   // disabling the fullscreen button in iOS because it only has partial support for the fullscreen mode
   // which is also buggy in WebViewer the last time we tested it
-  if (!isFullScreenSupported) {
+  if (isIOS) {
     dispatch(actions.disableElements(['fullscreenButton'], PRIORITY_THREE));
   }
 
