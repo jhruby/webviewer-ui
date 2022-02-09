@@ -20,7 +20,6 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
   const {
     includeAnnotations,
     includeComments,
-    maintainPageOrientation,
     onProgress,
     printQuality = PRINT_QUALITY,
     printWithoutModal = false,
@@ -63,7 +62,6 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
       pagesToPrint,
       includeComments,
       includeAnnotations,
-      maintainPageOrientation,
       printQuality,
       sortStrategy,
       colorMap,
@@ -110,7 +108,7 @@ const printPdf = () =>
       });
   });
 
-export const creatingPages = (pagesToPrint, includeComments, includeAnnotations, maintainPageOrientation, printQuality, sortStrategy, clrMap, dateFormat, onProgress, isPrintCurrentView, language) => {
+export const creatingPages = (pagesToPrint, includeComments, includeAnnotations, printQuality, sortStrategy, clrMap, dateFormat, onProgress, isPrintCurrentView, language) => {
   const createdPages = [];
   pendingCanvases = [];
   PRINT_QUALITY = printQuality;
@@ -118,7 +116,7 @@ export const creatingPages = (pagesToPrint, includeComments, includeAnnotations,
 
   pagesToPrint.forEach(pageNumber => {
     const printableAnnotationNotes = getPrintableAnnotationNotes(pageNumber);
-    createdPages.push(creatingImage(pageNumber, includeAnnotations, maintainPageOrientation, isPrintCurrentView));
+    createdPages.push(creatingImage(pageNumber, includeAnnotations, isPrintCurrentView));
 
     if (onProgress) {
       createdPages[createdPages.length - 1].then(htmlElement => {
@@ -178,12 +176,12 @@ const getPrintableAnnotationNotes = pageNumber =>
         annotation.Printable,
     );
 
-const creatingImage = (pageNumber, includeAnnotations, maintainPageOrientation, isPrintCurrentView) =>
+const creatingImage = (pageNumber, includeAnnotations, isPrintCurrentView) =>
   new Promise(resolve => {
     const pageIndex = pageNumber - 1;
     let zoom = 1;
     let renderRect;
-    const printRotation = getPrintRotation(pageIndex, maintainPageOrientation);
+    const printRotation = getPrintRotation(pageIndex);
     const onCanvasLoaded = async canvas => {
       pendingCanvases = pendingCanvases.filter(pendingCanvas => pendingCanvas !== id);
       positionCanvas(canvas, pageIndex);
@@ -272,22 +270,19 @@ const creatingNotesPage = (annotations, pageNumber, dateFormat, language) =>
     resolve(container);
   });
 
-const getPrintRotation = (pageIndex, maintainPageOrientation) => {
-  if (!maintainPageOrientation) {
-    const { width, height } = core.getPageInfo(pageIndex + 1);
-    const documentRotation = getDocumentRotation(pageIndex);
-    let printRotation = (4 - documentRotation) % 4;
+const getPrintRotation = pageIndex => {
+  const { width, height } = core.getPageInfo(pageIndex + 1);
+  const documentRotation = getDocumentRotation(pageIndex);
+  let printRotation = (4 - documentRotation) % 4;
 
-    // automatically rotate pages so that they fill up as much of the printed page as possible
-    if (printRotation % 2 === 0 && width > height) {
-      printRotation++;
-    } else if (printRotation % 2 === 1 && height > width) {
-      printRotation--;
-    }
-    return printRotation;
+  // automatically rotate pages so that they fill up as much of the printed page as possible
+  if (printRotation % 2 === 0 && width > height) {
+    printRotation++;
+  } else if (printRotation % 2 === 1 && height > width) {
+    printRotation--;
   }
 
-  return 0;
+  return printRotation;
 };
 
 const positionCanvas = (canvas, pageIndex) => {
