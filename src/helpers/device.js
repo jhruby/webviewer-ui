@@ -13,6 +13,7 @@ export const isMobileDevice = isIOS || isAndroid || window.navigator.userAgent.m
 export const isMobileDeviceFunc = () => window.navigator.userAgent.match(/(iPad|iPhone|iPod)/i) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || window.navigator.userAgent.match(/Android/i) || window.navigator.userAgent.match(/webOS|BlackBerry|IEMobile|Opera Mini/i);
 export const isMac = navigator.appVersion.indexOf('Mac') > -1;
 export const isWindows = navigator.appVersion.indexOf('Windows') > -1;
+export const isFullScreenSupported = document.fullscreenEnabled || document.mozFullscreenEnabled || document.webkitFullscreenEnabled || document.msFullscreenEnabled;
 
 
 export const isChrome = (function() {
