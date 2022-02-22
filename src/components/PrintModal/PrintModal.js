@@ -39,7 +39,7 @@ class PrintModal extends React.PureComponent {
     printedNoteDateFormat: PropTypes.string,
     language: PropTypes.string,
     setWatermarkModalOptions: PropTypes.func.isRequired,
-    watermarkModalOptions: PropTypes.object,
+    watermarkModalOptions: PropTypes.object
   };
 
   constructor() {
@@ -60,6 +60,7 @@ class PrintModal extends React.PureComponent {
       includeAnnotations: true,
       includeComments: false,
       allowDefaultPrintOptions: true,
+      cancelPrint: false
     };
   }
 
@@ -152,7 +153,7 @@ class PrintModal extends React.PureComponent {
     }
   };
 
-  createPagesAndPrint = e => {
+  createPagesAndPrint = async e => {
     e.preventDefault();
 
     if (this.state.pagesToPrint.length < 1) {
@@ -160,44 +161,55 @@ class PrintModal extends React.PureComponent {
     }
 
     const { language } = this.props;
-    this.setState({ count: 0 });
+    this.setState({ count: 0, cancelPrint: false });
 
     if (this.state.allowWatermarkModal) {
       core.setWatermark(this.props.watermarkModalOptions);
     } else {
       core.setWatermark(this.state.existingWatermarks);
     }
-
-    const createPages = creatingPages(
-      this.state.pagesToPrint,
-      this.state.includeComments,
-      this.state.includeAnnotations,
-      this.props.printQuality,
-      this.props.sortStrategy,
-      this.props.colorMap,
-      this.props.printedNoteDateFormat,
-      undefined,
-      this.currentView.current?.checked,
-      language,
-    );
-    createPages.forEach(async pagePromise => {
-      await pagePromise;
-      this.setState({
-        count:
-          this.state.count < this.state.pagesToPrint.length && this.state.count !== -1
-            ? this.state.count + 1
-            : this.state.count
+    
+    const limit = 10;
+    const runs = Math.ceil(this.state.pagesToPrint.length / limit);
+    for (let i = 0; i < runs; ++i) {
+      console.log(this.state.cancelPrint);
+      if (this.state.cancelPrint){
+        break;
+      }
+      const createPages = creatingPages(
+          this.state.pagesToPrint.slice(i * limit, Math.min((i+1)*limit, this.state.pagesToPrint.length)),
+          this.state.includeComments,
+          this.state.includeAnnotations,
+          this.props.printQuality,
+          this.props.sortStrategy,
+          this.props.colorMap,
+          this.props.printedNoteDateFormat,
+          undefined,
+          this.currentView.current?.checked,
+          language,
+      );
+      createPages.forEach(pagePromise => {
+        pagePromise.then(()=> {
+          this.setState({
+            count:
+                this.state.count < this.state.pagesToPrint.length && this.state.count !== -1
+                    ? this.state.count + 1
+                    : this.state.count
+          });
+        });
       });
-    });
-    Promise.all(createPages)
-      .then(pages => {
+      
+      try {
+        const pages = await Promise.all(createPages);
         printPages(pages);
-        this.closePrintModal();
-      })
-      .catch(e => {
+      }
+      catch(e) {
         console.error(e);
-        this.setState({ count: -1 });
-      });
+        this.setState({count: -1});
+      }
+    }
+
+    this.closePrintModal();
   };
 
   closePrintModal = () => {
@@ -255,6 +267,7 @@ class PrintModal extends React.PureComponent {
               className={className}
               data-element="printModal"
               onClick={() => {
+                this.setState({ cancelPrint: true });
                 cancelPrint();
                 this.closePrintModal();
               }}
