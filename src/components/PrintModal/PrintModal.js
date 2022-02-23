@@ -51,6 +51,7 @@ class PrintModal extends React.PureComponent {
     this.includeComments = React.createRef();
     this.currentView = React.createRef();
     this.pendingCanvases = [];
+    this.cancelPrint = false;
     this.state = {
       allowWatermarkModal: false,
       count: -1,
@@ -59,8 +60,7 @@ class PrintModal extends React.PureComponent {
       existingWatermarks: null,
       includeAnnotations: true,
       includeComments: false,
-      allowDefaultPrintOptions: true,
-      cancelPrint: false
+      allowDefaultPrintOptions: true
     };
   }
 
@@ -161,7 +161,8 @@ class PrintModal extends React.PureComponent {
     }
 
     const { language } = this.props;
-    this.setState({ count: 0, cancelPrint: false });
+    this.setState({ count: 0 });
+    this.cancelPrint = false;
 
     if (this.state.allowWatermarkModal) {
       core.setWatermark(this.props.watermarkModalOptions);
@@ -172,8 +173,8 @@ class PrintModal extends React.PureComponent {
     const limit = 10;
     const runs = Math.ceil(this.state.pagesToPrint.length / limit);
     for (let i = 0; i < runs; ++i) {
-      console.log(this.state.cancelPrint);
-      if (this.state.cancelPrint){
+      console.log(this.cancelPrint);
+      if (this.cancelPrint){
         break;
       }
       const createPages = creatingPages(
@@ -222,6 +223,10 @@ class PrintModal extends React.PureComponent {
       isWatermarkModalVisible: visible
     });
   };
+  
+  onCancelPrint= () =>{
+    this.cancelPrint = true;
+  }
 
   render() {
     const { isDisabled, t, isApplyWatermarkDisabled, isOpen } = this.props;
@@ -267,7 +272,7 @@ class PrintModal extends React.PureComponent {
               className={className}
               data-element="printModal"
               onClick={() => {
-                this.setState({ cancelPrint: true });
+                this.cancelPrint = true;
                 cancelPrint();
                 this.closePrintModal();
               }}
@@ -403,7 +408,10 @@ class PrintModal extends React.PureComponent {
                   </button>
                   <button
                       className="button cancel-button"
-                      onClick={this.closePrintModal}
+                      onClick={()=>{
+                        this.cancelPrint = true;
+                        this.closePrintModal();
+                      }}
                   >
                     {t('action.cancel')}
                   </button>
