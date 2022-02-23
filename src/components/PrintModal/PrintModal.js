@@ -26,6 +26,7 @@ class PrintModal extends React.PureComponent {
     isOpen: PropTypes.bool,
     currentPage: PropTypes.number,
     printQuality: PropTypes.number.isRequired,
+    printPageLimit: PropTypes.number.isRequired,
     pageLabels: PropTypes.array.isRequired,
     closeElement: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -170,10 +171,9 @@ class PrintModal extends React.PureComponent {
       core.setWatermark(this.state.existingWatermarks);
     }
     
-    const limit = 10;
+    const limit = this.props.printPageLimit === 0 ? Number.MAX_SAFE_INTEGER : this.props.printPageLimit ;
     const runs = Math.ceil(this.state.pagesToPrint.length / limit);
     for (let i = 0; i < runs; ++i) {
-      console.log(this.cancelPrint);
       if (this.cancelPrint){
         break;
       }
@@ -226,6 +226,8 @@ class PrintModal extends React.PureComponent {
   
   onCancelPrint= () =>{
     this.cancelPrint = true;
+    cancelPrint();
+    this.closePrintModal();
   }
 
   render() {
@@ -271,11 +273,7 @@ class PrintModal extends React.PureComponent {
             <div
               className={className}
               data-element="printModal"
-              onClick={() => {
-                this.cancelPrint = true;
-                cancelPrint();
-                this.closePrintModal();
-              }}
+              onClick={this.onCancelPrint}
             >
               <div className="container" onClick={e => e.stopPropagation()}>
                 <div className="swipe-indicator" />
@@ -408,10 +406,7 @@ class PrintModal extends React.PureComponent {
                   </button>
                   <button
                       className="button cancel-button"
-                      onClick={()=>{
-                        this.cancelPrint = true;
-                        this.closePrintModal();
-                      }}
+                      onClick={this.onCancelPrint}
                   >
                     {t('action.cancel')}
                   </button>
@@ -434,6 +429,7 @@ const mapStateToProps = state => ({
   isOpen: selectors.isElementOpen(state, 'printModal'),
   currentPage: selectors.getCurrentPage(state),
   printQuality: selectors.getPrintQuality(state),
+  printPageLimit: selectors.getPrintPageLimit(state),
   defaultPrintOptions: selectors.getDefaultPrintOptions(state),
   pageLabels: selectors.getPageLabels(state),
   sortStrategy: selectors.getSortStrategy(state),

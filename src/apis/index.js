@@ -121,6 +121,7 @@ import setPrintedNoteDateFormat from './setPrintedNoteDateFormat';
 import setNotesPanelSort from './setNotesPanelSort';
 import setPageLabels from './setPageLabels';
 import setPrintQuality from './setPrintQuality';
+import setPrintPageLimit from './setPrintPageLimit';
 import setDefaultPrintOptions from './setDefaultPrintOptions';
 import setSelectedTab from './setSelectedTab';
 import setSideWindowVisibility from './setSideWindowVisibility';
@@ -267,6 +268,7 @@ export default store => {
     setMeasurementUnits: setMeasurementUnits(store),
     setPageLabels: setPageLabels(store),
     setPrintQuality: setPrintQuality(store),
+    setPrintPageLimit: setPrintPageLimit(store),
     setDefaultPrintOptions: setDefaultPrintOptions(store),
     setNotesPanelSortStrategy: setNotesPanelSortStrategy(store),
     setSwipeOrientation,
