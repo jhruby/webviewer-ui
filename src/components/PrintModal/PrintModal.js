@@ -273,7 +273,6 @@ class PrintModal extends React.PureComponent {
             <div
               className={className}
               data-element="printModal"
-              onClick={this.onCancelPrint}
             >
               <div className="container" onClick={e => e.stopPropagation()}>
                 <div className="swipe-indicator" />
