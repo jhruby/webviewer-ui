@@ -257,8 +257,6 @@ class PrintModal extends React.PureComponent {
 
     return (
       <Swipeable
-        onSwipedUp={this.closePrintModal}
-        onSwipedDown={this.closePrintModal}
         preventDefaultTouchmoveEvent
       >
         <>
