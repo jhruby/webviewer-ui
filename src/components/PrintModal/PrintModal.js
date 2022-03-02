@@ -8,7 +8,7 @@ import WatermarkModal from 'components/PrintModal/WatermarkModal';
 import core from 'core';
 import getPageArrayFromString from 'helpers/getPageArrayFromString';
 import getClassName from 'helpers/getClassName';
-import { creatingPages, printPages, cancelPrint } from 'helpers/print';
+import {creatingPages, printPages, cancelPrint, unloadCanvases} from 'helpers/print';
 import LayoutMode from 'constants/layoutMode';
 import actions from 'actions';
 import selectors from 'selectors';
@@ -163,6 +163,8 @@ class PrintModal extends React.PureComponent {
     }
 
     this.setState({buttonEnabled: false});
+
+    unloadCanvases();
 
     const {language, t} = this.props;
     const i = this.state.stepNumber;

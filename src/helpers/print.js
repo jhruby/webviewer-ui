@@ -11,6 +11,7 @@ import { isSafari, isChromeOniOS } from 'helpers/device';
 import core from 'core';
 
 let pendingCanvases = [];
+let renderedCanvases = [];
 let PRINT_QUALITY = 1;
 let colorMap;
 
@@ -164,6 +165,18 @@ export const cancelPrint = () => {
   pendingCanvases.forEach(id => doc.cancelLoadCanvas(id));
 };
 
+export const unloadCanvases = () =>{
+  const doc = core.getDocument();
+  renderedCanvases.forEach(c => {
+    try {
+      doc.unloadCanvasResources(c.id);
+      c.img.parentNode.removeChild(c.img);
+    }
+    catch (e){} //ignore
+  });
+  renderedCanvases = [];
+}
+
 const getPrintableAnnotationNotes = pageNumber =>
   core
     .getAnnotationsList()
@@ -183,7 +196,7 @@ const creatingImage = (pageNumber, includeAnnotations, isPrintCurrentView) =>
     let renderRect;
     const printRotation = getPrintRotation(pageIndex);
     const onCanvasLoaded = async canvas => {
-      pendingCanvases = pendingCanvases.filter(pendingCanvas => pendingCanvas !== id);
+      pendingCanvases = pendingCanvases.filter(pendingCanvas => pendingCanvas !== id);      
       positionCanvas(canvas, pageIndex);
       let printableAnnotInfo = [];
       if (!includeAnnotations) {
@@ -211,6 +224,9 @@ const creatingImage = (pageNumber, includeAnnotations, isPrintCurrentView) =>
       img.onload = () => {
         resolve(img);
       };
+      
+      canvas = null;      
+      renderedCanvases.push({img, id});
     };
 
     if (isPrintCurrentView) {
