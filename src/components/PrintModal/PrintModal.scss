@@ -134,6 +134,7 @@
         height: 32px;
         cursor: pointer;
         font-size: 13px;
+        order: 2;
 
         &:hover {
           background: var(--primary-button-hover);
@@ -144,6 +145,7 @@
         color: var(--secondary-button-text);
         margin-right: 6px;
         background: none;
+        order: 1;
 
         &:hover {
           color: var(--secondary-button-hover);
