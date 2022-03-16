@@ -431,6 +431,8 @@
     },
     "shared": {
       "page": "Page",
+      "pageNumber": "Page #",
+      "notes": "Notes",
       "precision": "Precision",
       "enableSnapping": "Enable snapping for measurement tools"
     },

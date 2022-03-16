@@ -181,6 +181,7 @@ class PrintModal extends React.PureComponent {
     const limit = this.props.printPageLimit === 0 ? Number.MAX_SAFE_INTEGER : this.props.printPageLimit;
     const runs = Math.ceil(this.state.pagesToPrint.length / limit);
     const createPages = creatingPages(
+        this.state.pagesToPrint,
         this.state.pagesToPrint.slice(i * limit, Math.min((i + 1) * limit, this.state.pagesToPrint.length)),
         this.state.includeComments,
         this.state.includeAnnotations,
@@ -191,6 +192,7 @@ class PrintModal extends React.PureComponent {
         undefined,
         this.currentView.current?.checked,
         language,
+        runs === i + 1
     );
     createPages.forEach(pagePromise => {
       pagePromise.then(() => {

@@ -431,6 +431,8 @@
     },
     "shared": {
       "page": "Page",
+      "pageNumber": "# de page ",
+      "notes": "Remarques",
       "precision": "Précision",
       "enableSnapping": "Activer le magnétisme pour les outils de mesure"
     },
