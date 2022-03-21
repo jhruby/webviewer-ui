@@ -407,7 +407,7 @@ class PrintModal extends React.PureComponent {
                       {t('action.cancel')}
                     </button>
                     <button
-                        className="button"
+                        className="button print-button"
                         onClick={this.createPagesAndPrint}
                         disabled={!buttonEnabled}
                         key="print"
