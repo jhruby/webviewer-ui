@@ -401,13 +401,16 @@ class PrintModal extends React.PureComponent {
                   <div className="buttons">
                     <button
                         className="button cancel-button"
+                        name="cancel-button"
                         onClick={this.onCancelPrint}
                         key="cancel"
                     >
                       {t('action.cancel')}
                     </button>
                     <button
-                        className="button print-button"
+                        name="print-button"
+                        data-step={stepNumber}
+                        className="button"
                         onClick={this.createPagesAndPrint}
                         disabled={!buttonEnabled}
                         key="print"
