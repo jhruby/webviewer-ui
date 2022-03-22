@@ -417,7 +417,8 @@
       "colors": "Couleurs",
       "invalidFontSize": "La taille de la police doit être inférieure à",
       "labelText": "Texte de l'étiquette",
-      "labelTextPlaceholder": "Ajouter un texte d'étiquette"
+      "labelTextPlaceholder": "Ajouter un texte d'étiquette",
+      "colorStyle": "Couleur"
     },
     "styleOption": {
       "style": "Style",
