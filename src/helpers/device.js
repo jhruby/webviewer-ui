@@ -28,3 +28,4 @@ export const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgen
 
 
 export const isChromeOniOS =  window.navigator.userAgent.match(/CriOS\/(.*?) /);
+export const isChromeOrFirefoxOniOS =  window.navigator.userAgent.match(/(CriOS|FxiOS)\/(.*?) /);

@@ -7,7 +7,7 @@ import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import { workerTypes } from 'constants/types';
 import { getSortStrategies } from 'constants/sortStrategies';
 import { mapAnnotationToKey, getDataWithKey } from 'constants/map';
-import { isSafari, isChromeOniOS } from 'helpers/device';
+import {isSafari, isChromeOrFirefoxOniOS} from 'helpers/device';
 import core from 'core';
 
 let pendingCanvases = [];
@@ -156,7 +156,7 @@ export const printPages = pages => {
 
   printHandler.appendChild(fragment);
 
-  if (isSafari && !isChromeOniOS) {
+  if (isSafari && !isChromeOrFirefoxOniOS) {
     // Print for Safari browser. Makes Safari 11 consistently work.
     document.execCommand('print');
   } else {
