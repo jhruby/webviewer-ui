@@ -370,9 +370,14 @@ class PrintModal extends React.PureComponent {
                     </div>
                     <div className="total">
                       {isPrinting ? (
-                          <div>{`${t('message.processing')} ${count}/${
-                              pagesToPrint.length
-                          }`}</div>
+                          <div class="print-progress-container">
+                            <div><b>{`${t('message.processing')} ${count}/${
+                                pagesToPrint.length
+                            }`}</b></div>
+                            <div class="progress-bar">
+                              <div style={{width: `${Math.round(count/pagesToPrint.length*100)}%`}}></div>
+                            </div>
+                          </div>
                       ) : (
                           <div>
                             {t('message.printTotalPageCount', {

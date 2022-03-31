@@ -185,5 +185,23 @@
       display: flex;
       align-items: center;
     }
+    
+    .print-progress-container {
+      width: 100%;
+      
+      .progress-bar {
+        background-color: #CFD4DA;
+        width: 100%;
+        height: 7px;
+        border-radius: 3px;
+        margin-top: 10px;
+        
+        > div {
+          background-color: #3183C8;
+          height: 100%;
+          border-radius: 3px;
+        }
+      }
+    }
   }
 }
