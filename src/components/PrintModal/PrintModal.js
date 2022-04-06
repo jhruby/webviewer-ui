@@ -307,7 +307,7 @@ class PrintModal extends React.PureComponent {
                           disabled={isPrinting}
                           center
                       />
-                      <Choice
+                      {/*<Choice
                           dataElement="currentViewPrintOption"
                           ref={this.currentView}
                           id="current-view"
@@ -316,7 +316,7 @@ class PrintModal extends React.PureComponent {
                           label={t('option.print.view')}
                           disabled={isPrinting}
                           center
-                      />
+                      />*/}
                       <Choice
                           dataElement="customPagesPrintOption"
                           ref={this.customPages}
