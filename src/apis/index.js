@@ -6,7 +6,6 @@ import Feature from 'constants/feature';
 import Events from 'constants/events';
 import ToolbarGroup from 'constants/toolbar';
 import { NotesPanelSortStrategy } from 'constants/sortStrategies';
-import Theme from 'constants/theme';
 import RedactionSearchPatterns from 'constants/redactionSearchPatterns';
 import addSearchListener from './addSearchListener';
 import addSortStrategy from './addSortStrategy';
@@ -25,7 +24,6 @@ import disableLocalStorage from './disableLocalStorage';
 import disableMeasurement from './disableMeasurement';
 import disableNativeScrolling from './disableNativeScrolling';
 import disableNotesPanel from './disableNotesPanel';
-import disableNoteSubmissionWithEnter from './disableNoteSubmissionWithEnter';
 import disablePrint from './disablePrint';
 import disableRedaction from './disableRedaction';
 import disableTextSelection from './disableTextSelection';
@@ -116,7 +114,6 @@ import setFitMode from './setFitMode';
 import setHeaderItems from './setHeaderItems';
 import setIconColor from './setIconColor';
 import setLanguage from './setLanguage';
-import setTranslations from './setTranslations';
 import setLayoutMode from './setLayoutMode';
 import setMaxZoomLevel from './setMaxZoomLevel';
 import setMinZoomLevel from './setMinZoomLevel';
@@ -125,6 +122,7 @@ import setPrintedNoteDateFormat from './setPrintedNoteDateFormat';
 import setNotesPanelSort from './setNotesPanelSort';
 import setPageLabels from './setPageLabels';
 import setPrintQuality from './setPrintQuality';
+import setPrintPageLimit from './setPrintPageLimit';
 import setDefaultPrintOptions from './setDefaultPrintOptions';
 import setSelectedTab from './setSelectedTab';
 import setSideWindowVisibility from './setSideWindowVisibility';
@@ -187,9 +185,7 @@ import disableDesktopOnlyMode from './disableDesktopOnlyMode';
 import isInDesktopOnlyMode from './isInDesktopOnlyMode';
 import pageManipulationOverlay from './pageManipulationOverlay';
 import getWatermarkModalOptions from './getWatermarkModalOptions';
-import enableNoteSubmissionWithEnter from './enableNoteSubmissionWithEnter';
 import willUseEmbeddedPrinting from 'src/apis/willUseEmbeddedPrinting';
-import reloadOutline from './reloadOutline';
 import Fonts from 'src/apis/fonts';
 import TabManagerAPI from './TabManagerAPI';
 import getAvailableLanguages from './getAvailableLanguages';
@@ -215,7 +211,6 @@ export default store => {
     Events,
     ToolbarGroup,
     NotesPanelSortStrategy,
-    Theme,
     RedactionSearchPatterns,
     addSearchListener,
     addSortStrategy: addSortStrategy(store),
@@ -272,7 +267,6 @@ export default store => {
     setHeaderItems: setHeaderItems(store),
     setIconColor: setIconColor(store),
     setLanguage: setLanguage(store),
-    setTranslations,
     setLayoutMode,
     setMaxZoomLevel: setMaxZoomLevel(store),
     setMinZoomLevel: setMinZoomLevel(store),
@@ -281,6 +275,7 @@ export default store => {
     setMeasurementUnits: setMeasurementUnits(store),
     setPageLabels: setPageLabels(store),
     setPrintQuality: setPrintQuality(store),
+    setPrintPageLimit: setPrintPageLimit(store),
     setDefaultPrintOptions: setDefaultPrintOptions(store),
     setNotesPanelSortStrategy: setNotesPanelSortStrategy(store),
     setSwipeOrientation,
@@ -324,7 +319,6 @@ export default store => {
     disableLocalStorage,
     disableMeasurement: disableMeasurement(store),
     disableNotesPanel: disableNotesPanel(store),
-    disableNoteSubmissionWithEnter: disableNoteSubmissionWithEnter(store),
     disablePrint: disablePrint(store),
     disableRedaction: disableRedaction(store),
     disableTextSelection: disableTextSelection(store),
@@ -337,7 +331,6 @@ export default store => {
     enableLocalStorage,
     enableMeasurement: enableMeasurement(store),
     enableNotesPanel: enableNotesPanel(store),
-    enableNoteSubmissionWithEnter: enableNoteSubmissionWithEnter(store),
     enablePrint: enablePrint(store),
     enableRedaction: enableRedaction(store),
     enableTextSelection: enableTextSelection(store),
@@ -378,7 +371,6 @@ export default store => {
     removeEventListener,
     syncNamespaces,
     Fonts: Fonts(store),
-    reloadOutline: reloadOutline(store),
     TabManager: TabManagerAPI(store),
     getAvailableLanguages,
     replaceRedactionSearchPattern: replaceRedactionSearchPattern(store),

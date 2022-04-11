@@ -142,6 +142,7 @@ const InkSignature = ({
                 <canvas
                   className="ink-signature-canvas"
                   onMouseUp={handleFinishDrawing}
+                onMouseLeave={handleFinishDrawing}
                   onTouchEnd={handleFinishDrawing}
                   onMouseLeave={handleFinishDrawing}
                   ref={canvasRef}

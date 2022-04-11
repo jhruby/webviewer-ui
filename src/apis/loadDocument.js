@@ -4,6 +4,8 @@
  * @param {(string|File|Blob|Core.Document|Core.PDFNet.PDFDoc)} documentPath Path to the document OR <a href='https://developer.mozilla.org/en-US/docs/Web/API/File' target='_blank'>File object</a> if opening local file.
  * @param {UI.loadDocumentOptions} [options] Additional options
 
+ * @param {string} [options.officeLocale] The locale to render the document with.
+ * @param {function} [options.onError] - A callback function that will be called when error occurs in the process of loading a document. The function signature is `function(e) {}`
  * @example
 WebViewer(...)
   .then(function(instance) {

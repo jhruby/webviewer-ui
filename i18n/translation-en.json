@@ -429,7 +429,8 @@
       "colors": "Colors",
       "invalidFontSize": "Font size must be less than ",
       "labelText": "Label Text",
-      "labelTextPlaceholder": "Add label text"
+      "labelTextPlaceholder": "Add label text",
+      "colorStyle": "Color"
     },
     "styleOption": {
       "style": "Style",
@@ -443,6 +444,8 @@
     },
     "shared": {
       "page": "Page",
+      "pageNumber": "Page #",
+      "notes": "Notes",
       "precision": "Precision",
       "enableSnapping": "Enable snapping for measurement tools"
     },
