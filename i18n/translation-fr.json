@@ -342,6 +342,7 @@
       "view": "Vue actuelle",
       "pageQuality": "Qualité d'impression",
       "qualityNormal": "Ordinaire",
+      "qualityMobile": "Portable",      
       "qualityHigh": "Haute",
       "includeAnnotations": "Inclure les annotations",
       "includeComments": "Inclure les commentaires",
