@@ -341,7 +341,7 @@
       "pages": "Pages to print",
       "view": "Current View",
       "pageQuality": "Print Quality",
-      "qualityNormal": "Normal",
+      "qualityNormal": "Medium",
       "qualityMobile": "Mobile",
       "qualityHigh": "High",
       "includeAnnotations": "Include annotations",
