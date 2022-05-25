@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import { withTranslation } from 'react-i18next';
 
 import Button from 'components/Button';
@@ -19,6 +19,8 @@ class LeftPanelTabs extends React.Component {
     isLeftPanelTabsDisabled: PropTypes.bool,
     setActiveLeftPanel: PropTypes.func.isRequired,
     t: PropTypes.func.isRequired,
+    outlines: PropTypes.array.isRequired, 
+    outlineEditingEnabled: PropTypes.bool.isRequired
   };
   isActive = panel => this.props.activePanel === panel;
 
@@ -27,7 +29,9 @@ class LeftPanelTabs extends React.Component {
       customPanels,
       isLeftPanelTabsDisabled,
       setActiveLeftPanel,
-      notesInLeftPanel,
+      notesInLeftPanel, 
+      outlines, 
+      outlineEditingEnabled  
     } = this.props;
 
     if (isLeftPanelTabsDisabled) {
@@ -43,13 +47,14 @@ class LeftPanelTabs extends React.Component {
           onClick={() => setActiveLeftPanel('thumbnailsPanel')}
           title="component.thumbnailsPanel"
         />
+        {outlineEditingEnabled || outlines.length > 0 && (
         <Button
           isActive={this.isActive('outlinesPanel')}
           dataElement="outlinesPanelButton"
           img="icon-panel-outlines"
           onClick={() => setActiveLeftPanel('outlinesPanel')}
           title="component.outlinesPanel"
-        />
+        />)}
         <Button
           isActive={this.isActive('layersPanel')}
           dataElement="layersPanelButton"
@@ -109,7 +114,9 @@ const mapStateToProps = state => ({
   customPanels: selectors.getCustomPanels(state),
   disabledCustomPanelTabs: selectors.getDisabledCustomPanelTabs(state),
   isLeftPanelTabsDisabled: selectors.isElementDisabled(state, 'leftPanelTabs'),
-  notesInLeftPanel: selectors.getNotesInLeftPanel(state),
+  notesInLeftPanel: selectors.getNotesInLeftPanel(state), 
+  outlines: selectors.getOutlines(state),
+  outlineEditingEnabled: selectors.getIsOutlineEditing(state)
 });
 
 const mapDispatchToProps = {
