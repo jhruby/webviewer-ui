@@ -15,7 +15,7 @@ import LeftPanelPageTabsSmall from "components/LeftPanelPageTabs/LeftPanelPageTa
 import LeftPanelPageTabs from "components/LeftPanelPageTabs/LeftPanelPageTabs/LeftPanelPageTabs";
 import { workerTypes } from "constants/types";
 import core from "src/core";
-import LeftPanelPageTabsRotate from "components/LeftPanelPageTabs/LeftPanelPageTabsRotate/LeftPanelPageTabsRotate";
+import LeftPanelPageTabsXOD from "components/LeftPanelPageTabs/LeftPanelPageTabsXOD/LeftPanelPageTabsXOD";
 
 function LeftPanelPageTabsContainer() {
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ function LeftPanelPageTabsContainer() {
 
   if (isXod || isOffice || document?.isWebViewerServerDocument()) {
     return (
-      <LeftPanelPageTabsRotate onRotateClockwise={onRotateClockwise} onRotateCounterClockwise={onRotateCounterClockwise} />
+      <LeftPanelPageTabsXOD onRotateClockwise={onRotateClockwise} onRotateCounterClockwise={onRotateCounterClockwise} />
     );
   }
   // Breakpoint to convert to popups

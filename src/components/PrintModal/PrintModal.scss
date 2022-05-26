@@ -113,9 +113,22 @@
         height: 32px;
         cursor: pointer;
         font-size: 13px;
+        order: 2;
 
         &:hover {
           background: var(--primary-button-hover);
+        }
+      }
+      
+      .cancel-button {
+        color: var(--secondary-button-text);
+        margin-right: 6px;
+        background: none;
+        order: 1;
+
+        &:hover {
+          color: var(--secondary-button-hover);
+          background: none;
         }
       }
     }
@@ -150,6 +163,24 @@
       font-weight: bold;
       display: flex;
       align-items: center;
+    }
+    
+    .print-progress-container {
+      width: 100%;
+      
+      .progress-bar {
+        background-color: #CFD4DA;
+        width: 100%;
+        height: 7px;
+        border-radius: 3px;
+        margin-top: 10px;
+        
+        > div {
+          background-color: #3183C8;
+          height: 100%;
+          border-radius: 3px;
+        }
+      }
     }
   }
 }

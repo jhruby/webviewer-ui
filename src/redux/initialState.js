@@ -101,7 +101,8 @@ export default {
           render: () => <Ribbons />,
           className: 'custom-ribbons-container',
         },
-        { type: 'toggleElementButton', dataElement: 'searchButton', element: 'searchPanel', img: 'icon-header-search', title: 'component.searchPanel', hidden: ['small-mobile'] },
+        { type: 'toggleElementButton', dataElement: 'searchButton', element: 'searchPanel', img: 'icon-header-search', title: 'component.searchPanel', hidden: ['small-mobile', 'mobile', 'tablet'] },
+        { type: 'toggleElementButton', dataElement: 'printButton', element: 'printModal', img: 'icon-header-print-line', title: 'action.print', hidden:  ['small-mobile', 'mobile', 'tablet'] },
         {
           type: 'toggleElementButton',
           dataElement: 'toggleNotesButton',
@@ -113,9 +114,9 @@ export default {
             // Trigger with a delay so we ensure the panel is open before we compute correct coordinates of annotation
             setTimeout(() => dispatch(actions.toggleElement('annotationNoteConnectorLine')), 400);
           },
-          hidden: ['small-mobile']
+          hidden: ['small-mobile', 'mobile', 'tablet']
         },
-        { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-header-settings-line', title: 'component.menuOverlay', hidden: ['small-mobile'] },
+        { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-tools-more', title: 'component.menuOverlay', hidden: ['small-mobile', 'mobile', 'tablet'] },
         {
           type: 'actionButton',
           dataElement: 'moreButton',
@@ -125,13 +126,14 @@ export default {
             dispatch(actions.setActiveHeaderGroup('small-mobile-more-buttons'));
             core.setToolMode(defaultTool);
           },
-          hidden: ['mobile', 'tablet', 'desktop'],
+          hidden: ['desktop'],
         },
       ],
       'small-mobile-more-buttons': [
         { type: 'toggleElementButton', dataElement: 'searchButton', element: 'searchPanel', img: 'icon-header-search', title: 'component.searchPanel' },
+        { type: 'toggleElementButton', dataElement: 'printButton', element: 'printModal', img: 'icon-header-print-line', title: 'action.print' },
         { type: 'toggleElementButton', dataElement: 'toggleNotesButton', element: 'notesPanel', img: 'icon-header-chat-line', title: 'component.notesPanel' },
-        { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-header-settings-line', title: 'component.menuOverlay' },
+        { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-tools-more', title: 'component.menuOverlay' },
         { type: 'spacer' },
         {
           type: 'actionButton',
@@ -623,6 +625,7 @@ export default {
     bookmarks: {},
     layers: [],
     printQuality: 1,
+    printPageLimit: 0,
     passwordAttempts: -1,
     loadingProgress: 0,
   },
