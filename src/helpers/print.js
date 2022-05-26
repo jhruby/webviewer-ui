@@ -342,7 +342,8 @@ const getPrintableAnnotationNotes = (pages) =>
         !annotation.isReply() &&
         !annotation.isGrouped() &&
         annotation.Printable &&
-        annotation.Subject === "Note" ,
+        annotation.Subject === "Note" &&
+        annotation.Icon === "Comment"
     );
 
 const creatingImage = (pageNumber, includeAnnotations, isPrintCurrentView) =>
