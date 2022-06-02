@@ -247,7 +247,9 @@ class PrintModal extends React.PureComponent {
       this.state.maintainPageOrientation = this.props.defaultPrintOptions.maintainPageOrientation ?? this.state.maintainPageOrientation;
       this.state.allowDefaultPrintOptions = false;
     }
-
+    
+    const currentPageDefault = document.body.classList.contains("hidePrintPageRange");
+    
     const isPrinting = count >= 0;
     const className = getClassName('Modal PrintModal', this.props);
     const customPagesLabelElement = (
@@ -294,9 +296,10 @@ class PrintModal extends React.PureComponent {
                           name="pages"
                           radio
                           label={t('option.print.all')}
-                          defaultChecked
+                          defaultChecked={!currentPageDefault}
                           disabled={isPrinting}
                           center
+                          key={currentPageDefault + "all"}
                       />
                       <Choice
                           dataElement="currentPagePrintOption"
@@ -305,8 +308,10 @@ class PrintModal extends React.PureComponent {
                           name="pages"
                           radio
                           label={t('option.print.current')}
+                          defaultChecked={currentPageDefault}
                           disabled={isPrinting}
                           center
+                          key ={currentPageDefault + "current"}
                       />
                       {/*<Choice
                           dataElement="currentViewPrintOption"
