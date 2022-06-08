@@ -201,6 +201,7 @@ import replaceRedactionSearchPattern from './replaceRedactionSearchPattern';
 import addDateTimeFormat from './addDateTimeFormat';
 import addRedactionSearchPattern from './addRedactionSearchPattern';
 import removeRedactionSearchPattern from './removeRedactionSearchPattern';
+import setDisabledPrintRange from "./setDisabledPrintRange";
 
 export default store => {
   const CORE_NAMESPACE = 'Core';
@@ -289,6 +290,7 @@ export default store => {
     setPageLabels: setPageLabels(store),
     setPrintQuality: setPrintQuality(store),
     setPrintPageLimit: setPrintPageLimit(store),
+    setDisabledPrintRange: setDisabledPrintRange(store),
     setDefaultPrintOptions: setDefaultPrintOptions(store),
     setNotesPanelSortStrategy: setNotesPanelSortStrategy(store),
     setSwipeOrientation,

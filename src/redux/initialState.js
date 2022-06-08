@@ -628,6 +628,7 @@ export default {
     printPageLimit: 0,
     passwordAttempts: -1,
     loadingProgress: 0,
+    disabledPrintRange: false
   },
   user: {
     name: getHashParameters('user', 'Guest'),

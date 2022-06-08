@@ -27,6 +27,7 @@ class PrintModal extends React.PureComponent {
     currentPage: PropTypes.number,
     printQuality: PropTypes.number.isRequired,
     printPageLimit: PropTypes.number.isRequired,
+    disabledPrintRange: PropTypes.bool.isRequired,
     pageLabels: PropTypes.array.isRequired,
     closeElement: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -235,7 +236,7 @@ class PrintModal extends React.PureComponent {
   }
 
   render() {
-    const { isDisabled, t, isApplyWatermarkDisabled, isOpen } = this.props;
+    const { isDisabled, t, isApplyWatermarkDisabled, isOpen, disabledPrintRange } = this.props;
     const { count, pagesToPrint, includeAnnotations, includeComments, stepNumber, buttonEnabled } = this.state;
 
     if (isDisabled && !buttonEnabled) {
@@ -247,8 +248,6 @@ class PrintModal extends React.PureComponent {
       this.state.maintainPageOrientation = this.props.defaultPrintOptions.maintainPageOrientation ?? this.state.maintainPageOrientation;
       this.state.allowDefaultPrintOptions = false;
     }
-    
-    const currentPageDefault = document.body.classList.contains("hidePrintPageRange");
     
     const isPrinting = count >= 0;
     const className = getClassName('Modal PrintModal', this.props);
@@ -262,6 +261,13 @@ class PrintModal extends React.PureComponent {
             disabled={isPrinting}
         />
     );
+    
+    const inputProps = {
+    };
+
+    if (disabledPrintRange) {
+      inputProps.checked = true;
+    }
 
     return (
         <Swipeable
@@ -283,35 +289,35 @@ class PrintModal extends React.PureComponent {
                 <div className="container" onClick={e => e.stopPropagation()}>
                   <div className="swipe-indicator" />
                   <div className="settings">
-                    <div className="col">{`${t('option.print.pages')}:`}</div>
+                    <div style={{display: disabledPrintRange ? 'none' : 'initial'}} className="col">{`${t('option.print.pages')}:`}</div>
                     <form
                         className="settings-form"
                         onChange={this.onChange}
                         onSubmit={this.createPagesAndPrint}
                     >
                       <Choice
+                          className={disabledPrintRange ? 'displayNone' : ''}
                           dataElement="allPagesPrintOption"
                           ref={this.allPages}
                           id="all-pages"
                           name="pages"
                           radio
                           label={t('option.print.all')}
-                          defaultChecked={!currentPageDefault}
+                          defaultChecked
                           disabled={isPrinting}
                           center
-                          key={currentPageDefault + "all"}
                       />
                       <Choice
+                          className={disabledPrintRange ? 'displayNone' : ''}
                           dataElement="currentPagePrintOption"
                           ref={this.currentPage}
                           id="current-page"
                           name="pages"
                           radio
                           label={t('option.print.current')}
-                          defaultChecked={currentPageDefault}
                           disabled={isPrinting}
                           center
-                          key ={currentPageDefault + "current"}
+                          {...inputProps}
                       />
                       {/*<Choice
                           dataElement="currentViewPrintOption"
@@ -324,6 +330,7 @@ class PrintModal extends React.PureComponent {
                           center
                       />*/}
                       <Choice
+                          className={disabledPrintRange ? 'displayNone' : ''}
                           dataElement="customPagesPrintOption"
                           ref={this.customPages}
                           id="custom-pages"
@@ -449,6 +456,7 @@ const mapStateToProps = state => ({
   currentPage: selectors.getCurrentPage(state),
   printQuality: selectors.getPrintQuality(state),
   printPageLimit: selectors.getPrintPageLimit(state),
+  disabledPrintRange: selectors.getDisabledPrintRange(state),
   defaultPrintOptions: selectors.getDefaultPrintOptions(state),
   pageLabels: selectors.getPageLabels(state),
   sortStrategy: selectors.getSortStrategy(state),

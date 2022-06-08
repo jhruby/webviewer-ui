@@ -362,6 +362,10 @@ export const setPrintPageLimit = limit => ({
   type: 'SET_PRINT_PAGE_LIMIT',
   payload: { limit },
 });
+export const setDisabledPrintRange = disabledPrintRange => ({
+  type: 'SET_DISABLED_PRINT_RANGE',
+  payload: { disabledPrintRange },
+});
 export const setDefaultPrintOptions = options => ({
   type: 'SET_DEFAULT_PRINT_OPTIONS',
   payload: { options },
