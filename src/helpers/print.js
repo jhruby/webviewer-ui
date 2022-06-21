@@ -342,7 +342,6 @@ const getPrintableAnnotationNotes = (pages) =>
         !annotation.isReply() &&
         !annotation.isGrouped() &&
         annotation.Printable &&
-        annotation.Subject === "Note" &&
         annotation.Icon === "Comment"
     );
 
