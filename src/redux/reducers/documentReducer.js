@@ -34,6 +34,10 @@ export default initialState => (state = initialState, action) => {
       return { ...state, passwordAttempts: payload.attempt };
     case 'SET_PRINT_QUALITY':
       return { ...state, printQuality: payload.quality };
+    case 'SET_PRINT_PAGE_LIMIT':
+      return { ...state, printPageLimit: payload.limit }
+    case 'SET_DISABLED_PRINT_RANGE':
+      return { ...state, disabledPrintRange: payload.disabledPrintRange }
     case 'SET_DEFAULT_PRINT_OPTIONS':
       return {...state, defaultPrintOptions: payload.options };
     case 'SET_LOADING_PROGRESS':

@@ -2,6 +2,7 @@ import { isAndroid, isChrome } from 'helpers/device';
 import { defaultNoteDateFormat, defaultPrintedNoteDateFormat } from 'constants/defaultTimeFormat';
 
 // viewer
+export const getPresetCropDimensions = state => state.viewer.presetCropDimensions;
 export const getDateTimeFormats = state => state.viewer.dateTimeFormats;
 export const getThumbnailSelectionMode = state => state.viewer.thumbnailSelectionMode;
 export const getFonts = state => state.viewer.fonts;
@@ -383,6 +384,10 @@ export const getErrorMessage = state => state.viewer.errorMessage || '';
 export const getPasswordAttempts = state => state.document.passwordAttempts;
 
 export const getPrintQuality = state => state.document.printQuality;
+
+export const getPrintPageLimit = state => state.document.printPageLimit;
+
+export const getDisabledPrintRange = state => state.document.disabledPrintRange;
 
 export const getDefaultPrintOptions = state => state.document.defaultPrintOptions;
 

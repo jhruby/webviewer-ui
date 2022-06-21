@@ -69,7 +69,7 @@ export default store => {
   }
 
   const redactionsDisabled = !(
-    getHashParameters('enableRedaction', false) || core.isCreateRedactionEnabled()
+      getHashParameters('enableRedaction', false) || core.isCreateRedactionEnabled()
   );
   if (redactionsDisabled) {
     disableFeatures([Feature.Redaction]);

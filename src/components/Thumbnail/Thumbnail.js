@@ -251,12 +251,15 @@ const Thumbnail = ({
         onClick={handleClick}
       >
         <div id={`pageThumb${index}`} className="thumbnail" />
-        {isThumbnailSelectingPages && loaded && (
-          <Choice className={`checkbox ${checkboxRotateClass}`} checked={selectedPageIndexes.includes(index)} />
-        )}
+        {isThumbnailSelectingPages && <div className={`dim ${rotateDimDiv && checkboxRotateClass}`} style={{ width: dimensions.width * ratio, height: dimensions.height * ratio }} />}
+        {isThumbnailSelectingPages && loaded &&
+        <Choice
+          className={`checkbox ${checkboxRotateClass}`}
+          checked={selectedPageIndexes.includes(index)}
+        />}
       </div>
       <div className="page-label">{pageLabel}</div>
-      {!isThumbnailSelectingPages && isActive && shouldShowControls && <ThumbnailControls index={index} />}
+      {isActive && shouldShowControls && <ThumbnailControls index={index} />}
     </div>
   );
 };
