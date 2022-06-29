@@ -214,6 +214,7 @@ import removeRedactionSearchPattern from './removeRedactionSearchPattern';
 import setDisabledPrintRange from "./setDisabledPrintRange";
 import getZoomStepFactors from './getZoomStepFactors';
 import setZoomStepFactors from './setZoomStepFactors';
+import setAnnotationFilters from './setAnnotationFilters';
 
 export default store => {
   const CORE_NAMESPACE = 'Core';
@@ -464,6 +465,7 @@ export default store => {
     enablePageDeletionConfirmationModal: enablePageDeletionConfirmationModal(store),
     getZoomStepFactors: getZoomStepFactors(store),
     setZoomStepFactors: setZoomStepFactors(store),
+    setAnnotationFilters: setAnnotationFilters(store)
   };
 
   window.instance = {
