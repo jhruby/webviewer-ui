@@ -248,7 +248,8 @@
     "selectPageToReplace": "Select the pages in the document you would like to replace with.",
     "embeddedFiles": "Embedded Files",
     "pageNum": "Page Number",
-    "error": "Error"
+    "error": "Error",
+    "filterApplied": "Filter is applied"
   },
   "option": {
     "type": {

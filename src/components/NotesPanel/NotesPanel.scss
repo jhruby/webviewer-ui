@@ -114,7 +114,7 @@
     .sort-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 6px;
 
       .filterAnnotationButton {
         height: 28px;
@@ -144,6 +144,14 @@
         .picked-option {
           text-align: left;
         }
+      }
+    }
+    
+    .sort-row-last {
+      display: flex;
+      
+      > span {
+        margin-left: auto;
       }
     }
 

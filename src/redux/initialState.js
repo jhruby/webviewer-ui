@@ -850,7 +850,7 @@ export default {
       pageReplacementModal: 'urlInputPanelButton',
       linkModal: 'URLPanelButton',
       rubberStampTab: 'standardStampPanelButton',
-      filterAnnotModal: DataElements.ANNOTATION_USER_FILTER_PANEL_BUTTON
+      filterAnnotModal: DataElements.ANNOTATION_COLOR_FILTER_PANEL_BUTTON
     },
     customElementOverrides: {},
     activeHeaderGroup: 'default',
