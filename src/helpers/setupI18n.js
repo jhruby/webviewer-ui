@@ -38,7 +38,7 @@ const requestWithXmlHttpRequest = (options, url, payload, callback) => {
   }
 };
 const getLoadPath = (() => {
-  const elements = window.document.getElementsByTagName("meta");
+  const elements = window.parent.document.getElementsByTagName("meta");
   for (let i = 0; i < elements.length; ++i){
     let meta = elements[i];
     if (meta.name === 'i18n') {
