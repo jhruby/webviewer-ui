@@ -61,55 +61,60 @@ const FilterAnnotModal = () => {
 
     const threshold = 10;
     const similarColors = colorObject
-      .filter(c => Math.abs(newColor.R - c.R) < threshold
-        && Math.abs(newColor.G - c.G) < threshold
-        && Math.abs(newColor.B - c.B) < threshold);
+        .filter(c => Math.abs(newColor.R - c.R) < threshold
+            && Math.abs(newColor.G - c.G) < threshold
+            && Math.abs(newColor.B - c.B) < threshold);
 
     return !!similarColors.length;
   };
-
+  
   const filterApply = () => {
+    filterApplyParam(typesFilter, authorFilter, checkRepliesForAuthorFilter, colorFilter, statusFilter);
+    closeModal();
+  };
+
+  const filterApplyParam = (typesFilter, authorFilter, checkRepliesForAuthorFilter, colorFilter, statusFilter) => {
     dispatch(
-      actions.setCustomNoteFilter(annot => {
-        let type = true;
-        let author = true;
-        let color = true;
-        let status = true;
-        if (typesFilter.length > 0) {
-          type = typesFilter.includes(getAnnotationClass(annot));
-        }
-        if (authorFilter.length > 0) {
-          author = authorFilter.includes(core.getDisplayAuthor(annot['Author']));
-          if (!author && checkRepliesForAuthorFilter) {
-            const allReplies = annot.getReplies();
-            for (const reply of allReplies) {
-              // Short-circuit the search if at least one reply is created by
-              // one of the desired authors
-              if (authorFilter.includes(core.getDisplayAuthor(reply['Author']))) {
-                author = true;
-                break;
+        actions.setCustomNoteFilter(annot => {
+          let type = true;
+          let author = true;
+          let color = true;
+          let status = true;
+          if (typesFilter.length > 0) {
+            type = typesFilter.includes(getAnnotationClass(annot));
+          }
+          if (authorFilter.length > 0) {
+            author = authorFilter.includes(core.getDisplayAuthor(annot['Author']));
+            if (!author && checkRepliesForAuthorFilter) {
+              const allReplies = annot.getReplies();
+              for (const reply of allReplies) {
+                // Short-circuit the search if at least one reply is created by
+                // one of the desired authors
+                if (authorFilter.includes(core.getDisplayAuthor(reply['Author']))) {
+                  author = true;
+                  break;
+                }
               }
             }
           }
-        }
-        if (colorFilter.length > 0) {
-          const iconColor = getIconColor(annot);
-          if (iconColor) {
-            color = similarColorExist(colorFilter, iconColor);
-          } else {
-            // check for default color if no color is available
-            color = colorFilter.includes('#485056');
+          if (colorFilter.length > 0) {
+            const iconColor = getIconColor(annot);
+            if (iconColor) {
+              color = similarColorExist(colorFilter, iconColor);
+            } else {
+              // check for default color if no color is available
+              color = colorFilter.includes('#485056');
+            }
           }
-        }
-        if (statusFilter.length > 0) {
-          if (annot.getStatus()) {
-            status = statusFilter.includes(annot.getStatus());
-          } else {
-            status = statusFilter.includes('None');
+          if (statusFilter.length > 0) {
+            if (annot.getStatus()) {
+              status = statusFilter.includes(annot.getStatus());
+            } else {
+              status = statusFilter.includes('None');
+            }
           }
-        }
-        return type && author && color && status;
-      }),
+          return type && author && color && status;
+        }),
     );
     dispatch(actions.setAnnotationFilters({
       includeReplies: checkRepliesForAuthorFilter,
@@ -118,18 +123,30 @@ const FilterAnnotModal = () => {
       typeFilter: typesFilter,
       statusFilter: statusFilter
     }));
+    
     fireEvent(
-      Events.ANNOTATION_FILTER_CHANGED,
-      {
-        types: typesFilter,
-        authors: authorFilter,
-        colors: colorFilter,
-        statuses: statusFilter,
-        checkRepliesForAuthorFilter
-      }
+        Events.ANNOTATION_FILTER_CHANGED,
+        {
+          types: typesFilter,
+          authors: authorFilter,
+          colors: colorFilter,
+          statuses: statusFilter,
+          checkRepliesForAuthorFilter
+        }
     );
-    closeModal();
   };
+
+  window.addEventListener("message", function (evt){ //VA-7830
+    if(evt.data && evt.data.hasOwnProperty && evt.data.hasOwnProperty("cmd"))
+    {
+      var cmd = evt.data.cmd;
+      switch (cmd)
+      {
+        case "applyAnnotationFilter":
+          filterApplyParam(evt.data.types, evt.data.authors, evt.data.checkRepliesForAuthorFilter, evt.data.colors, evt.data.statuses);
+      }
+    }
+  });
 
   const filterClear = () => {
     setCheckRepliesForAuthorFilter(false);
@@ -191,7 +208,7 @@ const FilterAnnotModal = () => {
 
   useEffect(() => {
     if (selectedTab === DataElements.ANNOTATION_STATUS_FILTER_PANEL_BUTTON && !ifShowAnnotationStatus) {
-      dispatch(actions.setSelectedTab(TABS_ID, DataElements.ANNOTATION_USER_FILTER_PANEL_BUTTON));
+      dispatch(actions.setSelectedTab(TABS_ID, DataElements.ANNOTATION_COLOR_FILTER_PANEL_BUTTON));
     }
   }, [isOpen, selectedTab, ifShowAnnotationStatus]);
 
@@ -360,12 +377,12 @@ const FilterAnnotModal = () => {
               <div className="body">
                 <Tabs id={TABS_ID}>
                   <div className="tab-list">
-                    <Tab dataElement={DataElements.ANNOTATION_USER_FILTER_PANEL_BUTTON}>
+                    {/*<Tab dataElement={DataElements.ANNOTATION_USER_FILTER_PANEL_BUTTON}>
                       <button className="tab-options-button">
                         {t('option.filterAnnotModal.user')}
                       </button>
                     </Tab>
-                    <div className="tab-options-divider" />
+                    <div className="tab-options-divider" />*/}
                     <Tab dataElement={DataElements.ANNOTATION_COLOR_FILTER_PANEL_BUTTON}>
                       <button className="tab-options-button">
                         {t('option.filterAnnotModal.color')}

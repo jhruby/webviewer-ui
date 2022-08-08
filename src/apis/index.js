@@ -127,6 +127,7 @@ import setPrintedNoteDateFormat from './setPrintedNoteDateFormat';
 import setNotesPanelSort from './setNotesPanelSort';
 import setPageLabels from './setPageLabels';
 import setPrintQuality from './setPrintQuality';
+import setPrintPageLimit from './setPrintPageLimit';
 import setDefaultPrintOptions from './setDefaultPrintOptions';
 import setSelectedTab from './setSelectedTab';
 import setSideWindowVisibility from './setSideWindowVisibility';
@@ -219,8 +220,10 @@ import setPresetCropDimensions from './setPresetCropDimensions';
 import addDateTimeFormat from './addDateTimeFormat';
 import addRedactionSearchPattern from './addRedactionSearchPattern';
 import removeRedactionSearchPattern from './removeRedactionSearchPattern';
+import setDisabledPrintRange from "./setDisabledPrintRange";
 import getZoomStepFactors from './getZoomStepFactors';
 import setZoomStepFactors from './setZoomStepFactors';
+import setAnnotationFilters from './setAnnotationFilters';
 
 export default store => {
   const CORE_NAMESPACE = 'Core';
@@ -312,6 +315,8 @@ export default store => {
     setMeasurementUnits: setMeasurementUnits(store),
     setPageLabels: setPageLabels(store),
     setPrintQuality: setPrintQuality(store),
+    setPrintPageLimit: setPrintPageLimit(store),
+    setDisabledPrintRange: setDisabledPrintRange(store),
     setDefaultPrintOptions: setDefaultPrintOptions(store),
     setNotesPanelSortStrategy: setNotesPanelSortStrategy(store),
     setSwipeOrientation,
@@ -472,6 +477,7 @@ export default store => {
     enablePageDeletionConfirmationModal: enablePageDeletionConfirmationModal(store),
     getZoomStepFactors: getZoomStepFactors(store),
     setZoomStepFactors: setZoomStepFactors(store),
+    setAnnotationFilters: setAnnotationFilters(store)
   };
 
   window.instance = {

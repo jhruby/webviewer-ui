@@ -1,58 +1,45 @@
 @import '../../constants/styles';
 @import '../../constants/modal';
 
-@mixin mobileWidth {
-  @include mobile {
-    width: 100%;
-  }
-}
-
 .PrintModal {
   @extend %modal;
 
-  .modal-container {
-    width: 480px;
+  .container {
+    @extend %modal-shared-container-style;
+    @extend %modal-shared-container-style-mobile;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: 0px 0px 3px 0px var(--document-box-shadow);
+    padding: 16px;
+    background: var(--component-background);
+
+    @include mobile {
+      padding-top: 24px;
+      padding-bottom: 16px;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
 
     .settings {
       display: flex;
       flex-direction: column;
-      width: 100%;
-      padding: 24px;
-
-      .ui__choice {
-        margin: 10px 4px 4px 0;
-      }
     }
 
     .divider {
       height: 1px;
       width: 100%;
       background: var(--divider);
+      margin: 16px 0;
     }
 
-    .section {
-      padding-bottom: 16px;
+    .col {
+      padding: 8px;
+    }
 
-      &.watermark-section {
-        padding-bottom: 0;
-      }
-
-      .section-label{
-        font-weight: 700;
-      }
-
-      .printQualitySelectLabel {
-        display: grid;
-        padding: 4px 0px;
-
-        .printQualitySelect{
-          width:216px;
-          height:30px;
-          margin-top:5px;
-
-          @include mobileWidth;
-        }
-      }
+    .settings-form {
+      padding: 8px;
     }
 
     label {
@@ -69,7 +56,6 @@
       padding-bottom: 6px;
       padding-right: 42px;
       padding-top: 4px;
-      margin-top: 6px;
 
       &:focus {
         outline: none;
@@ -80,11 +66,16 @@
         color: var(--placeholder-text);
       }
     }
+    .printQualitySelect{
+      width:100%;
+      height:30px;
+      margin-top:5px;
+    }
 
     .total {
       display: flex;
       flex-direction: row;
-      padding-top: 4px;
+      padding: 0px 8px;
       color: var(--text-color);
     }
 
@@ -106,7 +97,6 @@
       flex-direction: row;
       justify-content: flex-end;
       width: 100%;
-      padding: 20px;
 
       .button {
         @include button-reset;
@@ -123,40 +113,33 @@
         height: 32px;
         cursor: pointer;
         font-size: 13px;
+        order: 2;
 
         &:hover {
           background: var(--primary-button-hover);
         }
       }
-    }
+      
+      .cancel-button {
+        color: var(--secondary-button-text);
+        margin-right: 6px;
+        background: none;
+        order: 1;
 
-    .specify-pages-choice {
-      margin-bottom: 18px;
-
-      input {
-        width: 195px;
-
-        @include mobileWidth;
-      }
-
-      label {
-        display: grid;
-
-        @include mobileWidth;
-      }
-
-      &.ui__choice--checked {
-        align-items: baseline;
+        &:hover {
+          color: var(--secondary-button-hover);
+          background: none;
+        }
       }
     }
 
     .apply-watermark {
       @include button-reset;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 16px;
       background: none;
-      border: 1px solid var(--secondary-button-text);
-      border-radius: 4px;
+      border: 0;
+      width: 100%;
       color: var(--secondary-button-text);
       padding: 6px 16px;
       height: 32px;
@@ -167,6 +150,36 @@
 
       &:hover {
         color: var(--secondary-button-hover);
+      }
+    }
+
+    .header-container {
+      display: flex;
+      align-content: center;
+      justify-content: space-between;
+    }
+
+    .header {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+    
+    .print-progress-container {
+      width: 100%;
+      
+      .progress-bar {
+        background-color: #CFD4DA;
+        width: 100%;
+        height: 7px;
+        border-radius: 3px;
+        margin-top: 10px;
+        
+        > div {
+          background-color: #3183C8;
+          height: 100%;
+          border-radius: 3px;
+        }
       }
     }
   }

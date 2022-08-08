@@ -12,6 +12,7 @@ import Button from 'components/Button';
 
 import core from 'core';
 import { extractPagesToMerge, mergeDocument, mergeExternalWebViewerDocument } from 'helpers/pageManipulation';
+import { workerTypes } from 'constants/types';
 import selectors from 'selectors';
 import actions from 'actions';
 import Events from 'constants/events';

@@ -421,6 +421,9 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
               title={t('component.filter')}
             />
           </div>
+          <div className="sort-row-last">
+            {(filterEnabled) ? <span>{t('message.filterApplied')}</span> : <span></span>}
+          </div>
         </div>
         {notesToRender.length === 0 ? (notes.length === 0 ? NoAnnotations : NoResults) : notesToRender.length <= VIRTUALIZATION_THRESHOLD ? (
           <NormalList
