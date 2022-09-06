@@ -465,11 +465,11 @@ const getPrintRotation = pageIndex => {
   let printRotation = (4 - documentRotation) % 4;
 
   // automatically rotate pages so that they fill up as much of the printed page as possible
-  if (printRotation % 2 === 0 && width > height) {
+  /*if (printRotation % 2 === 0 && width > height) {
     printRotation++;
   } else if (printRotation % 2 === 1 && height > width) {
     printRotation--;
-  }
+  }*/
 
   return printRotation;
 };
