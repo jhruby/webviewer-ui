@@ -551,10 +551,13 @@ const drawAnnotationsOnCanvas = (canvas, pageNumber) => {
 
 const getDocumentRotation = pageIndex => {
   const pageNumber = pageIndex + 1;
-  const completeRotation = core.getCompleteRotation(pageNumber);
+  //const completeRotation = core.getCompleteRotation(pageNumber);
   const viewerRotation = core.getRotation(pageNumber);
 
-  return (completeRotation - viewerRotation + 4) % 4;
+  var result = (viewerRotation + 4) % 4;
+  if (result === 1) result = 3;
+  else if (result === 3) result = 1;
+  return result;
 };
 
 const getNote = (annotation, dateFormat, language) => {
