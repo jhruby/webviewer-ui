@@ -164,6 +164,8 @@ class PrintModal extends React.PureComponent {
       return;
     }
 
+    window.parent.loadingForPrint = true;
+    
     this.setState({buttonEnabled: false});
 
     unloadCanvases();
@@ -220,6 +222,7 @@ class PrintModal extends React.PureComponent {
   };
 
   closePrintModal = () => {
+    window.parent.loadingForPrint = false;
     this.setState({ count: -1, stepNumber: 0, buttonEnabled: true });
     this.props.closeElement('printModal');
   };
