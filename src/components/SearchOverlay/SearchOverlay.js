@@ -69,8 +69,8 @@ function SearchOverlay(props) {
       } else {
         clearSearchResult();
       }
-    }, waitTime),
-    []
+    }, waitTime), 
+      [isCaseSensitive, isWholeWord, isWildcard]
   );
 
   const textInputOnChange = (event) => {
