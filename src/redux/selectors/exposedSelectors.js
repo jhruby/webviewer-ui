@@ -51,6 +51,8 @@ export const getLeftPanelWidth = (state) => state.viewer.panelWidths.leftPanel;
 export const getSearchPanelWidth = (state) => state.viewer.panelWidths.searchPanel;
 export const getNotesPanelWidth = (state) => state.viewer.panelWidths.notesPanel;
 
+export const getIsOutlineEditing = (state) => state.viewer.isOutlineEditingEnabled;
+
 export const getDeleteScaleInfo = (state) => state.viewer.deleteScale;
 
 export const getRedactionPanelWidth = (state) => state.viewer.panelWidths.redactionPanel;

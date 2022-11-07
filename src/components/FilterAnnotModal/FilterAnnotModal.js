@@ -128,6 +128,7 @@ const FilterAnnotModal = () => {
         checkRepliesForAuthorFilter
       }
     );
+    closeModal();
   };
 
   window.addEventListener("message", function (evt){ //VA-7830

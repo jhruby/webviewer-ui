@@ -165,6 +165,7 @@ export default {
           hidden: ['small-mobile', 'mobile', 'tablet']
         },
         { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-tools-more', title: 'component.menuOverlay', hidden: ['small-mobile', 'mobile', 'tablet'] },
+        {
           type: 'actionButton',
           dataElement: 'moreButton',
           title: 'action.more',
@@ -1829,7 +1830,7 @@ export default {
       pageReplacementModal: 'urlInputPanelButton',
       linkModal: 'URLPanelButton',
       rubberStampTab: 'standardStampPanelButton',
-      filterAnnotModal: DataElements.ANNOTATION_COLOR_FILTER_PANEL_BUTTON
+      filterAnnotModal: DataElements.ANNOTATION_COLOR_FILTER_PANEL_BUTTON,
       settingsModal: DataElements.SETTINGS_GENERAL_BUTTON,
       savedSignatures: DataElements.SAVED_SIGNATURES_PANEL_BUTTON,
       openFileModal: 'urlInputPanelButton',

@@ -140,6 +140,9 @@ function NotesPanelHeader({
             onClick={() => dispatch(actions.openElement('filterModal'))}
             title={t('component.filter')}
           />
+            <div className="sort-row-last">
+                {(filterEnabled) ? <span>{t('message.filterApplied')}</span> : <span></span>}
+            </div>
         </div>
       </DataElementWrapper>
     </DataElementWrapper>

@@ -479,9 +479,6 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
             isMultiSelectMode={isMultiSelectMode}
             toggleMultiSelectMode={toggleMultiSelectMode}
           />
-          <div className="sort-row-last">
-            {(filterEnabled) ? <span>{t('message.filterApplied')}</span> : <span></span>}
-          </div>
           {notesToRender.length === 0 ? (notes.length === 0 ? NoAnnotations : NoResults) : notesToRender.length <= VIRTUALIZATION_THRESHOLD ? (
             <NormalList
               ref={listRef}
