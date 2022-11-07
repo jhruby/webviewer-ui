@@ -465,11 +465,11 @@ const getPrintRotation = pageIndex => {
   let printRotation = (4 - documentRotation) % 4;
 
   // automatically rotate pages so that they fill up as much of the printed page as possible
-  if (printRotation % 2 === 0 && width > height) {
+  /*if (printRotation % 2 === 0 && width > height) {
     printRotation++;
   } else if (printRotation % 2 === 1 && height > width) {
     printRotation--;
-  }
+  }*/
 
   return printRotation;
 };
@@ -551,10 +551,13 @@ const drawAnnotationsOnCanvas = (canvas, pageNumber) => {
 
 const getDocumentRotation = pageIndex => {
   const pageNumber = pageIndex + 1;
-  const completeRotation = core.getCompleteRotation(pageNumber);
+  //const completeRotation = core.getCompleteRotation(pageNumber);
   const viewerRotation = core.getRotation(pageNumber);
 
-  return (completeRotation - viewerRotation + 4) % 4;
+  var result = (viewerRotation + 4) % 4;
+  if (result === 1) result = 3;
+  else if (result === 3) result = 1;
+  return result;
 };
 
 const getNote = (annotation, dateFormat, language) => {
