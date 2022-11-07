@@ -107,6 +107,14 @@
       }
     }
 
+      }
+    }
+    
+    .sort-row-last {
+      display: flex;
+      
+      > span {
+        margin-left: auto;
 
     .virtualized-notes-container,
     .normal-notes-container {

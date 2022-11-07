@@ -269,7 +269,8 @@
     "embeddedFiles": "Embedded Files",
     "pageNum": "Page Number",
     "viewBookmark": "View Bookmark on Page",
-    "error": "Error"
+    "error": "Error",
+    "filterApplied": "Filter is applied"
   },
   "option": {
     "type": {
@@ -371,7 +372,8 @@
       "specifyPages": "Specify Pages",
       "view": "Current View",
       "pageQuality": "Print Quality",
-      "qualityNormal": "Normal",
+      "qualityNormal": "Medium",
+      "qualityMobile": "Mobile",
       "qualityHigh": "High",
       "includeAnnotations": "Include annotations",
       "includeComments": "Include comments",
@@ -507,7 +509,8 @@
       "colors": "Colors",
       "invalidFontSize": "Font size must be less than ",
       "labelText": "Label Text",
-      "labelTextPlaceholder": "Add label text"
+      "labelTextPlaceholder": "Add label text",
+      "colorStyle": "Color"
     },
     "styleOption": {
       "style": "Style",
@@ -521,6 +524,8 @@
     },
     "shared": {
       "page": "Page",
+      "pageNumber": "Page #",
+      "notes": "Notes",
       "precision": "Precision",
       "enableSnapping": "Enable snapping for measurement tools"
     },

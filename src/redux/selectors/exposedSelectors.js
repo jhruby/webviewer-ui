@@ -404,6 +404,10 @@ export const getPasswordAttempts = (state) => state.document.passwordAttempts;
 export const getPrintQuality = (state) => state.document.printQuality;
 
 export const getDefaultPrintOptions = (state) => state.document.defaultPrintOptions;
+export const getPrintPageLimit = state => state.document.printPageLimit;
+
+export const getDisabledPrintRange = state => state.document.disabledPrintRange;
+
 
 export const getTotalPages = (state, documentViewerKey = 1) => state.document.totalPages[documentViewerKey];
 

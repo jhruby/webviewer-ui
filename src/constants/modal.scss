@@ -94,6 +94,10 @@ $modal-z-index: 100;
       }
     }
   }
+  
+  .displayNone{
+    display: none;
+  }
 
   .swipe-indicator {
     background: var(--divider);

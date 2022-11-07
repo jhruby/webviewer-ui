@@ -128,8 +128,19 @@ const FilterAnnotModal = () => {
         checkRepliesForAuthorFilter
       }
     );
-    closeModal();
   };
+
+  window.addEventListener("message", function (evt){ //VA-7830
+    if(evt.data && evt.data.hasOwnProperty && evt.data.hasOwnProperty("cmd"))
+    {
+      var cmd = evt.data.cmd;
+      switch (cmd)
+      {
+        case "applyAnnotationFilter":
+          filterApplyParam(evt.data.types, evt.data.authors, evt.data.checkRepliesForAuthorFilter, evt.data.colors, evt.data.statuses);
+      }
+    }
+  });
 
   const filterClear = () => {
     setCheckRepliesForAuthorFilter(false);
