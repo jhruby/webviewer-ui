@@ -125,7 +125,6 @@ function MenuOverlay() {
           onClick={handlePrintButtonClick}
         />
       </InitialMenuOverLayItem>
-      <div className="divider"></div>
       <ActionButton
         dataElement="settingsButton"
         className="row"

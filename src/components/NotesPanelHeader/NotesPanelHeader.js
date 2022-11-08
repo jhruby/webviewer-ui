@@ -58,6 +58,12 @@ function NotesPanelHeader({
     return () => {
       window.removeEventListener(Events.ANNOTATION_FILTER_CHANGED, toggleFilterStyle);
     };
+      var dataString = localStorage.getItem("vitrium_annotation_filter");
+      if (dataString){
+          var data = JSON.parse(dataString);
+          toggleFilterStyle({detail: data});
+          localStorage.removeItem("vitrium_annotation_filter");
+      }
   }, []);
 
   const handleInputChange = (e) => {
@@ -141,6 +147,9 @@ function NotesPanelHeader({
             title={t('component.filter')}
           />
         </div>
+      </DataElementWrapper>
+      <DataElementWrapper className="sort-row-last">
+        {(filterEnabled) ? <span>{t('message.filterApplied')}</span> : <span></span>}
       </DataElementWrapper>
     </DataElementWrapper>
   );

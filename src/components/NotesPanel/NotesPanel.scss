@@ -33,6 +33,14 @@
     flex-direction: column;
     position: relative;
 
+    .sort-row-last {
+      display: flex;
+
+      > span {
+        margin-left: auto;
+      }
+    }
+
     .close-container {
       display: flex;
       align-items: center;

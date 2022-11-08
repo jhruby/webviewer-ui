@@ -41,7 +41,7 @@ const GeneralTab = () => {
 
   return (
     <>
-      <DataElementWrapper
+      {/*<DataElementWrapper
         className="setting-section"
         dataElement={DataElements.SETTINGS_LANGUAGE_SECTION}
       >
@@ -58,7 +58,7 @@ const GeneralTab = () => {
           getCustomItemStyle={() => ({ textAlign: 'left', width: '326px' })}
           className="language-dropdown"
         />
-      </DataElementWrapper>
+      </DataElementWrapper> */}
       {!isIE && (
         <DataElementWrapper
           className="setting-section"

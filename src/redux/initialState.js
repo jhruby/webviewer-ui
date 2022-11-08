@@ -105,32 +105,18 @@ export default {
       default: [
         {
           type: 'toggleElementButton',
-          dataElement: 'menuButton',
-          element: 'menuOverlay',
-          img: 'ic-hamburger-menu',
-          title: 'component.menuOverlay',
-        },
-        {
-          type: 'divider',
-          hidden: ['small-mobile'],
-        },
-        {
-          type: 'toggleElementButton',
           img: 'icon-header-sidebar-line',
           element: 'leftPanel',
           dataElement: 'leftPanelButton',
           title: 'component.leftPanel',
         },
+        { type: 'divider' },
         {
           type: 'toggleElementButton',
           img: 'icon-header-page manipulation-line',
           element: 'viewControlsOverlay',
           dataElement: 'viewControlsButton',
           title: 'component.viewControlsOverlay',
-        },
-        {
-          type: 'divider',
-          hidden: ['small-mobile'],
         },
         {
           type: 'customElement',
@@ -149,54 +135,39 @@ export default {
           render: () => <Ribbons />,
           className: 'custom-ribbons-container',
         },
-        {
-          type: 'toggleElementButton',
-          dataElement: 'searchButton',
-          element: 'searchPanel',
-          img: 'icon-header-search',
-          title: 'component.searchPanel',
-          hidden: ['small-mobile'],
-        },
+        { type: 'toggleElementButton', dataElement: 'searchButton', element: 'searchPanel', img: 'icon-header-search', title: 'component.searchPanel', hidden: ['small-mobile', 'mobile', 'tablet'] },
+        { type: 'toggleElementButton', dataElement: 'printButton', element: 'printModal', img: 'icon-header-print-line', title: 'action.print', hidden:  ['small-mobile', 'mobile', 'tablet'] },
         {
           type: 'toggleElementButton',
           dataElement: 'toggleNotesButton',
           img: 'icon-header-chat-line',
           title: 'component.notesPanel',
           element: 'notesPanel',
-          onClick: (dispatch) => {
+          onClick: dispatch => {
             dispatch(actions.toggleElement('notesPanel'));
             // Trigger with a delay so we ensure the panel is open before we compute correct coordinates of annotation
             setTimeout(() => dispatch(actions.toggleElement('annotationNoteConnectorLine')), 400);
           },
-          hidden: ['small-mobile'],
+          hidden: ['small-mobile', 'mobile', 'tablet']
         },
+        { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-tools-more', title: 'component.menuOverlay', hidden: ['small-mobile', 'mobile', 'tablet'] },
         {
           type: 'actionButton',
           dataElement: 'moreButton',
           title: 'action.more',
           img: 'icon-tools-more',
-          onClick: (dispatch) => {
+          onClick: dispatch => {
             dispatch(actions.setActiveHeaderGroup('small-mobile-more-buttons'));
             core.setToolMode(defaultTool);
           },
-          hidden: ['mobile', 'tablet', 'desktop'],
+          hidden: ['desktop'],
         },
       ],
       'small-mobile-more-buttons': [
-        {
-          type: 'toggleElementButton',
-          dataElement: 'searchButton',
-          element: 'searchPanel',
-          img: 'icon-header-search',
-          title: 'component.searchPanel',
-        },
-        {
-          type: 'toggleElementButton',
-          dataElement: 'toggleNotesButton',
-          element: 'notesPanel',
-          img: 'icon-header-chat-line',
-          title: 'component.notesPanel',
-        },
+        { type: 'toggleElementButton', dataElement: 'searchButton', element: 'searchPanel', img: 'icon-header-search', title: 'component.searchPanel' },
+        { type: 'toggleElementButton', dataElement: 'printButton', element: 'printModal', img: 'icon-header-print-line', title: 'action.print' },
+        { type: 'toggleElementButton', dataElement: 'toggleNotesButton', element: 'notesPanel', img: 'icon-header-chat-line', title: 'component.notesPanel' },
+        { type: 'toggleElementButton', dataElement: 'menuButton', element: 'menuOverlay', img: 'icon-tools-more', title: 'component.menuOverlay' },
         { type: 'spacer' },
         {
           type: 'actionButton',
@@ -1845,12 +1816,12 @@ export default {
       pageReplacementModal: 'urlInputPanelButton',
       linkModal: 'URLPanelButton',
       rubberStampTab: 'standardStampPanelButton',
-      filterAnnotModal: DataElements.ANNOTATION_USER_FILTER_PANEL_BUTTON,
       settingsModal: DataElements.SETTINGS_GENERAL_BUTTON,
       savedSignatures: DataElements.SAVED_SIGNATURES_PANEL_BUTTON,
       openFileModal: 'urlInputPanelButton',
       // TODO: uncomment when InsertPageModal is added
       // insertPageModal: 'insertBlankPagePanelButton'
+      filterAnnotModal: DataElements.ANNOTATION_COLOR_FILTER_PANEL_BUTTON
     },
     customElementOverrides: {},
     activeHeaderGroup: 'default',
@@ -2026,8 +1997,10 @@ export default {
     bookmarks: {},
     layers: [],
     printQuality: 1,
+    printPageLimit: 0,
     passwordAttempts: -1,
     loadingProgress: 0,
+    disabledPrintRange: false
   },
   user: {
     name: getHashParameters('user', 'Guest'),
