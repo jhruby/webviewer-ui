@@ -54,16 +54,17 @@ function NotesPanelHeader({
       }
     };
 
-    window.addEventListener(Events.ANNOTATION_FILTER_CHANGED, toggleFilterStyle);
-    return () => {
-      window.removeEventListener(Events.ANNOTATION_FILTER_CHANGED, toggleFilterStyle);
-    };
       var dataString = localStorage.getItem("vitrium_annotation_filter");
       if (dataString){
           var data = JSON.parse(dataString);
           toggleFilterStyle({detail: data});
           localStorage.removeItem("vitrium_annotation_filter");
       }
+
+    window.addEventListener(Events.ANNOTATION_FILTER_CHANGED, toggleFilterStyle);
+    return () => {
+      window.removeEventListener(Events.ANNOTATION_FILTER_CHANGED, toggleFilterStyle);
+    };
   }, []);
 
   const handleInputChange = (e) => {
