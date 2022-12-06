@@ -362,6 +362,8 @@ export const getPrintQuality = state => state.document.printQuality;
 
 export const getPrintPageLimit = state => state.document.printPageLimit;
 
+export const getCopyEnabled = state => state.document.copyEnabled;
+
 export const getDisabledPrintRange = state => state.document.disabledPrintRange;
 
 export const getDefaultPrintOptions = state => state.document.defaultPrintOptions;

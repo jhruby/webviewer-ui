@@ -3,8 +3,19 @@ import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
 import './NoteTextPreview.scss'
+import {shallowEqual, useSelector} from "react-redux";
+import selectors from 'selectors';
 
 function NoteTextPreview(props) {
+  const [
+    copyEnabled
+  ] = useSelector(
+      state => [
+        selectors.getCopyEnabled(state)
+      ],
+      shallowEqual,
+  );
+  
   /* This replace is to remove the break line that the React Quill component add into the text */
   const text = props.children.replace(/\n$/, '');
   const {
@@ -32,7 +43,7 @@ function NoteTextPreview(props) {
 
   const textToDisplay = expanded ? text : text.substring(0, charsPerLine * linesToBreak);
   const prompt = expanded ? t('action.showLess') : t('action.showMore');
-  const noteTextPreviewClass = classNames('note-text-preview', { 'preview-comment': comment })
+  const noteTextPreviewClass = classNames('note-text-preview', { 'preview-comment': comment }, { 'copy-disabled': !copyEnabled });
 
   useEffect(() => {
     const textNodeWidth = ref.current.clientWidth;

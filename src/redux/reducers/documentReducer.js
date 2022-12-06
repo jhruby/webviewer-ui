@@ -36,6 +36,8 @@ export default initialState => (state = initialState, action) => {
       return { ...state, printQuality: payload.quality };
     case 'SET_PRINT_PAGE_LIMIT':
       return { ...state, printPageLimit: payload.limit }
+    case 'SET_COPY_ENABLED':
+      return { ...state, copyEnabled: payload.copy }
     case 'SET_DISABLED_PRINT_RANGE':
       return { ...state, disabledPrintRange: payload.disabledPrintRange }
     case 'SET_DEFAULT_PRINT_OPTIONS':

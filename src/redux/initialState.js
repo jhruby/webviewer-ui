@@ -1803,6 +1803,7 @@ export default {
     layers: [],
     printQuality: 1,
     printPageLimit: 0,
+    copyEnabled: true,
     passwordAttempts: -1,
     loadingProgress: 0,
     disabledPrintRange: false
