@@ -41,7 +41,8 @@ function NoteTextPreview(props) {
     resize && resize();
   };
 
-  const textToDisplay = expanded ? text : text.substring(0, charsPerLine * linesToBreak);
+  const baseText = expanded ? text : text.substring(0, charsPerLine * linesToBreak);
+  const textToDisplay = !copyEnabled && baseText.length > 15 && !comment ? baseText.substring(0, 15) + "...\"" : baseText;
   const prompt = expanded ? t('action.showLess') : t('action.showMore');
   const noteTextPreviewClass = classNames('note-text-preview', { 'preview-comment': comment }, { 'copy-disabled': !copyEnabled });
 
@@ -72,7 +73,7 @@ function NoteTextPreview(props) {
 
   return (
     <div className={noteTextPreviewClass} ref={ref} style={style}>
-      {renderRichText && richTextStyle ? renderRichText(textToDisplay, richTextStyle, 0) : textToDisplay} {showPrompt && <a className="note-text-preview-prompt" onClick={onClickHandler}>{prompt}</a>}
+      {renderRichText && richTextStyle ? renderRichText(textToDisplay, richTextStyle, 0) : textToDisplay} {showPrompt && (copyEnabled || comment) && <a className="note-text-preview-prompt" onClick={onClickHandler}>{prompt}</a>}
     </div>
   )
 };
