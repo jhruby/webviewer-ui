@@ -129,6 +129,7 @@ import setPageLabels from './setPageLabels';
 import setPrintQuality from './setPrintQuality';
 import setPrintPageLimit from './setPrintPageLimit';
 import setCopyEnabled from './setCopyEnabled';
+import setLimitAnnotationHighlightText from './setLimitAnnotationHighlightText';
 import setDefaultPrintOptions from './setDefaultPrintOptions';
 import setSelectedTab from './setSelectedTab';
 import setSideWindowVisibility from './setSideWindowVisibility';
@@ -318,6 +319,7 @@ export default store => {
     setPrintQuality: setPrintQuality(store),
     setPrintPageLimit: setPrintPageLimit(store),
     setCopyEnabled: setCopyEnabled(store),
+    setLimitAnnotationHighlightText: setLimitAnnotationHighlightText(store),
     setDisabledPrintRange: setDisabledPrintRange(store),
     setDefaultPrintOptions: setDefaultPrintOptions(store),
     setNotesPanelSortStrategy: setNotesPanelSortStrategy(store),

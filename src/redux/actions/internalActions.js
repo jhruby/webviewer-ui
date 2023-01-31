@@ -372,6 +372,10 @@ export const setCopyEnabled = copy => ({
   type: 'SET_COPY_ENABLED',
   payload: { copy },
 });
+export const setLimitAnnotationHighlightText = limitAnnotationHighlightText => ({
+  type: 'SET_LIMIT_ANNOTATION_HIGHLIGHT_TEXT',
+  payload: { limitAnnotationHighlightText },
+});
 export const setDisabledPrintRange = disabledPrintRange => ({
   type: 'SET_DISABLED_PRINT_RANGE',
   payload: { disabledPrintRange },

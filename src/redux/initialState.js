@@ -1804,6 +1804,7 @@ export default {
     printQuality: 1,
     printPageLimit: 0,
     copyEnabled: true,
+    limitAnnotationHighlightText: false,
     passwordAttempts: -1,
     loadingProgress: 0,
     disabledPrintRange: false
