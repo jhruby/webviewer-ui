@@ -820,6 +820,8 @@
       "regionRedaction": "Region redaction",
       "fullPageRedaction": "Full page redaction",
       "fullVideoFrameRedaction": "Video Redaction",
+      "audioRedaction": "Audio Redaction",
+      "fullVideoFrameAndAudioRedaction": "Video and Audio Redaction",
       "image": "Image"
     },
     "expand": "Expand",
