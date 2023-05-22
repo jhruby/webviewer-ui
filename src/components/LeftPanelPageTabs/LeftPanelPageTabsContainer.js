@@ -16,7 +16,7 @@ import LeftPanelPageTabsSmall from 'src/components/LeftPanelPageTabs/LeftPanelPa
 import LeftPanelPageTabs from 'components/LeftPanelPageTabs/LeftPanelPageTabs/LeftPanelPageTabs';
 import { workerTypes } from 'constants/types';
 import core from 'src/core';
-import LeftPanelPageTabsRotate from 'components/LeftPanelPageTabs/LeftPanelPageTabsRotate/LeftPanelPageTabsRotate';
+import LeftPanelPageTabsRotate from 'components/LeftPanelPageTabs/LeftPanelPageTabsXOD/LeftPanelPageTabsXOD';
 import LeftPanelPageTabsLarge from './LeftPanelPageTabsLarge/LeftPanelPageTabsLarge';
 
 function LeftPanelPageTabsContainer() {

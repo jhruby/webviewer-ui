@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import LeftPanelPageTabsRotate from 'components/LeftPanelPageTabs/LeftPanelPageTabsRotate/LeftPanelPageTabsRotate';
+import LeftPanelPageTabsRotate from 'components/LeftPanelPageTabs/LeftPanelPageTabsXOD/LeftPanelPageTabsXOD';
 import withMockRedux from '../../../../jest/withMockRedux';
 
 const LeftPanelPageTabsRotateRedux = withMockRedux(LeftPanelPageTabsRotate);
