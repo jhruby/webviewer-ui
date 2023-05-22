@@ -499,6 +499,22 @@ export const setPrintQuality = (quality) => ({
   type: 'SET_PRINT_QUALITY',
   payload: { quality },
 });
+export const setPrintPageLimit = (limit) => ({
+  type: 'SET_PRINT_PAGE_LIMIT',
+  payload: { limit },
+});
+export const setCopyEnabled = (copy) => ({
+  type: 'SET_COPY_ENABLED',
+  payload: { copy },
+});
+export const setLimitAnnotationHighlightText = (limitAnnotationHighlightText) => ({
+  type: 'SET_LIMIT_ANNOTATION_HIGHLIGHT_TEXT',
+  payload: { limitAnnotationHighlightText },
+});
+export const setDisabledPrintRange = (disabledPrintRange) => ({
+  type: 'SET_DISABLED_PRINT_RANGE',
+  payload: { disabledPrintRange },
+});
 export const setDefaultPrintOptions = (options) => ({
   type: 'SET_DEFAULT_PRINT_OPTIONS',
   payload: { options },
