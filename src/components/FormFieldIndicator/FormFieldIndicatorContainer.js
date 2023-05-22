@@ -90,8 +90,8 @@ const FormFieldIndicatorPortal = ({ children }) => {
   el.setAttribute('data-element', DataElements['FORM_FIELD_INDICATOR_CONTAINER']);
 
   useEffect(() => {
-    mount.appendChild(el);
-    return () => mount.removeChild(el);
+    mount?.appendChild(el);
+    return () => mount?.removeChild(el);
   }, [el, mount]);
   return createPortal(children, el);
 };
