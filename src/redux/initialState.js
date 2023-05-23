@@ -207,7 +207,7 @@ export default {
           img: 'icon-header-chat-line',
           title: 'component.notesPanel',
         },
-        { type: 'spacer' },
+       // { type: 'spacer' },
         {
           type: 'actionButton',
           dataElement: 'defaultHeaderButton',
