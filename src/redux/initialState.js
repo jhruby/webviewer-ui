@@ -165,7 +165,7 @@ export default {
           element: 'searchPanel',
           img: 'icon-header-search',
           title: 'component.searchPanel',
-          hidden: ['small-mobile'],
+          hidden: ['small-mobile', 'mobile', 'tablet'],
         },
         {
           type: 'toggleElementButton',
@@ -178,7 +178,7 @@ export default {
             // Trigger with a delay so we ensure the panel is open before we compute correct coordinates of annotation
             setTimeout(() => dispatch(actions.toggleElement('annotationNoteConnectorLine')), 400);
           },
-          hidden: ['small-mobile'],
+          hidden: ['small-mobile', 'mobile', 'tablet'],
         },
         {
           type: 'actionButton',
@@ -189,7 +189,7 @@ export default {
             dispatch(actions.setActiveHeaderGroup('small-mobile-more-buttons'));
             core.setToolMode(defaultTool);
           },
-          hidden: ['mobile', 'tablet', 'desktop'],
+          hidden: ['desktop'],
         },
       ],
       'small-mobile-more-buttons': [
