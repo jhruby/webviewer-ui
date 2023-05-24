@@ -357,13 +357,12 @@ const PrintModal = () => {
                     center
                   />*/}
                   <Choice
-                    className={disabledPrintRange ? 'displayNone' : ''}  
                     dataElement="customPagesPrintOption"
                     ref={customPages}
                     id="custom-pages"
                     name="pages"
-                    className="specify-pages-choice"
-                    radio
+                    className={"specify-pages-choice" + (disabledPrintRange ? ' displayNone' : '')}
+                  radio
                     label={customPagesLabelElement}
                     disabled={isPrinting}
                     center
