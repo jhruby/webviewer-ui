@@ -143,6 +143,7 @@ if (window.CanvasRenderingContext2D) {
 
   logDebugInfo();
   const documentViewer = addDocumentViewer(1);
+  window.documentViewer = documentViewer;
 
   documentViewer.setOpenURIHandler((uri, isOpenInNewWindow) => {
     store.dispatch(actions.showWarningMessage({
