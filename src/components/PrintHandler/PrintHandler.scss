@@ -55,42 +55,6 @@
       min-width: 100%;
       font-size: 10px;
 
-      h1 {
-        padding: 40px 0 0 40px;
-        margin: 0;
-      }
-      
-      .print__table {
-        color: black;
-        margin: 40px;
-        width: calc(100% - 80px);
-        border-collapse: separate !important; /*firefox border fix*/
-        border-spacing: 0;
-        font-size: 1rem;
-
-        tr {
-          th:first-child,
-          td:first-child {
-            width: 100px;
-          }
-
-          td {
-            border-bottom: solid lightgrey 1px;
-            vertical-align: top;
-
-            ul {
-              margin: 0;
-              padding-left: 30px;
-            }
-          }
-
-          th {
-            border-bottom: solid grey 1px;
-            text-align: left;
-          }
-        }
-      }
-
       .page__header {
         align-self: flex-start;
         font-size: 2rem;
