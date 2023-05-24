@@ -5,7 +5,7 @@ import selectors from 'selectors';
 import core from 'core';
 import getPageArrayFromString from 'helpers/getPageArrayFromString';
 import getClassName from 'helpers/getClassName';
-import { creatingPages, printPages } from 'helpers/print';
+import { creatingPages, printPages, cancelPrint, unloadCanvases } from 'helpers/print';
 import LayoutMode from 'constants/layoutMode';
 import WatermarkModal from 'components/PrintModal/WatermarkModal';
 import Choice from 'components/Choice/Choice';
@@ -31,7 +31,9 @@ const PrintModal = () => {
     printedNoteDateFormat,
     language,
     watermarkModalOptions,
-    timezone
+    timezone,
+    printPageLimit,
+    disabledPrintRange
   ] = useSelector(
     (state) => [
       selectors.isElementDisabled(state, DataElements.PRINT_MODAL),
@@ -47,7 +49,9 @@ const PrintModal = () => {
       selectors.getPrintedNoteDateFormat(state),
       selectors.getCurrentLanguage(state),
       selectors.getWatermarkModalOptions(state),
-      selectors.getTimezone(state)
+      selectors.getTimezone(state),
+      selectors.getPrintPageLimit(state),
+      selectors.getDisabledPrintRange(state)
     ],
     shallowEqual
   );
@@ -70,6 +74,8 @@ const PrintModal = () => {
   const [includeComments, setIncludeComments] = useState(false);
   const [maintainPageOrientation, setMaintainPageOrientation] = useState(false);
   const [isGrayscale, setIsGrayscale] = useState(false);
+  const [buttonEnabled, setButtonEnabled] = useState(true);
+  const [stepNumber, setStepNumber] = useState(0);
 
   useEffect(() => {
     if (defaultPrintOptions) {
@@ -117,6 +123,13 @@ const PrintModal = () => {
       />
     </>
   );
+
+  const inputProps = {
+  };
+
+  if (disabledPrintRange) {
+    inputProps.checked = true;
+  }
 
   useEffect(() => {
     onChange();
@@ -194,14 +207,27 @@ const PrintModal = () => {
     setPagesToPrint(pagesToPrint);
   };
 
-  const createPagesAndPrint = (e) => {
+  const onInputChange = () => {
+    if (!this.customPages.current.checked) {
+      this.customPages.current.click();
+      this.onChange();
+    }
+  };
+
+  const createPagesAndPrint = async (e) => {
     e.preventDefault();
 
     if (pagesToPrint.length < 1) {
       return;
     }
 
-    setCount(0);
+    window.parent.loadingForPrint = true;
+    setButtonEnabled(false);
+    unloadCanvases();
+
+    if (stepNumber === 0) {
+      setCount(0);
+    }
 
     if (allowWatermarkModal) {
       core.setWatermark(watermarkModalOptions);
@@ -209,11 +235,14 @@ const PrintModal = () => {
       core.setWatermark(existingWatermarksRef.current);
     }
 
+    const limit = printPageLimit === 0 ? Number.MAX_SAFE_INTEGER : printPageLimit;
+    const runs = Math.ceil(pagesToPrint.length / limit);
+
     const createPages = creatingPages(
-      pagesToPrint,
+      pagesToPrint, 
+      pagesToPrint.slice(stepNumber * limit, Math.min((stepNumber + 1) * limit, pagesToPrint.length)),
       includeComments,
       includeAnnotations,
-      maintainPageOrientation,
       printQuality,
       sortStrategy,
       colorMap,
@@ -223,7 +252,8 @@ const PrintModal = () => {
       language,
       false,
       isGrayscale,
-      timezone
+      timezone,
+      runs === stepNumber + 1  
     );
     createPages.forEach(async (pagePromise) => {
       await pagePromise;
@@ -232,7 +262,13 @@ const PrintModal = () => {
     Promise.all(createPages)
       .then((pages) => {
         printPages(pages);
-        closePrintModal();
+        if (runs === stepNumber + 1) {
+          closePrintModal();
+        }
+        else {
+          setStepNumber(stepNumber + 1);
+          setButtonEnabled(true);
+        }
       })
       .catch((e) => {
         console.error(e);
@@ -241,7 +277,10 @@ const PrintModal = () => {
   };
 
   const closePrintModal = () => {
+    window.parent.loadingForPrint = false;
     setCount(-1);
+    setStepNumber(0);
+    setButtonEnabled(true);
     dispatch(actions.closeElement(DataElements.PRINT_MODAL));
   };
 
@@ -249,10 +288,13 @@ const PrintModal = () => {
     setIsWatermarkModalVisible(visible);
   };
 
-  return isDisabled ? null : (
+  const onCancelPrint = () =>{
+    cancelPrint();
+    closePrintModal();
+  }
+
+  return isDisabled && !buttonEnabled ? null : (
     <Swipeable
-      onSwipedUp={closePrintModal}
-      onSwipedDown={closePrintModal}
       preventDefaultTouchmoveEvent
     >
       <>
@@ -274,13 +316,14 @@ const PrintModal = () => {
             <div className="swipe-indicator" />
             <div className="settings">
               <div className="section">
-                <div className="section-label">{`${t('option.print.pages')}:`}</div>
+                <div style={{display: disabledPrintRange ? 'none' : 'initial'}} className="section-label">{`${t('option.print.pages')}:`}</div>
                 <form
                   className="settings-form"
                   onChange={onChange}
                   onSubmit={createPagesAndPrint}
                 >
                   <Choice
+                    className={disabledPrintRange ? 'displayNone' : ''}
                     dataElement="allPagesPrintOption"
                     ref={allPages}
                     id="all-pages"
@@ -292,6 +335,7 @@ const PrintModal = () => {
                     center
                   />
                   <Choice
+                    className={disabledPrintRange ? 'displayNone' : ''}  
                     dataElement="currentPagePrintOption"
                     ref={currentPageRef}
                     id="current-page"
@@ -300,8 +344,9 @@ const PrintModal = () => {
                     label={t('option.print.current')}
                     disabled={isPrinting}
                     center
+                    {...inputProps}
                   />
-                  <Choice
+                  {/*<Choice
                     dataElement="currentViewPrintOption"
                     ref={currentView}
                     id="current-view"
@@ -310,8 +355,9 @@ const PrintModal = () => {
                     label={t('option.print.view')}
                     disabled={isPrinting}
                     center
-                  />
+                  />*/}
                   <Choice
+                    className={disabledPrintRange ? 'displayNone' : ''}  
                     dataElement="customPagesPrintOption"
                     ref={customPages}
                     id="custom-pages"
@@ -363,13 +409,19 @@ const PrintModal = () => {
                     onChange={(e) => dispatch(actions.setPrintQuality(Number(e.target.value)))}
                     value={printQuality}
                   >
-                    <option value="2">{`${t('option.print.qualityHigh')}`}</option>
-                    <option value="1">{`${t('option.print.qualityNormal')}`}</option>
+                    <option value="5">{`${t('option.print.qualityHigh')}`}</option>
+                    <option value="3">{`${t('option.print.qualityNormal')}`}</option>
+                    <option value="2">{`${t('option.print.qualityMobile')}`}</option>
                   </select>
                 </label>
                 <div className="total">
                   {isPrinting ? (
-                    <div>{`${t('message.processing')} ${count}/${pagesToPrint.length}`}</div>
+                    <div className="print-progress-container">
+                      <div><b>{`${t('message.processing')} ${count}/${pagesToPrint.length}`}</b></div>
+                      <div className="progress-bar">
+                        <div style={{width: `${Math.round(count / pagesToPrint.length * 100)}%`}}></div>
+                      </div>
+                    </div> 
                   ) : (
                     <div>{t('message.printTotalPageCount', { count: pagesToPrint.length })}</div>
                   )}
@@ -396,11 +448,22 @@ const PrintModal = () => {
             <div className="divider"></div>
             <div className="buttons">
               <button
+                  className="button cancel-button"
+                  name="cancel-button"
+                  onClick={onCancelPrint}
+                  key="cancel"
+              >
+                {t('action.cancel')}
+              </button>
+              <button
+                name="print-button"
+                data-step={stepNumber}
                 className="button"
                 onClick={createPagesAndPrint}
-                disabled={isPrinting || pagesToPrint.length < 1}
+                disabled={!buttonEnabled}
+                key="print"
               >
-                {t('action.print')}
+                {stepNumber === 0 ? t('action.print') : t('action.continue')}
               </button>
             </div>
           </ModalWrapper>

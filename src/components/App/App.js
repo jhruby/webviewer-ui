@@ -79,6 +79,7 @@ import DataElements from 'constants/dataElement';
 import setLanguage from 'src/apis/setLanguage';
 
 import './App.scss';
+import FilterAnnotModal from "components/FilterAnnotModal";
 
 // TODO: Use constants
 const tabletBreakpoint = window.matchMedia('(min-width: 641px) and (max-width: 900px)');
@@ -332,12 +333,12 @@ const App = ({ removeEventHandlers }) => {
         <LazyLoadWrapper Component={LazyLoadComponents.CreateStampModal} dataElement={DataElements.CUSTOM_STAMP_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.PageReplacementModal} dataElement={DataElements.PAGE_REPLACEMENT_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.LinkModal} dataElement={DataElements.LINK_MODAL} />
-        <LazyLoadWrapper Component={LazyLoadComponents.FilterAnnotModal} dataElement={DataElements.FILTER_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.PageRedactionModal} dataElement={DataElements.PAGE_REDACT_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.CalibrationModal} dataElement={DataElements.CALIBRATION_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.SettingsModal} dataElement={DataElements.SETTINGS_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.SaveModal} dataElement={DataElements.SAVE_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.InsertPageModal} dataElement={DataElements.INSERT_PAGE_MODAL} />
+        <FilterAnnotModal />
         <LoadingModal />
         <WarningModal />
         <ProgressModal />

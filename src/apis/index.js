@@ -128,10 +128,6 @@ import setPrintedNoteDateFormat from './setPrintedNoteDateFormat';
 import setNotesPanelSort from './setNotesPanelSort';
 import setPageLabels from './setPageLabels';
 import setPrintQuality from './setPrintQuality';
-import setPrintPageLimit from './setPrintPageLimit';
-import setCopyEnabled from './setCopyEnabled';
-import setLimitAnnotationHighlightText from './setLimitAnnotationHighlightText';
-import setDisabledPrintRange from './setDisabledPrintRange';
 import setDefaultPrintOptions from './setDefaultPrintOptions';
 import setSelectedTab from './setSelectedTab';
 import setSideWindowVisibility from './setSideWindowVisibility';
@@ -275,6 +271,11 @@ import setGrayscaleDarknessFactor from './setGrayscaleDarknessFactor';
 import { ALIGNMENT } from 'constants/customizationVariables';
 import FlyoutsAPI from './FlyoutsAPI';
 import { getInstanceNode } from 'helpers/getRootNode';
+import setPrintPageLimit from './setPrintPageLimit';
+import setCopyEnabled from './setCopyEnabled';
+import setLimitAnnotationHighlightText from './setLimitAnnotationHighlightText';
+import setDisabledPrintRange from './setDisabledPrintRange';
+import setAnnotationFilters from './setAnnotationFilters';
 
 export default (store) => {
   const CORE_NAMESPACE = 'Core';
@@ -368,10 +369,6 @@ export default (store) => {
     setMeasurementUnits: setMeasurementUnits(store),
     setPageLabels: setPageLabels(store),
     setPrintQuality: setPrintQuality(store),
-    setPrintPageLimit: setPrintPageLimit(store),
-    setCopyEnabled: setCopyEnabled(store),
-    setLimitAnnotationHighlightText: setLimitAnnotationHighlightText(store),
-    setDisabledPrintRange: setDisabledPrintRange(store),
     setDefaultPrintOptions: setDefaultPrintOptions(store),
     setNotesPanelSortStrategy: setNotesPanelSortStrategy(store),
     setSwipeOrientation,
@@ -580,6 +577,11 @@ export default (store) => {
     getZoomStepFactors: getZoomStepFactors(store),
     setZoomStepFactors: setZoomStepFactors(store),
     getDocumentViewer,
+    setPrintPageLimit: setPrintPageLimit(store),
+    setCopyEnabled: setCopyEnabled(store),
+    setLimitAnnotationHighlightText: setLimitAnnotationHighlightText(store),
+    setDisabledPrintRange: setDisabledPrintRange(store),
+    setAnnotationFilters: setAnnotationFilters(store)
   };
   const documentViewer = core.getDocumentViewer(1);
 

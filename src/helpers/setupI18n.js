@@ -41,6 +41,24 @@ const requestWithXmlHttpRequest = (options, url, payload, callback) => {
   }
 };
 
+const getLoadPath = (() => {
+  const elements = window.parent.document.getElementsByTagName("meta");
+  for (let i = 0; i < elements.length; ++i){
+    let meta = elements[i];
+    if (meta.name === 'i18n') {
+      if (meta.content[0] !== '%') {
+        return meta.content;
+      } else {
+        console.warn("language dev mode detected");
+        break;
+      }
+    }
+  }
+
+  console.warn("falling back to default language file");
+  return './i18n/{{ns}}-{{lng}}.json';
+});
+
 export default (state) => {
   const options = {
     fallbackLng: 'en',
@@ -72,7 +90,7 @@ export default (state) => {
       {
         ...options,
         backend: {
-          loadPath: i18nURL,
+          loadPath: getLoadPath(),
           request: requestWithXmlHttpRequest,
         },
       },

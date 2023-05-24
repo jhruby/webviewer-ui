@@ -9,7 +9,6 @@ const PasswordModal = lazy(() => import('components/PasswordModal'));
 const CreateStampModal = lazy(() => import('components/CreateStampModal'));
 const PageReplacementModal = lazy(() => import('components/PageReplacementModal'));
 const LinkModal = lazy(() => import('components/LinkModal'));
-const FilterAnnotModal = lazy(() => import('components/FilterAnnotModal'));
 const PageRedactionModal = lazy(() => import('components/PageRedactionModal'));
 const CalibrationModal = lazy(() => import('components/CalibrationModal'));
 const SettingsModal = lazy(() => import('components/SettingsModal'));
@@ -26,7 +25,6 @@ const LazyLoadComponents = {
   CreateStampModal,
   PageReplacementModal,
   LinkModal,
-  FilterAnnotModal,
   PageRedactionModal,
   CalibrationModal,
   SettingsModal,

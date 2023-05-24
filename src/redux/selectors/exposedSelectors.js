@@ -645,3 +645,11 @@ export const isToolDefaultStyleUpdateFromAnnotationPopupEnabled = (state) => sta
 export const getShortcutKeyMap = (state) => state.viewer.shortcutKeyMap;
 
 export const getMultiViewerSyncScrollMode = (state) => state.viewer.multiViewerSyncScrollMode;
+
+export const getPrintPageLimit = state => state.document.printPageLimit;
+
+export const getCopyEnabled = state => state.document.copyEnabled;
+
+export const getLimitAnnotationHighlightText = state => state.document.limitAnnotationHighlightText;
+
+export const getDisabledPrintRange = state => state.document.disabledPrintRange;

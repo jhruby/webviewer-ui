@@ -1,10 +1,28 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import LeftPanelPageTabsRotate from 'components/LeftPanelPageTabs/LeftPanelPageTabsXOD/LeftPanelPageTabsXOD';
-import withMockRedux from '../../../../jest/withMockRedux';
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import LeftPanelPageTabsRotate from "components/LeftPanelPageTabs/LeftPanelPageTabsRotate/LeftPanelPageTabsRotate";
 
-const LeftPanelPageTabsRotateRedux = withMockRedux(LeftPanelPageTabsRotate);
-
+// create test component with mock redux
+const initialState = {
+  viewer: {
+    disabledElements: {},
+    openElements: [],
+    customElementOverrides: []
+  },
+};
+function rootReducer(state = initialState, action) { // eslint-disable-line no-unused-vars
+  return state;
+}
+const store = createStore(rootReducer);
+const LeftPanelPageTabsRotateRedux = function(props) {
+  return (
+      <Provider store={store}>
+        <LeftPanelPageTabsRotate {...props} />
+      </Provider>
+  );
+};
 function noop() {}
 
 describe('LeftPanelPageTabsRotate', () => {

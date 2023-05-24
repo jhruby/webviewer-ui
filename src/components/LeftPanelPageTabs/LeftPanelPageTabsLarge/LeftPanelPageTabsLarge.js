@@ -1,7 +1,7 @@
 import React from 'react';
 
 import LeftPanelPageTabsInsert from '../LeftPanelPageTabsInsert/LeftPanelPageTabsInsert';
-import LeftPanelPageTabsRotate from '../LeftPanelPageTabsXOD/LeftPanelPageTabsXOD';
+import LeftPanelPageTabsRotate from '../LeftPanelPageTabsRotate/LeftPanelPageTabsRotate';
 import LeftPanelPageTabsOperations from '../LeftPanelPageTabsOperations/LeftPanelPageTabsOperations';
 import CustomLeftPanelOperations from '../CustomLeftPanelOperations/CustomLeftPanelOperations';
 import LeftPanelPageTabsMove from '../LeftPanelPageTabsMove/LeftPanelPageTabsMove';

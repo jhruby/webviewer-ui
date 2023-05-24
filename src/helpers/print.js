@@ -12,6 +12,7 @@ import { isSafari, isChromeOniOS, isFirefoxOniOS } from 'helpers/device';
 import core from 'core';
 
 let pendingCanvases = [];
+let renderedCanvases = [];
 let PRINT_QUALITY = 1;
 let colorMap;
 let grayscaleDarknessFactor = 1;
@@ -26,7 +27,6 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
   const {
     includeAnnotations,
     includeComments,
-    maintainPageOrientation,
     onProgress,
     printQuality = PRINT_QUALITY,
     printWithoutModal = false,
@@ -69,10 +69,10 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
     }
 
     const createPages = creatingPages(
+      pagesToPrint, 
       pagesToPrint,
       includeComments,
       includeAnnotations,
-      maintainPageOrientation,
       printQuality,
       sortStrategy,
       colorMap,
@@ -83,6 +83,7 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
       false,
       isGrayscale,
       timezone,
+      true
     );
     Promise.all(createPages)
       .then((pages) => {
@@ -121,34 +122,35 @@ const printPdf = () => core.exportAnnotations().then((xfdfString) => {
     });
 });
 
-export const creatingPages = (pagesToPrint, includeComments, includeAnnotations, maintainPageOrientation, printQuality, sortStrategy, clrMap, dateFormat, onProgress, isPrintCurrentView, language, createCanvases = false, isGrayscale = false, timezone) => {
+export const creatingPages = (originalPagesToPrint, pagesToPrint, includeComments, includeAnnotations, printQuality, sortStrategy, clrMap, dateFormat, onProgress, isPrintCurrentView, language, createCanvases = false, isGrayscale = false, timezone, lastRun) => {
   const createdPages = [];
   pendingCanvases = [];
   PRINT_QUALITY = printQuality;
   colorMap = clrMap;
 
   pagesToPrint.forEach((pageNumber) => {
-    createdPages.push(creatingImage(pageNumber, includeAnnotations, maintainPageOrientation, isPrintCurrentView, createCanvases, isGrayscale));
+    createdPages.push(creatingImage(pageNumber, includeAnnotations, isPrintCurrentView, createCanvases, isGrayscale));
 
     if (onProgress) {
       createdPages[createdPages.length - 1].then((htmlElement) => {
         onProgress(pageNumber, htmlElement);
       });
     }
-
-    const printableAnnotationNotes = getPrintableAnnotationNotes(pageNumber);
+  });
+  if (lastRun) {
+    const printableAnnotationNotes = getPrintableAnnotationNotes(originalPagesToPrint);
     if (includeComments && printableAnnotationNotes) {
       const sortedNotes = getSortStrategies()[sortStrategy].getSortedNotes(printableAnnotationNotes);
       if (sortedNotes.length) {
-        createdPages.push(creatingNotesPage(sortedNotes, pageNumber, dateFormat, language, timezone));
+        createdPages.push(creatingNotesPage(sortedNotes, dateFormat, language, timezone));
       }
       if (onProgress) {
         createdPages[createdPages.length - 1].then((htmlElement) => {
-          onProgress(pageNumber, htmlElement);
+          onProgress(createdPages.length - 1, htmlElement);
         });
       }
     }
-  });
+  }
 
   return createdPages;
 };
@@ -323,6 +325,18 @@ export const printPages = (pages) => {
   }
 };
 
+export const unloadCanvases = () =>{
+  const doc = core.getDocument();
+  renderedCanvases.forEach(c => {
+    try {
+      doc.unloadCanvasResources(c.id);
+      c.img.parentNode.removeChild(c.img);
+    }
+    catch (e){} //ignore
+  });
+  renderedCanvases = [];
+}
+
 const printDocument = () => {
   const doc = core.getDocument();
   const tempTitle = window.parent.document.title;
@@ -353,21 +367,22 @@ export const cancelPrint = () => {
   pendingCanvases.forEach((id) => doc.cancelLoadCanvas(id));
 };
 
-export const getPrintableAnnotationNotes = (pageNumber) => core
+export const getPrintableAnnotationNotes = (pages) => core
   .getAnnotationsList()
   .filter(
-    (annotation) => annotation.Listable &&
-      annotation.PageNumber === pageNumber &&
+    (annotation) => pages.indexOf(annotation.PageNumber) !== -1 && 
+      annotation.Listable &&
       !annotation.isReply() &&
       !annotation.isGrouped() &&
-      annotation.Printable,
+      annotation.Printable &&
+      annotation.Icon === "Comment"
   );
 
-const creatingImage = (pageNumber, includeAnnotations, maintainPageOrientation, isPrintCurrentView, createCanvases = false, isGrayscale = false) => new Promise((resolve) => {
+const creatingImage = (pageNumber, includeAnnotations, isPrintCurrentView, createCanvases = false, isGrayscale = false) => new Promise((resolve) => {
   const pageIndex = pageNumber - 1;
   let zoom = 1;
   let renderRect;
-  const printRotation = getPrintRotation(pageIndex, maintainPageOrientation);
+  const printRotation = getPrintRotation(pageIndex);
   const onCanvasLoaded = async (canvas) => {
     pendingCanvases = pendingCanvases.filter((pendingCanvas) => pendingCanvas !== id);
     positionCanvas(canvas, pageIndex);
@@ -423,6 +438,9 @@ const creatingImage = (pageNumber, includeAnnotations, maintainPageOrientation, 
     img.onload = () => {
       resolve(img);
     };
+
+    canvas = null;
+    renderedCanvases.push({img, id});
   };
 
   if (isPrintCurrentView) {
@@ -472,40 +490,47 @@ const creatingImage = (pageNumber, includeAnnotations, maintainPageOrientation, 
   pendingCanvases.push(id);
 });
 
-export const creatingNotesPage = (annotations, pageNumber, dateFormat, language, timezone) => new Promise((resolve) => {
+export const creatingNotesPage = (annotations, dateFormat, language, timezone) => new Promise((resolve) => {
   const container = document.createElement('div');
   container.className = 'page__container';
 
-  const header = document.createElement('div');
-  header.className = 'page__header';
-  header.innerHTML = `${i18n.t('option.shared.page')} ${pageNumber}`;
+  const title = document.createElement("h1");
+  title.innerHTML = `${window.parent.document.title.substr(0, window.parent.document.title.lastIndexOf('|'))}`;
 
-  container.appendChild(header);
+  const table = document.createElement('table');
+  table.className = "print__table";
+
+  const header = document.createElement('tr');
+  header.innerHTML = `<th>${i18n.t('option.shared.pageNumber')}</th><th>${i18n.t('option.shared.notes')}</th>`;
+
+  table.appendChild(header);
+  
   annotations.forEach((annotation) => {
     const note = getNote(annotation, dateFormat, language, timezone);
 
-    container.appendChild(note);
+    table.appendChild(note);
   });
 
+  container.appendChild(title);
+  container.appendChild(table);
   resolve(container);
 });
 
-const getPrintRotation = (pageIndex, maintainPageOrientation) => {
-  if (!maintainPageOrientation) {
+const getPrintRotation = (pageIndex) => {
     const { width, height } = core.getPageInfo(pageIndex + 1);
     const documentRotation = getDocumentRotation(pageIndex);
     let printRotation = (4 - documentRotation) % 4;
 
     // automatically rotate pages so that they fill up as much of the printed page as possible
-    if (printRotation % 2 === 0 && width > height) {
+    /*if (printRotation % 2 === 0 && width > height) {
       printRotation++;
     } else if (printRotation % 2 === 1 && height > width) {
       printRotation--;
     }
     return printRotation;
-  }
+  }*/
 
-  return core.getRotation(pageIndex + 1);
+  return printRotation;
 };
 
 const positionCanvas = (canvas, pageIndex) => {
@@ -585,39 +610,34 @@ const drawAnnotationsOnCanvas = (canvas, pageNumber, isGrayscale) => {
 
 const getDocumentRotation = (pageIndex) => {
   const pageNumber = pageIndex + 1;
-  const completeRotation = core.getCompleteRotation(pageNumber);
+  //const completeRotation = core.getCompleteRotation(pageNumber);
   const viewerRotation = core.getRotation(pageNumber);
 
-  return (completeRotation - viewerRotation + 4) % 4;
+  //return (completeRotation - viewerRotation + 4) % 4;
+  var result = (viewerRotation + 4) % 4;
+  if (result === 1) result = 3;
+  else if (result === 3) result = 1;
+  return result;
 };
 
 const getNote = (annotation, dateFormat, language, timezone) => {
-  const note = document.createElement('div');
-  note.className = 'note';
-
-  const noteRoot = document.createElement('div');
-  noteRoot.className = 'note__root';
-
-  const noteRootInfo = document.createElement('div');
-  noteRootInfo.className = 'note__info--with-icon';
-
-  const noteIcon = getNoteIcon(annotation);
-
-  noteRootInfo.appendChild(noteIcon);
-  noteRootInfo.appendChild(getNoteInfo(annotation, dateFormat, language, timezone));
-  noteRoot.appendChild(noteRootInfo);
-  noteRoot.appendChild(getNoteContent(annotation));
-
-  note.appendChild(noteRoot);
-  annotation.getReplies().forEach((reply) => {
-    const noteReply = document.createElement('div');
-    noteReply.className = 'note__reply';
-    noteReply.appendChild(getNoteInfo(reply, dateFormat, language, timezone));
-    noteReply.appendChild(getNoteContent(reply));
-
-    note.appendChild(noteReply);
-  });
-
+  const note = document.createElement('tr');
+  const page = document.createElement('td');
+  page.innerHTML = `${annotation.PageNumber}`
+  const content = document.createElement('td');
+  content.innerHTML = `${annotation.getContents()}`;
+  const replies = annotation.getReplies();
+  if (replies.length > 0) {
+    const list = document.createElement('ul');
+    replies.forEach(reply => {
+      const noteReply = document.createElement('li');
+      noteReply.innerHTML = `${reply.getContents()}`;
+      list.appendChild(noteReply);
+    });
+    content.appendChild(list);
+  }
+  note.appendChild(page);
+  note.appendChild(content);
   return note;
 };
 
@@ -660,25 +680,11 @@ const getNoteInfo = (annotation, dateFormat, language, timezone) => {
     dateCreated = annotation.DateCreated;
   }
   const info = document.createElement('div');
-  let date = dayjs(dateCreated).format(dateFormat);
-
-  if (language) {
-    date = dayjs(dateCreated).locale(language).format(dateFormat);
-  }
 
   info.className = 'note__info';
-  if (annotation.Subject === '' || annotation.Subject === null || annotation.Subject === undefined) {
-    info.innerHTML = `
-      ${i18n.t('option.printInfo.author')}: ${core.getDisplayAuthor(annotation['Author']) || ''} &nbsp;&nbsp;
-      ${i18n.t('option.printInfo.date')}: ${date}
+  info.innerHTML = `
+      ${i18n.t('option.shared.page')}: ${annotation.PageNumber}
     `;
-  } else {
-    info.innerHTML = `
-      ${i18n.t('option.printInfo.author')}: ${core.getDisplayAuthor(annotation['Author']) || ''} &nbsp;&nbsp;
-      ${i18n.t('option.printInfo.subject')}: ${annotation.Subject} &nbsp;&nbsp;
-      ${i18n.t('option.printInfo.date')}: ${date}
-    `;
-  }
 
   return info;
 };
