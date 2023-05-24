@@ -1862,7 +1862,7 @@ export default {
       pageReplacementModal: 'urlInputPanelButton',
       linkModal: 'URLPanelButton',
       rubberStampTab: 'standardStampPanelButton',
-      filterAnnotModal: DataElements.ANNOTATION_USER_FILTER_PANEL_BUTTON,
+      filterAnnotModal: DataElements.ANNOTATION_COLOR_FILTER_PANEL_BUTTON,
       settingsModal: DataElements.SETTINGS_GENERAL_BUTTON,
       savedSignatures: DataElements.SAVED_SIGNATURES_PANEL_BUTTON,
       openFileModal: 'urlInputPanelButton',
