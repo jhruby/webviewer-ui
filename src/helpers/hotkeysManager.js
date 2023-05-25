@@ -56,7 +56,8 @@ export const Shortcuts = {
   SQUIGGLY: 'squiggly',
   HIGHLIGHT: 'highlight',
   STRIKEOUT: 'strikeout',
-  UNDERLINE: 'underline'
+  UNDERLINE: 'underline',
+  ARIA_VIEWER: 'ariaViewer'
 };
 
 // prettier-ignore
@@ -223,6 +224,7 @@ export const Keys = {
   H: 'h',
   K: 'k',
   U: 'u',
+  ALT_U: "alt+u"
 };
 
 export function concatKeys(...keys) {
@@ -274,7 +276,8 @@ export const ShortcutKeys = {
   [Shortcuts.SQUIGGLY]: Keys.G,
   [Shortcuts.HIGHLIGHT]: Keys.H,
   [Shortcuts.STRIKEOUT]: Keys.K,
-  [Shortcuts.UNDERLINE]: Keys.U
+  [Shortcuts.UNDERLINE]: Keys.U,
+  [Shortcuts.ARIA_VIEWER]: Keys.ALT_U
 };
 
 const ToolNameHotkeyMap = {
