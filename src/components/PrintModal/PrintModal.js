@@ -76,6 +76,7 @@ const PrintModal = () => {
   const [isGrayscale, setIsGrayscale] = useState(false);
   const [buttonEnabled, setButtonEnabled] = useState(true);
   const [stepNumber, setStepNumber] = useState(0);
+  const [isPrinting, setIsPrinting] = useState(false);
 
   useEffect(() => {
     if (defaultPrintOptions) {
@@ -107,7 +108,6 @@ const PrintModal = () => {
     };
   }, []);
 
-  const isPrinting = count >= 0;
   const className = getClassName('Modal PrintModal', { isOpen });
   const customPagesLabelElement = (
     <>
@@ -224,9 +224,12 @@ const PrintModal = () => {
     window.parent.loadingForPrint = true;
     setButtonEnabled(false);
     unloadCanvases();
-
+    let localCount = count;
+    
     if (stepNumber === 0) {
       setCount(0);
+      localCount = 0;
+      setIsPrinting(true);
     }
 
     if (allowWatermarkModal) {
@@ -257,7 +260,8 @@ const PrintModal = () => {
     );
     createPages.forEach(async (pagePromise) => {
       await pagePromise;
-      setCount(count < pagesToPrint.length && (count !== -1 ? count + 1 : count));
+      localCount = localCount < pagesToPrint.length && (localCount !== -1 ? localCount + 1 : localCount);
+      setCount(localCount);
     });
     Promise.all(createPages)
       .then((pages) => {
@@ -273,12 +277,14 @@ const PrintModal = () => {
       .catch((e) => {
         console.error(e);
         setCount(-1);
+        setIsPrinting(false);
       });
   };
 
   const closePrintModal = () => {
     window.parent.loadingForPrint = false;
     setCount(-1);
+    setIsPrinting(false);
     setStepNumber(0);
     setButtonEnabled(true);
     dispatch(actions.closeElement(DataElements.PRINT_MODAL));
