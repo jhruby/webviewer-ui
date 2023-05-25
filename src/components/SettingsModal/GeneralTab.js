@@ -15,15 +15,21 @@ import DataElementWrapper from 'components/DataElementWrapper';
 import { SearchWrapper } from './SearchWrapper';
 
 import './GeneralTab.scss';
+import {getAvailableLanguages} from "selectors/exposedSelectors";
 
 const GeneralTab = () => {
   const [
     currentLanguage,
-    activeTheme
+    activeTheme,
+    availableLanguages  
   ] = useSelector((state) => [
     selectors.getCurrentLanguage(state),
-    selectors.getActiveTheme(state)
+    selectors.getActiveTheme(state),
+    selectors.getAvailableLanguages(state)  
   ]);
+  
+  const toShowLanguages =Languages.filter(l=>availableLanguages.indexOf(l[0]) !== -1);
+  
   const [t] = useTranslation();
   const dispatch = useDispatch();
   const store = useStore();
@@ -52,7 +58,7 @@ const GeneralTab = () => {
           <div className="setting-label">{t('option.settings.language')}</div>
           <Dropdown
             dataElement={DataElements.SETTINGS_LANGUAGE_DROPDOWN}
-            items={Languages}
+            items={toShowLanguages}
             currentSelectionKey={currentLanguage}
             getKey={(item) => item[0]}
             getDisplayValue={(item) => item[1]}

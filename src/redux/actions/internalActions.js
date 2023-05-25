@@ -674,3 +674,8 @@ export const setDisabledPrintRange = (disabledPrintRange) => ({
   type: 'SET_DISABLED_PRINT_RANGE',
   payload: { disabledPrintRange },
 });
+
+export const setAvailableLanguages = (availableLanguages) => ({
+  type: 'SET_AVAILABLE_LANGUAGES',
+  payload: { availableLanguages },
+});

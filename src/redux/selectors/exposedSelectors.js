@@ -653,3 +653,5 @@ export const getCopyEnabled = state => state.document.copyEnabled;
 export const getLimitAnnotationHighlightText = state => state.document.limitAnnotationHighlightText;
 
 export const getDisabledPrintRange = state => state.document.disabledPrintRange;
+
+export const getAvailableLanguages = state => state.document.availableLanguages;

@@ -52,6 +52,8 @@ export default (initialState) => (state = initialState, action) => {
       return { ...state, limitAnnotationHighlightText: payload.limitAnnotationHighlightText }
     case 'SET_DISABLED_PRINT_RANGE':
       return { ...state, disabledPrintRange: payload.disabledPrintRange }
+    case 'SET_AVAILABLE_LANGUAGES':
+      return { ...state, availableLanguages: payload.availableLanguages }
     default:
       return state;
   }
