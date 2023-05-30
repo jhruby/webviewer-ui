@@ -33,7 +33,8 @@ const PrintModal = () => {
     watermarkModalOptions,
     timezone,
     printPageLimit,
-    disabledPrintRange
+    disabledPrintRange,
+    validatePrint  
   ] = useSelector(
     (state) => [
       selectors.isElementDisabled(state, DataElements.PRINT_MODAL),
@@ -51,7 +52,8 @@ const PrintModal = () => {
       selectors.getWatermarkModalOptions(state),
       selectors.getTimezone(state),
       selectors.getPrintPageLimit(state),
-      selectors.getDisabledPrintRange(state)
+      selectors.getDisabledPrintRange(state),
+      selectors.getPrintValidation(state)
     ],
     shallowEqual
   );
@@ -218,6 +220,10 @@ const PrintModal = () => {
     e.preventDefault();
 
     if (pagesToPrint.length < 1) {
+      return;
+    }
+    
+    if (validatePrint && !(await validatePrint())){
       return;
     }
 

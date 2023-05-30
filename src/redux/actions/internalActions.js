@@ -679,3 +679,7 @@ export const setAvailableLanguages = (availableLanguages) => ({
   type: 'SET_AVAILABLE_LANGUAGES',
   payload: { availableLanguages },
 });
+export const setPrintValidation = (printValidation) => ({
+  type: 'SET_PRINT_VALIDATION',
+  payload: { printValidation },
+});

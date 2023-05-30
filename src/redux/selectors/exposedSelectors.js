@@ -655,3 +655,5 @@ export const getLimitAnnotationHighlightText = state => state.document.limitAnno
 export const getDisabledPrintRange = state => state.document.disabledPrintRange;
 
 export const getAvailableLanguages = state => state.document.availableLanguages;
+
+export const getPrintValidation = state => state.document.printValidation;
