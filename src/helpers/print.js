@@ -16,6 +16,7 @@ let renderedCanvases = [];
 let PRINT_QUALITY = 1;
 let colorMap;
 let grayscaleDarknessFactor = 1;
+let canceledPrint = false;
 
 export const setGrayscaleDarknessFactor = (factor) => {
   grayscaleDarknessFactor = factor;
@@ -125,7 +126,11 @@ export const creatingPages = async (originalPagesToPrint, pagesToPrint, includeC
   PRINT_QUALITY = printQuality;
   colorMap = clrMap;
 
+  canceledPrint = false;
+
   for (const pageNumber of pagesToPrint) {
+    if (canceledPrint)
+      break;
     const img = await creatingImage(pageNumber, includeAnnotations, isPrintCurrentView, createCanvases, isGrayscale);
     createdPages.push(img);
     if (onProgress) {
@@ -152,6 +157,8 @@ export const creatingPages = async (originalPagesToPrint, pagesToPrint, includeC
 };
 
 export const printPages = (pages) => {
+  if (canceledPrint) return;
+  
   const printHandler = document.getElementById('print-handler');
   printHandler.innerHTML = '';
 
@@ -361,6 +368,8 @@ const printDocument = () => {
 export const cancelPrint = () => {
   const doc = core.getDocument();
   pendingCanvases.forEach((id) => doc.cancelLoadCanvas(id));
+  canceledPrint = true;
+  unloadCanvases();
 };
 
 export const getPrintableAnnotationNotes = (pages) => core
