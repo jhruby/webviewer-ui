@@ -157,7 +157,7 @@ export default async (dispatch, options = {}, documentViewerKey = 1) => {
       `;
       window.document.head.prepend(style);
     }
-    const createdPages = creatingPages(
+    const createdPages = await creatingPages(
       pages,
       includeComments,
       includeAnnotations,
@@ -188,8 +188,7 @@ export default async (dispatch, options = {}, documentViewerKey = 1) => {
       });
     };
     const html2canvas = (await import('html2canvas')).default;
-    for (let page of createdPages) {
-      page = await page;
+    for (const page of createdPages) {
       let dataURL;
       if (page instanceof HTMLElement) {
         document.body.appendChild(page);

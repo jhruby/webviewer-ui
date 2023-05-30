@@ -68,7 +68,7 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
       pagesToPrint = [core.getDocumentViewer().getCurrentPage()];
     }
 
-    const createPages = creatingPages(
+    creatingPages(
       pagesToPrint, 
       pagesToPrint,
       includeComments,
@@ -84,14 +84,11 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
       isGrayscale,
       timezone,
       true
-    );
-    Promise.all(createPages)
-      .then((pages) => {
-        printPages(pages);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    ).then((pages) => {
+      printPages(pages);
+    }).catch((e) => {
+      console.error(e);
+    });
   } else {
     dispatch(actions.openElement('printModal'));
   }
@@ -122,21 +119,20 @@ const printPdf = () => core.exportAnnotations().then((xfdfString) => {
     });
 });
 
-export const creatingPages = (originalPagesToPrint, pagesToPrint, includeComments, includeAnnotations, printQuality, sortStrategy, clrMap, dateFormat, onProgress, isPrintCurrentView, language, createCanvases = false, isGrayscale = false, timezone, lastRun) => {
+export const creatingPages = async (originalPagesToPrint, pagesToPrint, includeComments, includeAnnotations, printQuality, sortStrategy, clrMap, dateFormat, onProgress, isPrintCurrentView, language, createCanvases = false, isGrayscale = false, timezone, lastRun) => {
   const createdPages = [];
   pendingCanvases = [];
   PRINT_QUALITY = printQuality;
   colorMap = clrMap;
 
-  pagesToPrint.forEach((pageNumber) => {
-    createdPages.push(creatingImage(pageNumber, includeAnnotations, isPrintCurrentView, createCanvases, isGrayscale));
-
+  for (const pageNumber of pagesToPrint) {
+    const img = await creatingImage(pageNumber, includeAnnotations, isPrintCurrentView, createCanvases, isGrayscale);
+    createdPages.push(img);
     if (onProgress) {
-      createdPages[createdPages.length - 1].then((htmlElement) => {
-        onProgress(pageNumber, htmlElement);
-      });
+      onProgress(pageNumber, img);
     }
-  });
+  }
+
   if (lastRun) {
     const printableAnnotationNotes = getPrintableAnnotationNotes(originalPagesToPrint);
     if (includeComments && printableAnnotationNotes) {
@@ -437,10 +433,9 @@ const creatingImage = (pageNumber, includeAnnotations, isPrintCurrentView, creat
     img.src = canvas.toDataURL();
     img.onload = () => {
       resolve(img);
+      canvas = null;
+      renderedCanvases.push({img, id});
     };
-
-    canvas = null;
-    renderedCanvases.push({img, id});
   };
 
   if (isPrintCurrentView) {
@@ -490,7 +485,7 @@ const creatingImage = (pageNumber, includeAnnotations, isPrintCurrentView, creat
   pendingCanvases.push(id);
 });
 
-export const creatingNotesPage = (annotations, dateFormat, language, timezone) => new Promise((resolve) => {
+export const creatingNotesPage = (annotations, dateFormat, language, timezone) =>  {
   const container = document.createElement('div');
   container.className = 'page__container';
 
@@ -513,8 +508,8 @@ export const creatingNotesPage = (annotations, dateFormat, language, timezone) =
 
   container.appendChild(title);
   container.appendChild(table);
-  resolve(container);
-});
+  return container;
+};
 
 const getPrintRotation = (pageIndex) => {
     const { width, height } = core.getPageInfo(pageIndex + 1);

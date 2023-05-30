@@ -241,7 +241,7 @@ const PrintModal = () => {
     const limit = printPageLimit === 0 ? Number.MAX_SAFE_INTEGER : printPageLimit;
     const runs = Math.ceil(pagesToPrint.length / limit);
 
-    const createPages = creatingPages(
+    const pages = await creatingPages(
       pagesToPrint, 
       pagesToPrint.slice(stepNumber * limit, Math.min((stepNumber + 1) * limit, pagesToPrint.length)),
       includeComments,
@@ -250,35 +250,26 @@ const PrintModal = () => {
       sortStrategy,
       colorMap,
       printedNoteDateFormat,
-      undefined,
+        ()=>{
+          localCount = localCount < pagesToPrint.length && (localCount !== -1 ? localCount + 1 : localCount);
+          setCount(localCount);
+        } ,
       currentView.current?.checked,
       language,
       false,
       isGrayscale,
       timezone,
-      runs === stepNumber + 1  
+      runs === stepNumber + 1
     );
-    createPages.forEach(async (pagePromise) => {
-      await pagePromise;
-      localCount = localCount < pagesToPrint.length && (localCount !== -1 ? localCount + 1 : localCount);
-      setCount(localCount);
-    });
-    Promise.all(createPages)
-      .then((pages) => {
-        printPages(pages);
-        if (runs === stepNumber + 1) {
-          closePrintModal();
-        }
-        else {
-          setStepNumber(stepNumber + 1);
-          setButtonEnabled(true);
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-        setCount(-1);
-        setIsPrinting(false);
-      });
+    
+    printPages(pages);
+    if (runs === stepNumber + 1) {
+      closePrintModal();
+    }
+    else {
+      setStepNumber(stepNumber + 1);
+      setButtonEnabled(true);
+    }
   };
 
   const closePrintModal = () => {
