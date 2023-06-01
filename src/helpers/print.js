@@ -145,11 +145,6 @@ export const creatingPages = async (originalPagesToPrint, pagesToPrint, includeC
       if (sortedNotes.length) {
         createdPages.push(creatingNotesPage(sortedNotes, dateFormat, language, timezone));
       }
-      if (onProgress) {
-        createdPages[createdPages.length - 1].then((htmlElement) => {
-          onProgress(createdPages.length - 1, htmlElement);
-        });
-      }
     }
   }
 
