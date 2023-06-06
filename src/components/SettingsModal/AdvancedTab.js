@@ -106,14 +106,14 @@ const AdvancedTab = () => {
   ];
 
   const pageManipulationItems = [
-    /*createItem(
+    createItem(
       t('option.settings.disablePageDeletionConfirmationModal'),
       t('option.settings.disablePageDeletionConfirmationModalDesc'),
       !pageDeletionConfirmationModalEnabled,
       (enable) => {
         enable ? dispatch(actions.disablePageDeletionConfirmationModal()) : dispatch(actions.enablePageDeletionConfirmationModal());
       }
-    ),*/
+    ),
     createItem(
       t('option.settings.disableMultiselect'),
       t('option.settings.disableMultiselectDesc'),
