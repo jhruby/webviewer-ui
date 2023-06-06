@@ -319,6 +319,7 @@ const PrintModal = () => {
             <div className="swipe-indicator" />
             <div className="settings">
               <div className="section">
+                <span className={"disabledPrintRangeWarning" + (disabledPrintRange ? '' : ' displayNone')}>{`${t('warning.print.current')}`}</span>
                 <div style={{display: disabledPrintRange ? 'none' : 'initial'}} className="section-label">{`${t('option.print.pages')}:`}</div>
                 <form
                   className="settings-form"
