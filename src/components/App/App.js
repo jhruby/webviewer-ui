@@ -213,7 +213,7 @@ const App = ({ removeEventHandlers }) => {
 
   // These need to be done here to wait for the persisted values loaded in redux
   useEffect(() => {
-    setLanguage(store)(store.getState().viewer.currentLanguage);
+    //setLanguage(store)(store.getState().viewer.currentLanguage);
     hotkeysManager.initialize(store);
     setDefaultDisabledElements(store);
   }, []);
