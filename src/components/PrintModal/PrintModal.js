@@ -222,10 +222,6 @@ const PrintModal = () => {
     if (pagesToPrint.length < 1) {
       return;
     }
-    
-    if (validatePrint && !(await validatePrint())){
-      return;
-    }
 
     window.parent.loadingForPrint = true;
     setButtonEnabled(false);
@@ -233,6 +229,9 @@ const PrintModal = () => {
     let localCount = count;
     
     if (stepNumber === 0) {
+      if (validatePrint && !(await validatePrint())){
+        return;
+      }
       setCount(0);
       localCount = 0;
       setIsPrinting(true);
