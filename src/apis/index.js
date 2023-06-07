@@ -276,7 +276,6 @@ import setCopyEnabled from './setCopyEnabled';
 import setLimitAnnotationHighlightText from './setLimitAnnotationHighlightText';
 import setDisabledPrintRange from './setDisabledPrintRange';
 import setAnnotationFilters from './setAnnotationFilters';
-import setAvailableLanguages from './setAvailableLanguages';
 import setPrintValidation from './setPrintValidation';
 
 export default (store) => {
@@ -584,7 +583,6 @@ export default (store) => {
     setLimitAnnotationHighlightText: setLimitAnnotationHighlightText(store),
     setDisabledPrintRange: setDisabledPrintRange(store),
     setAnnotationFilters: setAnnotationFilters(store),
-    setAvailableLanguages: setAvailableLanguages(store),
     setPrintValidation: setPrintValidation(store)
   };
   const documentViewer = core.getDocumentViewer(1);

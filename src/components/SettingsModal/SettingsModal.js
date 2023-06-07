@@ -55,7 +55,7 @@ const SettingsModal = () => {
 
   return isDisabled ? null : (
     <SearchContext.Provider value={searchTerm}>
-      <Swipeable preventDefaultTouchmoveEvent>
+      <Swipeable onSwipedUp={closeModal} onSwipedDown={closeModal} preventDefaultTouchmoveEvent>
         <FocusTrap locked={!isHidden}>
           <div className={className} data-element={DataElements.SettingsModal} onClick={closeModal}>
             <div className="container" onClick={(e) => e.stopPropagation()}>
