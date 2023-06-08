@@ -16,7 +16,6 @@ import DataElements from 'constants/dataElement';
 
 import './PrintModal.scss';
 
-let printing = false;
 const PrintModal = () => {
   const [
     isDisabled,
@@ -103,17 +102,11 @@ const PrintModal = () => {
         print.parentElement.setAttribute('style', 'height: 100%;');
       }
     };
-    
-    const enableButton = () => {
-      setButtonEnabled(true);
-    }
 
     window.addEventListener('beforeprint', adjustHeightIfSinglePage);
-    window.addEventListener('afterprint', enableButton);
 
     return () => {
       window.removeEventListener('beforeprint', adjustHeightIfSinglePage);
-      window.removeEventListener('afterprint', enableButton);
     };
   }, []);
 
@@ -225,70 +218,62 @@ const PrintModal = () => {
 
   const createPagesAndPrint = async (e) => {
     e.preventDefault();
+
+    if (pagesToPrint.length < 1) {
+      return;
+    }
+
+    window.parent.loadingForPrint = true;
+    setButtonEnabled(false);
+    unloadCanvases();
+    let localCount = count;
     
-    if (!printing) {
-      printing = true;
-
-      try {
-        if (pagesToPrint.length < 1) {
-          return;
-        }
-
-        window.parent.loadingForPrint = true;
-        setButtonEnabled(false);
-        unloadCanvases();
-        let localCount = count;
-
-        if (stepNumber === 0) {
-          if (validatePrint && !(await validatePrint())) {
-            return;
-          }
-          setCount(0);
-          localCount = 0;
-          setIsPrinting(true);
-        }
-
-        if (allowWatermarkModal) {
-          core.setWatermark(watermarkModalOptions);
-        } else {
-          core.setWatermark(existingWatermarksRef.current);
-        }
-
-        const limit = printPageLimit === 0 ? Number.MAX_SAFE_INTEGER : printPageLimit;
-        const runs = Math.ceil(pagesToPrint.length / limit);
-
-        const pages = await creatingPages(
-            pagesToPrint,
-            pagesToPrint.slice(stepNumber * limit, Math.min((stepNumber + 1) * limit, pagesToPrint.length)),
-            includeComments,
-            includeAnnotations,
-            printQuality,
-            sortStrategy,
-            colorMap,
-            printedNoteDateFormat,
-            () => {
-              localCount = localCount < pagesToPrint.length && (localCount !== -1 ? localCount + 1 : localCount);
-              setCount(localCount);
-            },
-            currentView.current?.checked,
-            language,
-            false,
-            isGrayscale,
-            timezone,
-            runs === stepNumber + 1
-        );
-
-        printPages(pages);
-        if (runs === stepNumber + 1) {
-          closePrintModal();
-        } else {
-          setStepNumber(stepNumber + 1);
-        }
-      } finally {
-        setTimeout(() => { //VA-9181 workaround, the button must be enabled on window.print command for Chrome on iOS
-          printing = false;
-        }, 1000);
+    if (stepNumber === 0) {
+      if (validatePrint && !(await validatePrint())){
+        return;
       }
+      setCount(0);
+      localCount = 0;
+      setIsPrinting(true);
+    }
+
+    if (allowWatermarkModal) {
+      core.setWatermark(watermarkModalOptions);
+    } else {
+      core.setWatermark(existingWatermarksRef.current);
+    }
+
+    const limit = printPageLimit === 0 ? Number.MAX_SAFE_INTEGER : printPageLimit;
+    const runs = Math.ceil(pagesToPrint.length / limit);
+
+    const pages = await creatingPages(
+      pagesToPrint, 
+      pagesToPrint.slice(stepNumber * limit, Math.min((stepNumber + 1) * limit, pagesToPrint.length)),
+      includeComments,
+      includeAnnotations,
+      printQuality,
+      sortStrategy,
+      colorMap,
+      printedNoteDateFormat,
+        ()=>{
+          localCount = localCount < pagesToPrint.length && (localCount !== -1 ? localCount + 1 : localCount);
+          setCount(localCount);
+        } ,
+      currentView.current?.checked,
+      language,
+      false,
+      isGrayscale,
+      timezone,
+      runs === stepNumber + 1
+    );
+    
+    printPages(pages);
+    if (runs === stepNumber + 1) {
+      closePrintModal();
+    }
+    else {
+      setStepNumber(stepNumber + 1);
+      setButtonEnabled(true);
     }
   };
 
@@ -308,7 +293,6 @@ const PrintModal = () => {
   const onCancelPrint = () =>{
     cancelPrint();
     closePrintModal();
-    printing = false;
   }
 
   return isDisabled && !buttonEnabled ? null : (
@@ -476,8 +460,9 @@ const PrintModal = () => {
               <button
                 name="print-button"
                 data-step={stepNumber}
-                className={"button" + (!buttonEnabled ? " disabled" : "")}
+                className="button"
                 onClick={createPagesAndPrint}
+                disabled={!buttonEnabled}
                 key="print"
               >
                 {stepNumber === 0 ? t('action.print') : t('action.continue')}
