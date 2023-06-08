@@ -16,6 +16,7 @@ import DataElements from 'constants/dataElement';
 
 import './PrintModal.scss';
 
+let printing = false;
 const PrintModal = () => {
   const [
     isDisabled,
@@ -102,11 +103,17 @@ const PrintModal = () => {
         print.parentElement.setAttribute('style', 'height: 100%;');
       }
     };
+    
+    const enableButton = () => {
+      setButtonEnabled(true);
+    }
 
     window.addEventListener('beforeprint', adjustHeightIfSinglePage);
+    window.addEventListener('afterprint', enableButton);
 
     return () => {
       window.removeEventListener('beforeprint', adjustHeightIfSinglePage);
+      window.removeEventListener('afterprint', enableButton);
     };
   }, []);
 
@@ -215,8 +222,6 @@ const PrintModal = () => {
       this.onChange();
     }
   };
-  
-  let printing = false;
 
   const createPagesAndPrint = async (e) => {
     e.preventDefault();
@@ -278,7 +283,6 @@ const PrintModal = () => {
           closePrintModal();
         } else {
           setStepNumber(stepNumber + 1);
-          setButtonEnabled(true);
         }
       } finally {
         setTimeout(() => { //VA-9181 workaround, the button must be enabled on window.print command for Chrome on iOS
@@ -304,6 +308,7 @@ const PrintModal = () => {
   const onCancelPrint = () =>{
     cancelPrint();
     closePrintModal();
+    printing = false;
   }
 
   return isDisabled && !buttonEnabled ? null : (
@@ -323,7 +328,7 @@ const PrintModal = () => {
           data-element={DataElements.PRINT_MODAL}
         >
           <ModalWrapper isOpen={isOpen && !isWatermarkModalVisible} title={'option.print.printSettings'}
-            containerOnClick={(e) => e.stopPropagation()} onCloseClick={closePrintModal}
+            containerOnClick={(e) => e.stopPropagation()} onCloseClick={onCancelPrint}
             closeButtonDataElement={'printModalCloseButton'}
           >
             <div className="swipe-indicator" />
@@ -471,9 +476,8 @@ const PrintModal = () => {
               <button
                 name="print-button"
                 data-step={stepNumber}
-                className="button"
+                className={"button" + (!buttonEnabled ? " disabled" : "")}
                 onClick={createPagesAndPrint}
-                disabled={!buttonEnabled}
                 key="print"
               >
                 {stepNumber === 0 ? t('action.print') : t('action.continue')}
