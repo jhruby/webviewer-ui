@@ -102,11 +102,17 @@ const PrintModal = () => {
         print.parentElement.setAttribute('style', 'height: 100%;');
       }
     };
+    
+    const enableButton = () => {
+      setButtonEnabled(true);
+    };
 
     window.addEventListener('beforeprint', adjustHeightIfSinglePage);
+    window.addEventListener('afterprint', enableButton);
 
     return () => {
       window.removeEventListener('beforeprint', adjustHeightIfSinglePage);
+      window.removeEventListener('afterprint', enableButton);
     };
   }, []);
 
@@ -273,7 +279,6 @@ const PrintModal = () => {
     }
     else {
       setStepNumber(stepNumber + 1);
-      setButtonEnabled(true);
     }
   };
 
