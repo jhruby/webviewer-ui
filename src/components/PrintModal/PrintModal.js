@@ -215,67 +215,76 @@ const PrintModal = () => {
       this.onChange();
     }
   };
+  
+  let printing = false;
 
   const createPagesAndPrint = async (e) => {
     e.preventDefault();
-
-    if (pagesToPrint.length < 1) {
-      return;
-    }
-
-    window.parent.loadingForPrint = true;
-    setButtonEnabled(false);
-    unloadCanvases();
-    let localCount = count;
     
-    if (stepNumber === 0) {
-      if (validatePrint && !(await validatePrint())){
-        return;
+    if (!printing) {
+      printing = true;
+
+      try {
+        if (pagesToPrint.length < 1) {
+          return;
+        }
+
+        window.parent.loadingForPrint = true;
+        setButtonEnabled(false);
+        unloadCanvases();
+        let localCount = count;
+
+        if (stepNumber === 0) {
+          if (validatePrint && !(await validatePrint())) {
+            return;
+          }
+          setCount(0);
+          localCount = 0;
+          setIsPrinting(true);
+        }
+
+        if (allowWatermarkModal) {
+          core.setWatermark(watermarkModalOptions);
+        } else {
+          core.setWatermark(existingWatermarksRef.current);
+        }
+
+        const limit = printPageLimit === 0 ? Number.MAX_SAFE_INTEGER : printPageLimit;
+        const runs = Math.ceil(pagesToPrint.length / limit);
+
+        const pages = await creatingPages(
+            pagesToPrint,
+            pagesToPrint.slice(stepNumber * limit, Math.min((stepNumber + 1) * limit, pagesToPrint.length)),
+            includeComments,
+            includeAnnotations,
+            printQuality,
+            sortStrategy,
+            colorMap,
+            printedNoteDateFormat,
+            () => {
+              localCount = localCount < pagesToPrint.length && (localCount !== -1 ? localCount + 1 : localCount);
+              setCount(localCount);
+            },
+            currentView.current?.checked,
+            language,
+            false,
+            isGrayscale,
+            timezone,
+            runs === stepNumber + 1
+        );
+
+        printPages(pages);
+        if (runs === stepNumber + 1) {
+          closePrintModal();
+        } else {
+          setStepNumber(stepNumber + 1);
+          setButtonEnabled(true);
+        }
+      } finally {
+        setTimeout(() => { //VA-9181 workaround, the button must be enabled on window.print command for Chrome on iOS
+          printing = false;
+        }, 1000);
       }
-      setCount(0);
-      localCount = 0;
-      setIsPrinting(true);
-    }
-
-    if (allowWatermarkModal) {
-      core.setWatermark(watermarkModalOptions);
-    } else {
-      core.setWatermark(existingWatermarksRef.current);
-    }
-
-    const limit = printPageLimit === 0 ? Number.MAX_SAFE_INTEGER : printPageLimit;
-    const runs = Math.ceil(pagesToPrint.length / limit);
-
-    const pages = await creatingPages(
-      pagesToPrint, 
-      pagesToPrint.slice(stepNumber * limit, Math.min((stepNumber + 1) * limit, pagesToPrint.length)),
-      includeComments,
-      includeAnnotations,
-      printQuality,
-      sortStrategy,
-      colorMap,
-      printedNoteDateFormat,
-        ()=>{
-          localCount = localCount < pagesToPrint.length && (localCount !== -1 ? localCount + 1 : localCount);
-          setCount(localCount);
-        } ,
-      currentView.current?.checked,
-      language,
-      false,
-      isGrayscale,
-      timezone,
-      runs === stepNumber + 1
-    );
-    
-    printPages(pages);
-    if (runs === stepNumber + 1) {
-      closePrintModal();
-    }
-    else {
-      setStepNumber(stepNumber + 1);
-      setTimeout(()=> { //VA-9181 onAfterPrint does not always work
-        setButtonEnabled(true);
-      }, 1000);
     }
   };
 
