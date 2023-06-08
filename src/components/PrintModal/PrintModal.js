@@ -90,7 +90,6 @@ const PrintModal = () => {
 
   useEffect(() => {
     const adjustHeightIfSinglePage = () => {
-      setButtonEnabled(true);
       const print = document.getElementById('print-handler');
 
       if (!print) {
@@ -274,6 +273,9 @@ const PrintModal = () => {
     }
     else {
       setStepNumber(stepNumber + 1);
+      setTimeout(()=> { //VA-9181 onAfterPrint does not always work
+        setButtonEnabled(true);
+      }, 1000);
     }
   };
 
