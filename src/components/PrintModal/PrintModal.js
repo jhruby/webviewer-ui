@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import DataElements from 'constants/dataElement';
 
 import './PrintModal.scss';
+import Events from "constants/events";
 
 const PrintModal = () => {
   const [
@@ -139,8 +140,9 @@ const PrintModal = () => {
     inputProps.checked = true;
   }
 
-  useEffect(() => {
-    onChange();
+  useEffect(() => {    
+    window.addEventListener(Events.DOCUMENT_LOADED, onChange);
+    
     dispatch(actions.closeElements([
       DataElements.SIGNATURE_MODAL,
       DataElements.LOADING_MODAL,
@@ -157,6 +159,7 @@ const PrintModal = () => {
     });
 
     return () => {
+      window.removeEventListener(Events.DOCUMENT_LOADED, onChange);
       core.setWatermark(existingWatermarksRef.current);
       setIsWatermarkModalVisible(false);
     };

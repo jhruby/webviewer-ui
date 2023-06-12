@@ -3,7 +3,6 @@ import { lazy } from 'react';
 const ContentEditLinkModal = lazy(() => import('components/ContentEditLinkModal'));
 const SignatureModal = lazy(() => import('components/SignatureModal'));
 const ScaleModal = lazy(() => import('components/ScaleModal'));
-const PrintModal = lazy(() => import('components/PrintModal'));
 const ErrorModal = lazy(() => import('components/ErrorModal'));
 const PasswordModal = lazy(() => import('components/PasswordModal'));
 const CreateStampModal = lazy(() => import('components/CreateStampModal'));
@@ -19,7 +18,6 @@ const LazyLoadComponents = {
   ContentEditLinkModal,
   SignatureModal,
   ScaleModal,
-  PrintModal,
   ErrorModal,
   PasswordModal,
   CreateStampModal,

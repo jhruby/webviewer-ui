@@ -80,6 +80,7 @@ import setLanguage from 'src/apis/setLanguage';
 
 import './App.scss';
 import FilterAnnotModal from "components/FilterAnnotModal";
+import PrintModal from "components/PrintModal";
 
 // TODO: Use constants
 const tabletBreakpoint = window.matchMedia('(min-width: 641px) and (max-width: 900px)');
@@ -327,7 +328,6 @@ const App = ({ removeEventHandlers }) => {
         <LazyLoadWrapper Component={LazyLoadComponents.ContentEditLinkModal} dataElement={DataElements.CONTENT_EDIT_LINK_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.SignatureModal} dataElement={DataElements.SIGNATURE_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.ScaleModal} dataElement={DataElements.SCALE_MODAL} />
-        <LazyLoadWrapper Component={LazyLoadComponents.PrintModal} dataElement={DataElements.PRINT_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.ErrorModal} dataElement={DataElements.ERROR_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.PasswordModal} dataElement={DataElements.PASSWORD_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.CreateStampModal} dataElement={DataElements.CUSTOM_STAMP_MODAL} />
@@ -348,6 +348,7 @@ const App = ({ removeEventHandlers }) => {
         <ColorPickerModal />
         {core.isFullPDFEnabled() && <SignatureValidationModal />}
         <OpenFileModal />
+        <PrintModal />
       </div>
 
       <PrintHandler />
