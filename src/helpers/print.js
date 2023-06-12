@@ -357,7 +357,10 @@ const printDocument = () => {
   window.addEventListener('beforeprint', onBeforePrint, { once: true });
   window.addEventListener('afterprint', onAfterPrint, { once: true });
 
-  window.print();
+  if (isChromeOniOS) //VA-9184
+    window.parent.print();
+  else 
+    window.print();
 };
 
 export const cancelPrint = () => {
