@@ -141,7 +141,20 @@ const PrintModal = () => {
   }
 
   useEffect(() => {    
-    window.addEventListener(Events.DOCUMENT_LOADED, onChange);
+    const onDocumentLoaded = ()=>{
+      onChange();
+      
+      core.getWatermark().then((watermark) => {
+        setAllowWatermarkModal(
+            watermark === undefined ||
+            watermark === null ||
+            Object.keys(watermark).length === 0
+        );
+        existingWatermarksRef.current = watermark;
+      });
+    }
+    
+    window.addEventListener(Events.DOCUMENT_LOADED, onDocumentLoaded);
     
     dispatch(actions.closeElements([
       DataElements.SIGNATURE_MODAL,
@@ -149,17 +162,9 @@ const PrintModal = () => {
       DataElements.PROGRESS_MODAL,
       DataElements.ERROR_MODAL,
     ]));
-    core.getWatermark().then((watermark) => {
-      setAllowWatermarkModal(
-        watermark === undefined ||
-        watermark === null ||
-        Object.keys(watermark).length === 0
-      );
-      existingWatermarksRef.current = watermark;
-    });
 
     return () => {
-      window.removeEventListener(Events.DOCUMENT_LOADED, onChange);
+      window.removeEventListener(Events.DOCUMENT_LOADED, onDocumentLoaded);
       core.setWatermark(existingWatermarksRef.current);
       setIsWatermarkModalVisible(false);
     };
