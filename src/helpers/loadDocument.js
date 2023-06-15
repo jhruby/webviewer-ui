@@ -1,21 +1,11 @@
 import { setCheckPasswordFunction } from 'components/PasswordModal';
+import core from 'core';
 import { fireError } from 'helpers/fireEvent';
 import getHashParameters from 'helpers/getHashParameters';
 import actions from 'actions';
 import DataElements from 'constants/dataElement';
 
-
-const loadModule = async (modulePath) => {
-  try {
-    return await import(modulePath)
-  } catch (e) {
-    window.parent.postMessage({cmd: "reload"}, "*");
-  }
-}
-
 export default (dispatch, src, options = {}, documentViewerKey = 1) => {
-  const core = loadModule('core');
-  
   core.closeDocument(documentViewerKey);
   options = { ...getDefaultOptions(), ...options };
 
