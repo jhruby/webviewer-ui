@@ -152,7 +152,7 @@ export const creatingPages = async (originalPagesToPrint, pagesToPrint, includeC
 };
 
 export const printPages = (pages) => {
-  if (canceledPrint) return;
+  if (canceledPrint) return true;
   
   const printHandler = document.getElementById('print-handler');
   printHandler.innerHTML = '';
@@ -321,6 +321,7 @@ export const printPages = (pages) => {
 
     printDocument();
   }
+  return false;
 };
 
 export const unloadCanvases = () =>{

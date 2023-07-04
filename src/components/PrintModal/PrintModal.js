@@ -281,11 +281,11 @@ const PrintModal = () => {
       runs === stepNumber + 1
     );
     
-    printPages(pages);
+    const canceled = printPages(pages);
     if (runs === stepNumber + 1) {
       closePrintModal();
     }
-    else {
+    else if (!canceled) {
       setStepNumber(stepNumber + 1);
     }
   };
