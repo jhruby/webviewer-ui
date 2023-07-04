@@ -378,7 +378,8 @@ export const getPrintableAnnotationNotes = (pages) => core
       !annotation.isReply() &&
       !annotation.isGrouped() &&
       annotation.Printable &&
-      annotation.Icon === "Comment"
+      annotation.Icon === "Comment" &&
+      !annotation.Hidden  
   );
 
 const creatingImage = (pageNumber, includeAnnotations, isPrintCurrentView, createCanvases = false, isGrayscale = false) => new Promise((resolve) => {
