@@ -221,6 +221,7 @@ const PrintModal = () => {
     }
 
     setPagesToPrint(pagesToPrint);
+    return pagesToPrint;
   };
 
   const onInputChange = () => {
@@ -232,8 +233,9 @@ const PrintModal = () => {
 
   const createPagesAndPrint = async (e) => {
     e.preventDefault();
+    const localPagesToPrint = onChange();
 
-    if (pagesToPrint.length < 1) {
+    if (localPagesToPrint.length < 1) {
       return;
     }
 
@@ -258,11 +260,11 @@ const PrintModal = () => {
     }
 
     const limit = printPageLimit === 0 ? Number.MAX_SAFE_INTEGER : printPageLimit;
-    const runs = Math.ceil(pagesToPrint.length / limit);
+    const runs = Math.ceil(localPagesToPrint.length / limit);
 
     const pages = await creatingPages(
-      pagesToPrint, 
-      pagesToPrint.slice(stepNumber * limit, Math.min((stepNumber + 1) * limit, pagesToPrint.length)),
+        localPagesToPrint,
+        localPagesToPrint.slice(stepNumber * limit, Math.min((stepNumber + 1) * limit, localPagesToPrint.length)),
       includeComments,
       includeAnnotations,
       printQuality,
@@ -270,7 +272,7 @@ const PrintModal = () => {
       colorMap,
       printedNoteDateFormat,
         ()=>{
-          localCount = localCount < pagesToPrint.length && (localCount !== -1 ? localCount + 1 : localCount);
+          localCount = localCount < localPagesToPrint.length && (localCount !== -1 ? localCount + 1 : localCount);
           setCount(localCount);
         } ,
       currentView.current?.checked,
