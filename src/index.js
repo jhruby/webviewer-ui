@@ -145,22 +145,8 @@ if (window.CanvasRenderingContext2D) {
   const documentViewer = addDocumentViewer(1);
 
   documentViewer.setOpenURIHandler((uri, isOpenInNewWindow) => {
-    store.dispatch(actions.showWarningMessage({
-      title: 'warning.connectToURL.title',
-      message: 'warning.connectToURL.message',
-      onConfirm: () => Promise.resolve(),
-      onSecondary: () => {
-        openURI(uri, isOpenInNewWindow);
-        return Promise.resolve();
-      },
-      confirmBtnText: 'action.cancel',
-      secondaryBtnText: 'action.confirm',
-      secondaryBtnClass: 'secondary-btn-custom',
-      templateStrings: {
-        uri,
-      },
-      modalClass: 'connect-to-url-modal'
-    }));
+    // VA-9465 We do not want to display a Security Warning dialog when opening a link.
+    openURI(uri, isOpenInNewWindow);
   });
 
   if (getHashParameters('hideDetachedReplies', false)) {
