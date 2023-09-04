@@ -698,3 +698,24 @@ export const setShortcutKeyMap = (shortcutKeyMap) => ({
   type: 'SET_SHORTCUT_KEY_MAP',
   payload: shortcutKeyMap
 });
+
+export const setPrintPageLimit = (limit) => ({
+  type: 'SET_PRINT_PAGE_LIMIT',
+  payload: { limit },
+});
+export const setCopyEnabled = (copy) => ({
+  type: 'SET_COPY_ENABLED',
+  payload: { copy },
+});
+export const setLimitAnnotationHighlightText = (limitAnnotationHighlightText) => ({
+  type: 'SET_LIMIT_ANNOTATION_HIGHLIGHT_TEXT',
+  payload: { limitAnnotationHighlightText },
+});
+export const setDisabledPrintRange = (disabledPrintRange) => ({
+  type: 'SET_DISABLED_PRINT_RANGE',
+  payload: { disabledPrintRange },
+});
+export const setPrintValidation = (printValidation) => ({
+  type: 'SET_PRINT_VALIDATION',
+  payload: { printValidation },
+});

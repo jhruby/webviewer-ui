@@ -275,6 +275,12 @@ import setGrayscaleDarknessFactor from './setGrayscaleDarknessFactor';
 import { ALIGNMENT } from 'constants/customizationVariables';
 import FlyoutsAPI from './FlyoutsAPI';
 import { getInstanceNode } from 'helpers/getRootNode';
+import setPrintPageLimit from './setPrintPageLimit';
+import setCopyEnabled from './setCopyEnabled';
+import setLimitAnnotationHighlightText from './setLimitAnnotationHighlightText';
+import setDisabledPrintRange from './setDisabledPrintRange';
+import setAnnotationFilters from './setAnnotationFilters';
+import setPrintValidation from './setPrintValidation';
 
 export default (store) => {
   const CORE_NAMESPACE = 'Core';
@@ -582,6 +588,12 @@ export default (store) => {
     getZoomStepFactors: getZoomStepFactors(store),
     setZoomStepFactors: setZoomStepFactors(store),
     getDocumentViewer,
+    setPrintPageLimit: setPrintPageLimit(store),
+    setCopyEnabled: setCopyEnabled(store),
+    setLimitAnnotationHighlightText: setLimitAnnotationHighlightText(store),
+    setDisabledPrintRange: setDisabledPrintRange(store),
+    setAnnotationFilters: setAnnotationFilters(store),
+    setPrintValidation: setPrintValidation(store)
   };
   const documentViewer = core.getDocumentViewer(1);
 

@@ -145,6 +145,9 @@ function NotesPanelHeader({
             title={t('component.filter')}
           />
         </div>
+        <div className="sort-row-last">
+          {(filterEnabled) ? <span>{t('message.filterApplied')}</span> : <span></span>}
+        </div>
       </DataElementWrapper>
     </DataElementWrapper>
   );

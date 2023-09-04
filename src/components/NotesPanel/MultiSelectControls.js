@@ -193,7 +193,7 @@ const MultiSelectControls = ({
         <Button
           dataElement={DataElements.NOTE_MULTI_STYLE_BUTTON}
           img="icon-menu-style-line"
-          disabled={modifiableMultiSelectAnnotations.length === 0}
+          disabled={multiSelectedAnnotations.length === 0}
           onClick={() => {
             setShowMultiStyle(!showMultiStyle);
           }}
@@ -201,7 +201,7 @@ const MultiSelectControls = ({
         />
         {showMultiStyle &&
           <MultiStylePopup
-            annotations={modifiableMultiSelectAnnotations}
+            annotations={multiSelectedAnnotations}
             triggerElementName="multiStyleButton"
             onClose={() => {
               setShowMultiStyle(false);
