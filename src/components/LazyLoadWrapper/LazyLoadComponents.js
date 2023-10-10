@@ -48,7 +48,6 @@ const CreatePortfolioModal = lazy(() => import('components/CreatePortfolioModal'
 
 // Panels
 const NotesPanel = lazy(() => import('components/NotesPanel'));
-const SearchPanel = lazy(() => import('components/SearchPanel'));
 
 const OfficeEditorToolsHeader = lazy(() => import('components/Header/OfficeEditorToolsHeader'));
 
@@ -93,7 +92,6 @@ const LazyLoadComponents = {
   SignatureValidationModal,
   CustomModal,
   NotesPanel,
-  SearchPanel,
   OfficeEditorToolsHeader,
   CreatePortfolioModal
 };

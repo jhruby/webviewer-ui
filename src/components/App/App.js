@@ -69,6 +69,7 @@ import setLanguage from 'src/apis/setLanguage';
 import './App.scss';
 import FilterAnnotModal from "components/FilterAnnotModal";
 import PrintModal from "components/PrintModal";
+import SearchPanel from "components/SearchPanel";
 
 // TODO: Use constants
 const tabletBreakpoint = window.matchMedia('(min-width: 641px) and (max-width: 900px)');
@@ -290,10 +291,7 @@ const App = ({ removeEventHandlers }) => {
           {window?.ResizeObserver && <MultiViewer />}
           <RightHeader />
           <RightPanel dataElement={DataElements.SEARCH_PANEL} onResize={(width) => dispatch(actions.setSearchPanelWidth(width))}>
-            <LazyLoadWrapper
-              Component={LazyLoadComponents.SearchPanel}
-              dataElement={DataElements.SEARCH_PANEL}
-            />
+            <SearchPanel />
           </RightPanel>
           <RightPanel dataElement="notesPanel" onResize={(width) => dispatch(actions.setNotesPanelWidth(width))}>
             {!notesInLeftPanel && <LazyLoadWrapper
