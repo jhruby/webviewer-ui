@@ -336,7 +336,9 @@ export const printPages = (pages) => {
       if (node.getElementById('print-handler')) {
         node.getElementById('print-handler').remove();
       }
-      node.appendChild(printHandler.cloneNode(true));
+      
+      const body = isApryseWebViewerWebComponent ? getRootNode() : window.parent.document.body;
+      body.appendChild(printHandler.cloneNode(true));
 
       if (!node.getElementById('print-handler-css')) {
         const style = getResetPrintStyle();
