@@ -8,7 +8,7 @@ import { disableElements, enableElements, setActiveFlyout } from 'actions/intern
 import defaultTool from 'constants/defaultTool';
 import { PRIORITY_TWO } from 'constants/actionPriority';
 import Events from 'constants/events';
-import { getCustomFlxPanels } from 'selectors/exposedSelectors';
+import { getCustomFlxPanels, getToolButtonDataElement, isElementDisabled as isElementDisabldCall } from 'selectors/exposedSelectors';
 import DataElements from 'constants/dataElement';
 
 export const disableApplyCropWarningModal = () => ({
@@ -149,7 +149,8 @@ export const allButtonsInGroupDisabled = (state, toolGroup) => {
     .filter(({ group }) => group === toolGroup)
     .map(({ dataElement }) => dataElement);
 
-  return dataElements.every((dataElement) => isElementDisabled(state, dataElement));
+  console.log(toolGroup);
+  return dataElements.every((dataElement) => {console.log(dataElement);console.log(isElementDisabled(state, dataElement)); return isElementDisabled(state, dataElement);});
 };
 
 export const setCurrentGroupedItem = (groupedItems) => (dispatch) => {
@@ -159,10 +160,25 @@ export const setCurrentGroupedItem = (groupedItems) => (dispatch) => {
   });
 };
 
+function isDisabled(state, lastPickedToolName) {
+  if (!lastPickedToolName) return true;
+  const element = getToolButtonDataElement(state, lastPickedToolName);
+  console.log(element);
+  return isElementDisabldCall(state, element);
+}
+
+function isGroupDisabled(state, lastPickedToolGroupElement) {
+  console.log(lastPickedToolGroupElement);
+  console.log(allButtonsInGroupDisabled(state, lastPickedToolGroupElement));
+  if (!lastPickedToolGroupElement || allButtonsInGroupDisabled(state, lastPickedToolGroupElement)) return undefined;
+  console.log(lastPickedToolGroupElement);
+  return lastPickedToolGroupElement;
+}
+
 export const setToolbarGroup = (toolbarGroup, pickTool = true, toolGroup = '') => (dispatch, getState) => {
   const getFirstToolGroupForToolbarGroup = (state, _toolbarGroup) => {
     const toolGroups = state.viewer.headers[_toolbarGroup];
-    let firstToolGroupForToolbarGroup = '';
+    let firstToolGroupForToolbarGroup = undefined;
     if (toolGroups) {
       const firstTool = Object.values(toolGroups).find(({ toolGroup, dataElement }) => {
         if (toolGroup && !isElementDisabled(state, dataElement) && !allButtonsInGroupDisabled(state, toolGroup)) {
@@ -174,15 +190,17 @@ export const setToolbarGroup = (toolbarGroup, pickTool = true, toolGroup = '') =
         firstToolGroupForToolbarGroup = firstTool.toolGroup;
       }
     }
+    console.log(firstToolGroupForToolbarGroup);
     return firstToolGroupForToolbarGroup;
   };
 
   const getFirstToolNameForGroup = (state, toolGroup) => {
     const tools = state.viewer.toolButtonObjects;
     const firstTool = Object.keys(tools).find((key) => {
-      return tools[key].group === toolGroup;
+      //console.log(tools[key]);
+      return tools[key].group === toolGroup && !isDisabled(state, key);
     });
-    return firstTool;
+    return firstTool ?? defaultTool;
   };
 
   if (toolbarGroup === 'toolbarGroup-View') {
@@ -194,10 +212,14 @@ export const setToolbarGroup = (toolbarGroup, pickTool = true, toolGroup = '') =
   } else {
     dispatch(openElements(['toolsHeader']));
     const state = getState();
+    console.log(toolGroup);
     const lastPickedToolGroup =
-      toolGroup || state.viewer.lastPickedToolGroup[toolbarGroup] || getFirstToolGroupForToolbarGroup(state, toolbarGroup);
+        !isGroupDisabled(state, toolGroup) || !isGroupDisabled(state, state.viewer.lastPickedToolGroup[toolbarGroup]) || getFirstToolGroupForToolbarGroup(state, toolbarGroup);
+    console.log(lastPickedToolGroup);
     const lastPickedToolName =
-      state.viewer.lastPickedToolForGroup[lastPickedToolGroup] || getFirstToolNameForGroup(state, lastPickedToolGroup);
+        !isDisabled(state, state.viewer.lastPickedToolForGroup[lastPickedToolGroup])
+        || getFirstToolNameForGroup(state, lastPickedToolGroup);
+    
     if (pickTool) {
       dispatch({
         type: 'SET_ACTIVE_TOOL_GROUP',
