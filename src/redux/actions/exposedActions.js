@@ -189,8 +189,8 @@ export const setToolbarGroup = (toolbarGroup, pickTool = true, toolGroup = '') =
     const toolGroupName = state.viewer.lastPickedToolGroup[toolbarGroup];
     if (!toolGroupName) return '';
 
-    const toolGroupElement = Object.values(state.viewer.headers[toolbarGroup]).find(({ toolGroup }) => toolGroup === toolGroupName).dataElement;
-    if (!isElementDisabled(state, toolGroupElement) && !allButtonsInGroupDisabled(state, toolGroupName))
+    const toolGroupElement = Object.values(state.viewer.headers[toolbarGroup]).find(({ toolGroup }) => toolGroup === toolGroupName)?.dataElement;
+    if (toolGroupElement != null && !isElementDisabled(state, toolGroupElement) && !allButtonsInGroupDisabled(state, toolGroupName))
       return toolGroupName;
     
     return '';    
