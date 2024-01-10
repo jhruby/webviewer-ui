@@ -59,6 +59,7 @@ export const Shortcuts = {
   STRIKEOUT: 'strikeout',
   UNDERLINE: 'underline',
   HOME: 'home',
+  ARIA_VIEWER: 'ariaViewer',
   END: 'end',
 };
 
@@ -283,6 +284,7 @@ export const ShortcutKeys = {
   [Shortcuts.STRIKEOUT]: Keys.K,
   [Shortcuts.UNDERLINE]: Keys.U,
   [Shortcuts.HOME]: Keys.HOME,
+  [Shortcuts.ARIA_VIEWER]: Keys.ALT_U,
   [Shortcuts.END]: Keys.END,
 };
 

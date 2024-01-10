@@ -8,7 +8,6 @@ import DataElements from 'constants/dataElement';
 import Button from 'components/Button';
 import DataElementWrapper from 'components/DataElementWrapper';
 import { FocusTrap } from '@pdftron/webviewer-react-toolkit';
-import { Swipeable } from 'react-swipeable';
 import GeneralTab from './GeneralTab';
 import KeyboardShortcutTab from './KeyboardShortcutTab';
 import AdvancedTab from './AdvancedTab';

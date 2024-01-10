@@ -205,7 +205,7 @@ const MultiSelectControls = ({
         />
         {showMultiStyle &&
           <MultiStylePopup
-            annotations={modifiableMultiSelectAnnotations}
+            annotations={multiSelectedAnnotations}
             triggerElementName="multiStyleButton"
             onClose={() => {
               setShowMultiStyle(false);
