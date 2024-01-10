@@ -25,13 +25,11 @@ const InlineCommentingPopup = lazy(() => import('components/InlineCommentingPopu
 const ContentEditLinkModal = lazy(() => import('components/ContentEditLinkModal'));
 const SignatureModal = lazy(() => import('components/SignatureModal'));
 const ScaleModal = lazy(() => import('components/ScaleModal'));
-const PrintModal = lazy(() => import('components/PrintModal'));
 const ErrorModal = lazy(() => import('components/ErrorModal'));
 const PasswordModal = lazy(() => import('components/PasswordModal'));
 const CreateStampModal = lazy(() => import('components/CreateStampModal'));
 const PageReplacementModal = lazy(() => import('components/PageReplacementModal'));
 const LinkModal = lazy(() => import('components/LinkModal'));
-const FilterAnnotModal = lazy(() => import('components/FilterAnnotModal'));
 const PageRedactionModal = lazy(() => import('components/PageRedactionModal'));
 const CalibrationModal = lazy(() => import('components/CalibrationModal'));
 const SettingsModal = lazy(() => import('components/SettingsModal'));
@@ -49,7 +47,6 @@ const CreatePortfolioModal = lazy(() => import('components/CreatePortfolioModal'
 
 // Panels
 const NotesPanel = lazy(() => import('components/NotesPanel'));
-const SearchPanel = lazy(() => import('components/SearchPanel'));
 
 const OfficeEditorToolsHeader = lazy(() => import('components/Header/OfficeEditorToolsHeader'));
 
@@ -74,13 +71,11 @@ const LazyLoadComponents = {
   ContentEditLinkModal,
   SignatureModal,
   ScaleModal,
-  PrintModal,
   ErrorModal,
   PasswordModal,
   CreateStampModal,
   PageReplacementModal,
   LinkModal,
-  FilterAnnotModal,
   PageRedactionModal,
   CalibrationModal,
   SettingsModal,
@@ -95,7 +90,6 @@ const LazyLoadComponents = {
   SignatureValidationModal,
   CustomModal,
   NotesPanel,
-  SearchPanel,
   OfficeEditorToolsHeader,
   CreatePortfolioModal
 };

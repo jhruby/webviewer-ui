@@ -4,7 +4,7 @@ import selectors from 'selectors';
 import core from 'core';
 import getPageArrayFromString from 'helpers/getPageArrayFromString';
 import getClassName from 'helpers/getClassName';
-import { creatingPages, printPages } from 'helpers/print';
+import { creatingPages, printPages, cancelPrint, unloadCanvases } from 'helpers/print';
 import LayoutMode from 'constants/layoutMode';
 import WatermarkModal from 'components/PrintModal/WatermarkModal';
 import Choice from 'components/Choice/Choice';
@@ -16,6 +16,7 @@ import getRootNode from 'helpers/getRootNode';
 
 import './PrintModal.scss';
 import DataElementWrapper from '../DataElementWrapper';
+import Events from "constants/events";
 
 const PrintModal = () => {
   const [
@@ -32,7 +33,10 @@ const PrintModal = () => {
     printedNoteDateFormat,
     language,
     watermarkModalOptions,
-    timezone
+    timezone,
+    printPageLimit,
+    disabledPrintRange,
+    validatePrint  
   ] = useSelector(
     (state) => [
       selectors.isElementDisabled(state, DataElements.PRINT_MODAL),
@@ -48,7 +52,10 @@ const PrintModal = () => {
       selectors.getPrintedNoteDateFormat(state),
       selectors.getCurrentLanguage(state),
       selectors.getWatermarkModalOptions(state),
-      selectors.getTimezone(state)
+      selectors.getTimezone(state),
+      selectors.getPrintPageLimit(state),
+      selectors.getDisabledPrintRange(state),
+      selectors.getPrintValidation(state)
     ],
     shallowEqual
   );
@@ -71,6 +78,9 @@ const PrintModal = () => {
   const [includeComments, setIncludeComments] = useState(false);
   const [maintainPageOrientation, setMaintainPageOrientation] = useState(false);
   const [isGrayscale, setIsGrayscale] = useState(false);
+  const [buttonEnabled, setButtonEnabled] = useState(true);
+  const [stepNumber, setStepNumber] = useState(0);
+  const [isPrinting, setIsPrinting] = useState(false);
 
   useEffect(() => {
     if (defaultPrintOptions) {
@@ -94,15 +104,20 @@ const PrintModal = () => {
         print.parentElement.setAttribute('style', 'height: 100%;');
       }
     };
+    
+    const enableButton = () => {
+      setButtonEnabled(true);
+    };
 
     window.addEventListener('beforeprint', adjustHeightIfSinglePage);
+    window.addEventListener('afterprint', enableButton);
 
     return () => {
       window.removeEventListener('beforeprint', adjustHeightIfSinglePage);
+      window.removeEventListener('afterprint', enableButton);
     };
   }, []);
 
-  const isPrinting = count >= 0;
   const className = getClassName('Modal PrintModal', { isOpen });
   const customPagesLabelElement = (
     <>
@@ -119,24 +134,38 @@ const PrintModal = () => {
     </>
   );
 
-  useEffect(() => {
-    onChange();
+  const inputProps = {
+  };
+
+  if (disabledPrintRange) {
+    inputProps.checked = true;
+  }
+
+  useEffect(() => {    
+    const onDocumentLoaded = ()=>{
+      onChange();
+      
+      core.getWatermark().then((watermark) => {
+        setAllowWatermarkModal(
+            watermark === undefined ||
+            watermark === null ||
+            Object.keys(watermark).length === 0
+        );
+        existingWatermarksRef.current = watermark;
+      });
+    }
+    
+    window.addEventListener(Events.DOCUMENT_LOADED, onDocumentLoaded);
+    
     dispatch(actions.closeElements([
       DataElements.SIGNATURE_MODAL,
       DataElements.LOADING_MODAL,
       DataElements.PROGRESS_MODAL,
       DataElements.ERROR_MODAL,
     ]));
-    core.getWatermark().then((watermark) => {
-      setAllowWatermarkModal(
-        watermark === undefined ||
-        watermark === null ||
-        Object.keys(watermark).length === 0
-      );
-      existingWatermarksRef.current = watermark;
-    });
 
     return () => {
+      window.removeEventListener(Events.DOCUMENT_LOADED, onDocumentLoaded);
       core.setWatermark(existingWatermarksRef.current);
       setIsWatermarkModalVisible(false);
     };
@@ -193,16 +222,37 @@ const PrintModal = () => {
     }
 
     setPagesToPrint(pagesToPrint);
+    return pagesToPrint;
   };
 
-  const createPagesAndPrint = (e) => {
-    e.preventDefault();
+  const onInputChange = () => {
+    if (!this.customPages.current.checked) {
+      this.customPages.current.click();
+      this.onChange();
+    }
+  };
 
-    if (pagesToPrint.length < 1) {
+  const createPagesAndPrint = async (e) => {
+    e.preventDefault();
+    const localPagesToPrint = onChange();
+
+    if (localPagesToPrint.length < 1) {
       return;
     }
 
-    setCount(0);
+    window.parent.loadingForPrint = true;
+    setButtonEnabled(false);
+    unloadCanvases();
+    let localCount = count;
+    
+    if (stepNumber === 0) {
+      if (validatePrint && !(await validatePrint())){
+        return;
+      }
+      setCount(0);
+      localCount = 0;
+      setIsPrinting(true);
+    }
 
     if (allowWatermarkModal) {
       core.setWatermark(watermarkModalOptions);
@@ -210,39 +260,45 @@ const PrintModal = () => {
       core.setWatermark(existingWatermarksRef.current);
     }
 
-    const createPages = creatingPages(
-      pagesToPrint,
+    const limit = printPageLimit === 0 ? Number.MAX_SAFE_INTEGER : printPageLimit;
+    const runs = Math.ceil(localPagesToPrint.length / limit);
+
+    const pages = await creatingPages(
+        localPagesToPrint,
+        localPagesToPrint.slice(stepNumber * limit, Math.min((stepNumber + 1) * limit, localPagesToPrint.length)),
       includeComments,
       includeAnnotations,
-      maintainPageOrientation,
       printQuality,
       sortStrategy,
       colorMap,
       printedNoteDateFormat,
-      undefined,
+        ()=>{
+          localCount = localCount < localPagesToPrint.length && (localCount !== -1 ? localCount + 1 : localCount);
+          setCount(localCount);
+        } ,
       currentView.current?.checked,
       language,
       false,
       isGrayscale,
-      timezone
+      timezone,
+      runs === stepNumber + 1
     );
-    createPages.forEach(async (pagePromise) => {
-      await pagePromise;
-      setCount(count < pagesToPrint.length && (count !== -1 ? count + 1 : count));
-    });
-    Promise.all(createPages)
-      .then((pages) => {
-        printPages(pages);
-        closePrintModal();
-      })
-      .catch((e) => {
-        console.error(e);
-        setCount(-1);
-      });
+    
+    const canceled = printPages(pages);
+    if (runs === stepNumber + 1) {
+      closePrintModal();
+    }
+    else if (!canceled) {
+      setStepNumber(stepNumber + 1);
+    }
   };
 
   const closePrintModal = () => {
+    window.parent.loadingForPrint = false;
     setCount(-1);
+    setIsPrinting(false);
+    setStepNumber(0);
+    setButtonEnabled(true);
     dispatch(actions.closeElement(DataElements.PRINT_MODAL));
   };
 
@@ -250,7 +306,12 @@ const PrintModal = () => {
     setIsWatermarkModalVisible(visible);
   };
 
-  return isDisabled ? null : (
+  const onCancelPrint = () =>{
+    cancelPrint();
+    closePrintModal();
+  }
+
+  return isDisabled && !buttonEnabled ? null : (
     <>
       <WatermarkModal
         isVisible={!!(isOpen && isWatermarkModalVisible)}
@@ -264,8 +325,8 @@ const PrintModal = () => {
         data-element={DataElements.PRINT_MODAL}
       >
         <ModalWrapper
+            containerOnClick={(e) => e.stopPropagation()} onCloseClick={onCancelPrint}
           isOpen={isOpen && !isWatermarkModalVisible} title={'option.print.printSettings'}
-          containerOnClick={(e) => e.stopPropagation()} onCloseClick={closePrintModal}
           closeButtonDataElement={'printModalCloseButton'}
           swipeToClose
           closeHandler={closePrintModal}
@@ -273,13 +334,15 @@ const PrintModal = () => {
           <div className="swipe-indicator" />
           <div className="settings">
             <div className="section">
-              <div className="section-label">{`${t('option.print.pages')}:`}</div>
+                <span className={"disabledPrintRangeWarning" + (disabledPrintRange ? '' : ' displayNone')}>{`${t('warning.print.current')}`}</span>
+                <div style={{display: disabledPrintRange ? 'none' : 'initial'}} className="section-label">{`${t('option.print.pages')}:`}</div>
               <form
                 className="settings-form"
                 onChange={onChange}
                 onSubmit={createPagesAndPrint}
               >
                 <Choice
+                    className={disabledPrintRange ? 'displayNone' : ''}
                   dataElement="allPagesPrintOption"
                   ref={allPages}
                   id="all-pages"
@@ -291,6 +354,7 @@ const PrintModal = () => {
                   center
                 />
                 <Choice
+                    className={disabledPrintRange ? 'displayNone' : ''}  
                   dataElement="currentPagePrintOption"
                   ref={currentPageRef}
                   id="current-page"
@@ -299,8 +363,9 @@ const PrintModal = () => {
                   label={t('option.print.current')}
                   disabled={isPrinting}
                   center
+                    {...inputProps}
                 />
-                <Choice
+                  {/*<Choice
                   dataElement="currentViewPrintOption"
                   ref={currentView}
                   id="current-view"
@@ -309,13 +374,13 @@ const PrintModal = () => {
                   label={t('option.print.view')}
                   disabled={isPrinting}
                   center
-                />
+                  />*/}
                 <Choice
                   dataElement="customPagesPrintOption"
                   ref={customPages}
                   id="custom-pages"
                   name="pages"
-                  className="specify-pages-choice"
+                    className={"specify-pages-choice" + (disabledPrintRange ? ' displayNone' : '')}
                   radio
                   label={customPagesLabelElement}
                   disabled={isPrinting}
@@ -362,13 +427,19 @@ const PrintModal = () => {
                   onChange={(e) => dispatch(actions.setPrintQuality(Number(e.target.value)))}
                   value={printQuality}
                 >
-                  <option value="2">{`${t('option.print.qualityHigh')}`}</option>
-                  <option value="1">{`${t('option.print.qualityNormal')}`}</option>
+                    <option value="5">{`${t('option.print.qualityHigh')}`}</option>
+                    <option value="3">{`${t('option.print.qualityNormal')}`}</option>
+                    <option value="2">{`${t('option.print.qualityMobile')}`}</option>
                 </select>
               </label>
               <div className="total">
                 {isPrinting ? (
-                  <div>{`${t('message.processing')} ${count}/${pagesToPrint.length}`}</div>
+                    <div className="print-progress-container">
+                      <div><b>{`${t('message.processing')} ${count}/${pagesToPrint.length}`}</b></div>
+                      <div className="progress-bar">
+                        <div style={{width: `${Math.round(count / pagesToPrint.length * 100)}%`}}></div>
+                      </div>
+                    </div> 
                 ) : (
                   <div>{t('message.printTotalPageCount', { count: pagesToPrint.length })}</div>
                 )}
@@ -395,11 +466,22 @@ const PrintModal = () => {
           <div className="divider"></div>
           <div className="buttons">
             <button
-              className="button"
+                  className="button cancel-button"
+                  name="cancel-button"
+                  onClick={onCancelPrint}
+                  key="cancel"
+              >
+                {t('action.cancel')}
+              </button>
+              <button
+                name="print-button"
+                data-step={stepNumber}
+                className="button"
               onClick={createPagesAndPrint}
-              disabled={isPrinting || pagesToPrint.length < 1}
+                disabled={!buttonEnabled}
+                key="print"
             >
-              {t('action.print')}
+                {stepNumber === 0 ? t('action.print') : t('action.continue')}
             </button>
           </div>
         </ModalWrapper>
