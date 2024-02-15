@@ -170,6 +170,7 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
   const {
     includeAnnotations,
     includeComments,
+    maintainPageOrientation,
     onProgress,
     printQuality = PRINT_QUALITY,
     printWithoutModal = false,
@@ -212,21 +213,22 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
     }
 
     creatingPages(
-      pagesToPrint, 
-      pagesToPrint,
-      includeComments,
-      includeAnnotations,
-      printQuality,
-      sortStrategy,
-      colorMap,
-      dateFormat,
-      onProgress,
-      isPrintCurrentView,
-      language,
-      false,
-      isGrayscale,
-      timezone,
-      true
+        pagesToPrint,
+        pagesToPrint,
+        includeComments,
+        includeAnnotations,
+        maintainPageOrientation,
+        printQuality,
+        sortStrategy,
+        colorMap,
+        dateFormat,
+        onProgress,
+        isPrintCurrentView,
+        language,
+        false,
+        isGrayscale,
+        timezone,
+        true
     ).then((pages) => {
       printPages(pages);
     }).catch((e) => {
@@ -240,28 +242,28 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
 const printPdf = () => core.exportAnnotations().then((xfdfString) => {
   const printDocument = true;
   return core
-    .getDocument()
-    .getFileData({ xfdfString, printDocument })
-    .then((data) => {
-      const arr = new Uint8Array(data);
-      const blob = new Blob([arr], { type: 'application/pdf' });
-      const printHandler = getRootNode().getElementById('print-handler');
-      printHandler.src = URL.createObjectURL(blob);
+      .getDocument()
+      .getFileData({ xfdfString, printDocument })
+      .then((data) => {
+        const arr = new Uint8Array(data);
+        const blob = new Blob([arr], { type: 'application/pdf' });
+        const printHandler = getRootNode().getElementById('print-handler');
+        printHandler.src = URL.createObjectURL(blob);
 
-      return new Promise((resolve) => {
-        const loadListener = function() {
-          printHandler.contentWindow.print();
-          printHandler.removeEventListener('load', loadListener);
+        return new Promise((resolve) => {
+          const loadListener = function() {
+            printHandler.contentWindow.print();
+            printHandler.removeEventListener('load', loadListener);
 
-          resolve();
-        };
+            resolve();
+          };
 
-        printHandler.addEventListener('load', loadListener);
+          printHandler.addEventListener('load', loadListener);
+        });
       });
-    });
 });
 
-export const creatingPages = async (originalPagesToPrint, pagesToPrint, includeComments, includeAnnotations, printQuality, sortStrategy, clrMap, dateFormat, onProgress, isPrintCurrentView, language, createCanvases = false, isGrayscale = false, timezone, lastRun) => {
+export const creatingPages = async (originalPagesToPrint, pagesToPrint, includeComments, includeAnnotations, maintainPageOrientation, printQuality, sortStrategy, clrMap, dateFormat, onProgress, isPrintCurrentView, language, createCanvases = false, isGrayscale = false, timezone, lastRun) => {
   const createdPages = [];
   pendingCanvases = [];
   PRINT_QUALITY = printQuality;
@@ -272,7 +274,7 @@ export const creatingPages = async (originalPagesToPrint, pagesToPrint, includeC
   for (const pageNumber of pagesToPrint) {
     if (canceledPrint)
       break;
-    const img = await creatingImage(pageNumber, includeAnnotations, isPrintCurrentView, createCanvases, isGrayscale);
+    const img = await creatingImage(pageNumber, includeAnnotations, maintainPageOrientation, isPrintCurrentView, createCanvases, isGrayscale);
     createdPages.push(img);
     if (onProgress) {
       onProgress(pageNumber, img);
@@ -302,7 +304,7 @@ const getResetPrintStyle = () => {
 export const printPages = (pages) => {
   if (canceledPrint) return true;
   const printHandler = getRootNode().getElementById('print-handler');
-  
+
   printHandler.innerHTML = '';
   const isApryseWebViewerWebComponent = window.isApryseWebViewerWebComponent;
 
@@ -337,7 +339,7 @@ export const printPages = (pages) => {
       if (node.getElementById('print-handler')) {
         node.getElementById('print-handler').remove();
       }
-      
+
       const body = isApryseWebViewerWebComponent ? getRootNode() : window.parent.document.body;
       body.appendChild(printHandler.cloneNode(true));
 
@@ -395,7 +397,7 @@ const printDocument = () => {
   window.addEventListener('afterprint', onAfterPrint, { once: true });
   if (isChromeOniOS) //VA-9184
     window.parent.print();
-  else 
+  else
     window.print();
 };
 
@@ -407,20 +409,20 @@ export const cancelPrint = () => {
 };
 
 export const getPrintableAnnotationNotes = (pages) => core
-  .getAnnotationsList()
-  .filter(
-    (annotation) => pages.indexOf(annotation.PageNumber) !== -1 && 
-      annotation.Listable &&
-      !annotation.isReply() &&
-      !annotation.isGrouped() &&
-      annotation.Printable &&
-      annotation.Icon === "Comment" &&
-      !annotation.Hidden  
-  );
+    .getAnnotationsList()
+    .filter(
+        (annotation) => pages.indexOf(annotation.PageNumber) !== -1 &&
+            annotation.Listable &&
+            !annotation.isReply() &&
+            !annotation.isGrouped() &&
+            annotation.Printable &&
+            annotation.Icon === "Comment" &&
+            !annotation.Hidden
+    );
 
-const creatingImage = (pageNumber, includeAnnotations, isPrintCurrentView, createCanvases = false, isGrayscale = false) => new Promise((resolve) => {
+const creatingImage = (pageNumber, includeAnnotations, maintainPageOrientation, isPrintCurrentView, createCanvases = false, isGrayscale = false) => new Promise((resolve) => {
   const pageIndex = pageNumber - 1;
-  const printRotation = getPrintRotation(pageIndex);
+  const printRotation = getPrintRotation(pageIndex, maintainPageOrientation);
   const onCanvasLoaded = async (canvas) => {
     pendingCanvases = pendingCanvases.filter((pendingCanvas) => pendingCanvas !== id);
     positionCanvas(canvas, pageIndex);
@@ -530,7 +532,7 @@ export const creatingNotesPage = (annotations, dateFormat, language, timezone) =
   header.innerHTML = `<th>${i18n.t('option.shared.pageNumber')}</th><th>${i18n.t('option.shared.notes')}</th>`;
 
   table.appendChild(header);
-  
+
   annotations.forEach((annotation) => {
     const note = getNote(annotation, dateFormat, language, timezone);
 
@@ -542,21 +544,22 @@ export const creatingNotesPage = (annotations, dateFormat, language, timezone) =
   return container;
 };
 
-const getPrintRotation = (pageIndex) => {
+const getPrintRotation = (pageIndex, maintainPageOrientation) => {
+  if (!maintainPageOrientation) {
     const { width, height } = core.getPageInfo(pageIndex + 1);
     const documentRotation = getDocumentRotation(pageIndex);
     let printRotation = (4 - documentRotation) % 4;
 
     // automatically rotate pages so that they fill up as much of the printed page as possible
-    /*if (printRotation % 2 === 0 && width > height) {
+    if (printRotation % 2 === 0 && width > height) {
       printRotation++;
     } else if (printRotation % 2 === 1 && height > width) {
       printRotation = 0;
     }
     return printRotation;
-  }*/
+  }
 
-  return printRotation;
+  return core.getRotation(pageIndex + 1);
 };
 
 const positionCanvas = (canvas, pageIndex) => {
@@ -611,8 +614,8 @@ const drawAnnotationsOnCanvas = (canvas, pageNumber, isGrayscale) => {
   }
 
   const widgetAnnotations = core
-    .getAnnotationsList()
-    .filter((annotation) => annotation.PageNumber === pageNumber && annotation instanceof window.Core.Annotations.WidgetAnnotation);
+      .getAnnotationsList()
+      .filter((annotation) => annotation.PageNumber === pageNumber && annotation instanceof window.Core.Annotations.WidgetAnnotation);
   // just draw markup annotations
   if (widgetAnnotations.length === 0) {
     return core.drawAnnotations(pageNumber, canvas);
@@ -637,14 +640,10 @@ const drawAnnotationsOnCanvas = (canvas, pageNumber, isGrayscale) => {
 
 const getDocumentRotation = (pageIndex) => {
   const pageNumber = pageIndex + 1;
-  //const completeRotation = core.getCompleteRotation(pageNumber);
+  const completeRotation = core.getCompleteRotation(pageNumber);
   const viewerRotation = core.getRotation(pageNumber);
 
-  //return (completeRotation - viewerRotation + 4) % 4;
-  var result = (viewerRotation + 4) % 4;
-  if (result === 1) result = 3;
-  else if (result === 3) result = 1;
-  return result;
+  return (completeRotation - viewerRotation + 4) % 4;
 };
 
 const getNote = (annotation, dateFormat, language, timezone) => {
