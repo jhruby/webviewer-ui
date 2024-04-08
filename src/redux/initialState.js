@@ -792,17 +792,17 @@ export default {
     ],
     multiPageManipulationControlsLarge: [
       { dataElement: 'leftPanelPageTabsRotate' },
-      { type: 'divider' },
+      //{ type: 'divider' },
       { dataElement: 'leftPanelPageTabsMove' },
-      { type: 'divider' },
+      //{ type: 'divider' },
       { dataElement: 'leftPanelPageTabsOperations' },
     ],
     multiPageManipulationControlsSmall: [
       { dataElement: 'leftPanelPageTabsRotate' },
-      { type: 'divider' },
+      //{ type: 'divider' },
       { dataElement: 'leftPanelPageTabsMoreSmall' },
     ],
-    thumbnailControlMenu: [{ dataElement: 'thumbRotateClockwise' }, { dataElement: 'thumbDelete' }],
+    thumbnailControlMenu: [{ dataElement: 'thumbRotateCounterClockwise' }, { dataElement: 'thumbRotateClockwise' }, { dataElement: 'thumbDelete' }],
     toolButtonObjects: {
       AnnotationCreateCountMeasurement: {
         dataElement: 'countMeasurementToolButton',
