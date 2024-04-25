@@ -67,6 +67,11 @@ export default (store, documentViewerKey) => async () => {
   // TODO compare: integrate with panels
   if (documentViewerKey === 1) {
     core.getOutlines((outlines) => {
+      if (!outlines || outlines.length === 0) {
+        setTimeout(() => {
+            core.getOutlines((outlines) => dispatch(actions.setOutlines(outlines)), documentViewerKey);
+        },3000);
+      }
       dispatch(actions.setOutlines(outlines));
     }, documentViewerKey);
 
