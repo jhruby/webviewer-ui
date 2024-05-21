@@ -69,6 +69,9 @@ import { defaultPanels } from '../../redux/modularComponents';
 import setLanguage from 'src/apis/setLanguage';
 import { loadDefaultFonts } from 'src/helpers/loadFont';
 import './App.scss';
+import FilterAnnotModal from "components/FilterAnnotModal";
+import PrintModal from "components/PrintModal";
+import SearchPanel from "components/SearchPanel";
 import LayersPanel from 'components/LayersPanel';
 import MultiViewerWrapper from 'components/MultiViewer/MultiViewerWrapper';
 import FeatureFlags from 'constants/featureFlags';
@@ -271,7 +274,7 @@ const App = ({ removeEventHandlers }) => {
 
   // These need to be done here to wait for the persisted values loaded in redux
   useEffect(() => {
-    setLanguage(store)(store.getState().viewer.currentLanguage);
+    //setLanguage(store)(store.getState().viewer.currentLanguage);
     hotkeysManager.initialize(store);
     setDefaultDisabledElements(store);
   }, []);
@@ -394,10 +397,7 @@ const App = ({ removeEventHandlers }) => {
           {window?.ResizeObserver && <MultiViewer />}
           <RightHeader />
           {!customizableUI && <RightPanel dataElement={DataElements.SEARCH_PANEL} onResize={(width) => dispatch(actions.setSearchPanelWidth(width))}>
-            <LazyLoadWrapper
-              Component={LazyLoadComponents.SearchPanel}
-              dataElement={DataElements.SEARCH_PANEL}
-            />
+            <SearchPanel />
           </RightPanel>}
           {!customizableUI && <RightPanel dataElement="notesPanel" onResize={(width) => dispatch(actions.setNotesPanelWidth(width))}>
             {!notesInLeftPanel && <LazyLoadWrapper
@@ -514,7 +514,6 @@ const App = ({ removeEventHandlers }) => {
         />
         <LazyLoadWrapper Component={LazyLoadComponents.ContentEditLinkModal} dataElement={DataElements.CONTENT_EDIT_LINK_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.SignatureModal} dataElement={DataElements.SIGNATURE_MODAL} />
-        <LazyLoadWrapper Component={LazyLoadComponents.PrintModal} dataElement={DataElements.PRINT_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.ErrorModal} dataElement={DataElements.ERROR_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.PasswordModal} dataElement={DataElements.PASSWORD_MODAL} />
         <LazyLoadWrapper
@@ -530,7 +529,6 @@ const App = ({ removeEventHandlers }) => {
           dataElement={DataElements.LINK_MODAL}
           onOpenHook={useOnRightClickAnnotation}
         />
-        <LazyLoadWrapper Component={LazyLoadComponents.FilterAnnotModal} dataElement={DataElements.FILTER_MODAL} />
         <LazyLoadWrapper
           Component={LazyLoadComponents.PageRedactionModal}
           dataElement={DataElements.PAGE_REDACT_MODAL}
@@ -540,6 +538,7 @@ const App = ({ removeEventHandlers }) => {
         <LazyLoadWrapper Component={LazyLoadComponents.SaveModal} dataElement={DataElements.SAVE_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.InsertPageModal} dataElement={DataElements.INSERT_PAGE_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.LoadingModal} dataElement={DataElements.LOADING_MODAL} />
+        <FilterAnnotModal />
 
         {
           /*
@@ -558,6 +557,7 @@ const App = ({ removeEventHandlers }) => {
           Component={LazyLoadComponents.ColorPickerModal}
           dataElement={DataElements.COLOR_PICKER_MODAL}
         />
+        <PrintModal />
         <LazyLoadWrapper Component={LazyLoadComponents.OpenFileModal} dataElement={DataElements.OPEN_FILE_MODAL} />
         {customModals.length > 0 && (
           <LazyLoadWrapper Component={LazyLoadComponents.CustomModal} dataElement={DataElements.CUSTOM_MODAL} />

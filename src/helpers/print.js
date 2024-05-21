@@ -16,9 +16,11 @@ import { getCurrentViewRect, doesCurrentViewContainEntirePage } from './printCur
 import { adjustListBoxForPrint } from './printHTMLToCanvasHelper';
 
 let pendingCanvases = [];
+let renderedCanvases = [];
 let PRINT_QUALITY = 1;
 let colorMap;
 let grayscaleDarknessFactor = 1;
+let canceledPrint = false;
 const printResetStyle = `
 #print-handler {
   display: none;
@@ -27,6 +29,57 @@ const printResetStyle = `
 @media print {
   * {
     display: none! important;
+  }
+  
+  #print-handler * {
+    display: initial !important;  
+  }
+  
+  #print-handler .page__container h1 {
+    padding: 40px 0 0 40px;
+    margin: 0;
+    color: #485056;
+  }
+
+  #print-handler .page__container .print__table {
+    display: table !important;
+    color: black;
+    margin: 40px;
+    width: calc(100% - 80px) !important;
+    border-collapse: separate !important; /*firefox border fix*/
+    border-spacing: 0;
+    font-size: 1rem;
+  }
+
+  #print-handler .page__container .print__table tr th:first-child,
+  #print-handler .page__container .print__table tr td:first-child {
+    width: 100px !important;      
+  }
+
+  #print-handler .page__container .print__table tr {
+    display: table-row !important;
+  }
+  
+  #print-handler .page__container .print__table tr td {
+    display: table-cell !important;
+    border-bottom: solid lightgrey 1px;
+    vertical-align: top;
+  }
+
+  #print-handler .page__container .print__table tr td ul {
+    display: block !important;
+    margin: 0;
+    padding-left: 30px;
+  }
+    
+  #print-handler .page__container .print__table tr td ul li {
+    display: list-item !important;
+  }
+
+  #print-handler .page__container .print__table tr th {
+    display: table-cell !important;
+    border-bottom: solid grey 1px;
+    text-align: left;
   }
 
   @page {
@@ -211,29 +264,28 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
       pagesToPrint = [core.getDocumentViewer().getCurrentPage()];
     }
 
-    const createPages = creatingPages(
-      pagesToPrint,
-      includeComments,
-      includeAnnotations,
-      maintainPageOrientation,
-      printQuality,
-      sortStrategy,
-      colorMap,
-      dateFormat,
-      onProgress,
-      isPrintCurrentView,
-      language,
-      false,
-      isGrayscale,
-      timezone,
-    );
-    Promise.all(createPages)
-      .then((pages) => {
-        printPages(pages);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    creatingPages(
+        pagesToPrint,
+        pagesToPrint,
+        includeComments,
+        includeAnnotations,
+        maintainPageOrientation,
+        printQuality,
+        sortStrategy,
+        colorMap,
+        dateFormat,
+        onProgress,
+        isPrintCurrentView,
+        language,
+        false,
+        isGrayscale,
+        timezone,
+        true
+    ).then((pages) => {
+      printPages(pages);
+    }).catch((e) => {
+      console.error(e);
+    });
   } else {
     dispatch(actions.openElement('printModal'));
   }
@@ -242,55 +294,54 @@ export const print = async (dispatch, isEmbedPrintSupported, sortStrategy, color
 const printPdf = () => core.exportAnnotations().then((xfdfString) => {
   const printDocument = true;
   return core
-    .getDocument()
-    .getFileData({ xfdfString, printDocument })
-    .then((data) => {
-      const arr = new Uint8Array(data);
-      const blob = new Blob([arr], { type: 'application/pdf' });
-      const printHandler = getRootNode().getElementById('print-handler');
-      printHandler.src = URL.createObjectURL(blob);
+      .getDocument()
+      .getFileData({ xfdfString, printDocument })
+      .then((data) => {
+        const arr = new Uint8Array(data);
+        const blob = new Blob([arr], { type: 'application/pdf' });
+        const printHandler = getRootNode().getElementById('print-handler');
+        printHandler.src = URL.createObjectURL(blob);
 
-      return new Promise((resolve) => {
-        const loadListener = function() {
-          printHandler.contentWindow.print();
-          printHandler.removeEventListener('load', loadListener);
+        return new Promise((resolve) => {
+          const loadListener = function() {
+            printHandler.contentWindow.print();
+            printHandler.removeEventListener('load', loadListener);
 
-          resolve();
-        };
+            resolve();
+          };
 
-        printHandler.addEventListener('load', loadListener);
+          printHandler.addEventListener('load', loadListener);
+        });
       });
-    });
 });
 
-export const creatingPages = (pagesToPrint, includeComments, includeAnnotations, maintainPageOrientation, printQuality, sortStrategy, clrMap, dateFormat, onProgress, isPrintCurrentView, language, createCanvases = false, isGrayscale = false, timezone) => {
+export const creatingPages = async (originalPagesToPrint, pagesToPrint, includeComments, includeAnnotations, maintainPageOrientation, printQuality, sortStrategy, clrMap, dateFormat, onProgress, isPrintCurrentView, language, createCanvases = false, isGrayscale = false, timezone, lastRun) => {
   const createdPages = [];
   pendingCanvases = [];
   PRINT_QUALITY = printQuality;
   colorMap = clrMap;
 
-  pagesToPrint.forEach((pageNumber) => {
-    createdPages.push(creatingImage(pageNumber, includeAnnotations, maintainPageOrientation, isPrintCurrentView, createCanvases, isGrayscale));
+  canceledPrint = false;
 
+  for (const pageNumber of pagesToPrint) {
+    if (canceledPrint)
+      break;
+    const img = await creatingImage(pageNumber, includeAnnotations, maintainPageOrientation, isPrintCurrentView, createCanvases, isGrayscale);
+    createdPages.push(img);
     if (onProgress) {
-      createdPages[createdPages.length - 1].then((htmlElement) => {
-        onProgress(pageNumber, htmlElement);
-      });
+      onProgress(pageNumber, img);
     }
+  }
 
-    const printableAnnotationNotes = getPrintableAnnotationNotes(pageNumber);
+  if (lastRun) {
+    const printableAnnotationNotes = getPrintableAnnotationNotes(originalPagesToPrint);
     if (includeComments && printableAnnotationNotes) {
       const sortedNotes = getSortStrategies()[sortStrategy].getSortedNotes(printableAnnotationNotes);
       if (sortedNotes.length) {
-        createdPages.push(creatingNotesPage(sortedNotes, pageNumber, dateFormat, language, timezone));
-      }
-      if (onProgress) {
-        createdPages[createdPages.length - 1].then((htmlElement) => {
-          onProgress(pageNumber, htmlElement);
-        });
+        createdPages.push(creatingNotesPage(sortedNotes, dateFormat, language, timezone));
       }
     }
-  });
+  }
 
   return createdPages;
 };
@@ -303,7 +354,9 @@ const getResetPrintStyle = () => {
 };
 
 export const printPages = (pages) => {
+  if (canceledPrint) return true;
   const printHandler = getRootNode().getElementById('print-handler');
+
   printHandler.innerHTML = '';
   const isApryseWebViewerWebComponent = window.isApryseWebViewerWebComponent;
 
@@ -338,7 +391,9 @@ export const printPages = (pages) => {
       if (node.getElementById('print-handler')) {
         node.getElementById('print-handler').remove();
       }
-      node.appendChild(printHandler.cloneNode(true));
+
+      const body = isApryseWebViewerWebComponent ? getRootNode() : window.parent.document.body;
+      body.appendChild(printHandler.cloneNode(true));
 
       if (!node.getElementById('print-handler-css')) {
         const style = getResetPrintStyle();
@@ -354,7 +409,20 @@ export const printPages = (pages) => {
 
     printDocument();
   }
+  return false;
 };
+
+export const unloadCanvases = () =>{
+  const doc = core.getDocument();
+  renderedCanvases.forEach(c => {
+    try {
+      doc.unloadCanvasResources(c.id);
+      c.img.parentNode.removeChild(c.img);
+    }
+    catch (e){} //ignore
+  });
+  renderedCanvases = [];
+}
 
 const printDocument = () => {
   const doc = core.getDocument();
@@ -384,23 +452,30 @@ const printDocument = () => {
 
   window.addEventListener('beforeprint', onBeforePrint, { once: true });
   window.addEventListener('afterprint', onAfterPrint, { once: true });
-  window.print();
+  if (isChromeOniOS) //VA-9184
+    window.parent.print();
+  else
+    window.print();
 };
 
 export const cancelPrint = () => {
   const doc = core.getDocument();
   pendingCanvases.forEach((id) => doc.cancelLoadCanvas(id));
+  canceledPrint = true;
+  unloadCanvases();
 };
 
-export const getPrintableAnnotationNotes = (pageNumber) => core
-  .getAnnotationsList()
-  .filter(
-    (annotation) => annotation.Listable &&
-      annotation.PageNumber === pageNumber &&
-      !annotation.isReply() &&
-      !annotation.isGrouped() &&
-      annotation.Printable,
-  );
+export const getPrintableAnnotationNotes = (pages) => core
+    .getAnnotationsList()
+    .filter(
+        (annotation) => pages.indexOf(annotation.PageNumber) !== -1 &&
+            annotation.Listable &&
+            !annotation.isReply() &&
+            !annotation.isGrouped() &&
+            annotation.Printable &&
+            annotation.Icon === "Comment" &&
+            !annotation.Hidden
+    );
 
 const creatingImage = (pageNumber, includeAnnotations, maintainPageOrientation, isPrintCurrentView, createCanvases = false, isGrayscale = false) => new Promise((resolve) => {
   const pageIndex = pageNumber - 1;
@@ -466,6 +541,8 @@ const creatingImage = (pageNumber, includeAnnotations, maintainPageOrientation, 
     img.src = canvas.toDataURL();
     img.onload = () => {
       resolve(img);
+      canvas = null;
+      renderedCanvases.push({img, id});
     };
   };
 
@@ -498,23 +575,31 @@ const creatingImage = (pageNumber, includeAnnotations, maintainPageOrientation, 
   pendingCanvases.push(id);
 });
 
-export const creatingNotesPage = (annotations, pageNumber, dateFormat, language, timezone) => new Promise((resolve) => {
+export const creatingNotesPage = (annotations, dateFormat, language, timezone) =>  {
   const container = document.createElement('div');
   container.className = 'page__container';
 
-  const header = document.createElement('div');
-  header.className = 'page__header';
-  header.innerHTML = `${i18n.t('option.shared.page')} ${pageNumber}`;
+  const title = document.createElement("h1");
+  title.innerHTML = `${window.parent.document.title.substr(0, window.parent.document.title.lastIndexOf('|'))}`;
 
-  container.appendChild(header);
+  const table = document.createElement('table');
+  table.className = "print__table";
+
+  const header = document.createElement('tr');
+  header.innerHTML = `<th>${i18n.t('option.shared.pageNumber')}</th><th>${i18n.t('option.shared.notes')}</th>`;
+
+  table.appendChild(header);
+
   annotations.forEach((annotation) => {
     const note = getNote(annotation, dateFormat, language, timezone);
 
-    container.appendChild(note);
+    table.appendChild(note);
   });
 
-  resolve(container);
-});
+  container.appendChild(title);
+  container.appendChild(table);
+  return container;
+};
 
 const getPrintRotation = (pageIndex, maintainPageOrientation) => {
   if (!maintainPageOrientation) {
@@ -586,8 +671,8 @@ const drawAnnotationsOnCanvas = async (canvas, pageNumber, isGrayscale) => {
   }
 
   const widgetAnnotations = core
-    .getAnnotationsList()
-    .filter((annotation) => annotation.PageNumber === pageNumber && annotation instanceof window.Core.Annotations.WidgetAnnotation);
+      .getAnnotationsList()
+      .filter((annotation) => annotation.PageNumber === pageNumber && annotation instanceof window.Core.Annotations.WidgetAnnotation);
 
   const hasWidgetAnnotations = widgetAnnotations.length > 0;
   if (!hasWidgetAnnotations) {
@@ -620,32 +705,23 @@ const getDocumentRotation = (pageIndex) => {
 };
 
 const getNote = (annotation, dateFormat, language, timezone) => {
-  const note = document.createElement('div');
-  note.className = 'note';
-
-  const noteRoot = document.createElement('div');
-  noteRoot.className = 'note__root';
-
-  const noteRootInfo = document.createElement('div');
-  noteRootInfo.className = 'note__info--with-icon';
-
-  const noteIcon = getNoteIcon(annotation);
-
-  noteRootInfo.appendChild(noteIcon);
-  noteRootInfo.appendChild(getNoteInfo(annotation, dateFormat, language, timezone));
-  noteRoot.appendChild(noteRootInfo);
-  noteRoot.appendChild(getNoteContent(annotation));
-
-  note.appendChild(noteRoot);
-  annotation.getReplies().forEach((reply) => {
-    const noteReply = document.createElement('div');
-    noteReply.className = 'note__reply';
-    noteReply.appendChild(getNoteInfo(reply, dateFormat, language, timezone));
-    noteReply.appendChild(getNoteContent(reply));
-
-    note.appendChild(noteReply);
-  });
-
+  const note = document.createElement('tr');
+  const page = document.createElement('td');
+  page.innerHTML = `${annotation.PageNumber}`
+  const content = document.createElement('td');
+  content.innerHTML = `${annotation.getContents()}`;
+  const replies = annotation.getReplies();
+  if (replies.length > 0) {
+    const list = document.createElement('ul');
+    replies.forEach(reply => {
+      const noteReply = document.createElement('li');
+      noteReply.innerHTML = `${reply.getContents()}`;
+      list.appendChild(noteReply);
+    });
+    content.appendChild(list);
+  }
+  note.appendChild(page);
+  note.appendChild(content);
   return note;
 };
 
@@ -688,25 +764,11 @@ const getNoteInfo = (annotation, dateFormat, language, timezone) => {
     dateCreated = annotation.DateCreated;
   }
   const info = document.createElement('div');
-  let date = dayjs(dateCreated).format(dateFormat);
-
-  if (language) {
-    date = dayjs(dateCreated).locale(language).format(dateFormat);
-  }
 
   info.className = 'note__info';
-  if (annotation.Subject === '' || annotation.Subject === null || annotation.Subject === undefined) {
-    info.innerHTML = `
-      ${i18n.t('option.printInfo.author')}: ${core.getDisplayAuthor(annotation['Author']) || ''} &nbsp;&nbsp;
-      ${i18n.t('option.printInfo.date')}: ${date}
+  info.innerHTML = `
+      ${i18n.t('option.shared.page')}: ${annotation.PageNumber}
     `;
-  } else {
-    info.innerHTML = `
-      ${i18n.t('option.printInfo.author')}: ${core.getDisplayAuthor(annotation['Author']) || ''} &nbsp;&nbsp;
-      ${i18n.t('option.printInfo.subject')}: ${annotation.Subject} &nbsp;&nbsp;
-      ${i18n.t('option.printInfo.date')}: ${date}
-    `;
-  }
 
   return info;
 };

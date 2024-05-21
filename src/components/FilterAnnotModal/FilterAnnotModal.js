@@ -72,7 +72,12 @@ const FilterAnnotModal = () => {
   };
 
   const filterApply = () => {
-    const newFilter = (annot, documentViewerKey = 1) => {
+    filterApplyParam(typesFilter, authorFilter, checkRepliesForAuthorFilter, colorFilter, statusFilter);
+    closeModal();
+  };
+
+  const filterApplyParam = (typesFilter, authorFilter, checkRepliesForAuthorFilter, colorFilter, statusFilter) => {
+    const newFilter = (annot) => {
       let type = true;
       let author = true;
       let color = true;
@@ -130,35 +135,34 @@ const FilterAnnotModal = () => {
     const redrawList = [];
     if (isDocumentFilterActive) {
       core.getDocumentViewers().forEach((documentViewer, index) => documentViewer.getAnnotationManager()
-        .getAnnotationsList().forEach((annot) => {
-          const shouldHide = !newFilter(annot, index + 1);
-          if (shouldHide !== annot.NoView) {
-            annot.NoView = shouldHide;
-            redrawList.push(annot);
-          }
-        }));
+          .getAnnotationsList().forEach((annot) => {
+            const shouldHide = !newFilter(annot, index + 1);
+            if (shouldHide !== annot.NoView) {
+              annot.NoView = shouldHide;
+              redrawList.push(annot);
+            }
+          }));
     } else {
       core.getDocumentViewers().forEach((documentViewer) => documentViewer.getAnnotationManager()
-        .getAnnotationsList().forEach((annot) => {
-          if (annot.NoView === true) {
-            annot.NoView = false;
-            redrawList.push(annot);
-          }
-        }));
+          .getAnnotationsList().forEach((annot) => {
+            if (annot.NoView === true) {
+              annot.NoView = false;
+              redrawList.push(annot);
+            }
+          }));
     }
     core.getDocumentViewers().forEach((documentViewer) => documentViewer.getAnnotationManager().drawAnnotationsFromList(redrawList));
     fireEvent(
-      Events.ANNOTATION_FILTER_CHANGED,
-      {
-        types: typesFilter,
-        authors: authorFilter,
-        colors: colorFilter,
-        statuses: statusFilter,
-        checkRepliesForAuthorFilter
-      }
+        Events.ANNOTATION_FILTER_CHANGED,
+        {
+          types: typesFilter,
+          authors: authorFilter,
+          colors: colorFilter,
+          statuses: statusFilter,
+          checkRepliesForAuthorFilter
+        }
     );
-    closeModal();
-  };
+  }
 
   const filterClear = () => {
     setCheckRepliesForAuthorFilter(false);
@@ -189,9 +193,25 @@ const FilterAnnotModal = () => {
       filterClear();
       filterApply();
     };
+    
+    const applyFilterEvent = (evt) =>{ //VA-7830
+      if(evt.data && evt.data.hasOwnProperty && evt.data.hasOwnProperty("cmd"))
+      {
+        var cmd = evt.data.cmd;
+        switch (cmd)
+        {
+          case "applyAnnotationFilter":
+            filterApplyParam(evt.data.types, evt.data.authors, evt.data.checkRepliesForAuthorFilter, evt.data.colors, evt.data.statuses);
+        }
+      }
+    };
+    
     core.addEventListener('documentUnloaded', clearAllFilters);
+    window.addEventListener("message", applyFilterEvent);
+    
     return () => {
       core.removeEventListener('documentUnloaded', clearAllFilters);
+      window.removeEventListener("message", applyFilterEvent);
     };
   }, []);
 
@@ -251,7 +271,7 @@ const FilterAnnotModal = () => {
 
   useEffect(() => {
     if (selectedTab === DataElements.ANNOTATION_STATUS_FILTER_PANEL_BUTTON && !ifShowAnnotationStatus) {
-      dispatch(actions.setSelectedTab(TABS_ID, DataElements.ANNOTATION_USER_FILTER_PANEL_BUTTON));
+      dispatch(actions.setSelectedTab(TABS_ID, DataElements.ANNOTATION_COLOR_FILTER_PANEL_BUTTON));
     }
   }, [isOpen, selectedTab, ifShowAnnotationStatus]);
 
@@ -417,12 +437,12 @@ const FilterAnnotModal = () => {
               <div className="body">
                 <Tabs id={TABS_ID}>
                   <div className="tab-list">
-                    <Tab dataElement={DataElements.ANNOTATION_USER_FILTER_PANEL_BUTTON}>
+                    {/*<Tab dataElement={DataElements.ANNOTATION_USER_FILTER_PANEL_BUTTON}>
                       <button className="tab-options-button">
                         {t('option.filterAnnotModal.user')}
                       </button>
                     </Tab>
-                    <div className="tab-options-divider" />
+                    <div className="tab-options-divider" />*/}
                     <Tab dataElement={DataElements.ANNOTATION_COLOR_FILTER_PANEL_BUTTON}>
                       <button className="tab-options-button">
                         {t('option.filterAnnotModal.color')}

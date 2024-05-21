@@ -162,7 +162,11 @@ if (window.CanvasRenderingContext2D) {
 
   logDebugInfo();
   const documentViewer = addDocumentViewer(1);
-  setupOpenURLHandler(documentViewer, store);
+  
+  documentViewer.setOpenURIHandler((uri, isOpenInNewWindow) => {
+    // VA-9465 We do not want to display a Security Warning dialog when opening a link.
+    openURI(uri, isOpenInNewWindow);
+  });
 
   if (getHashParameters('hideDetachedReplies', false)) {
     documentViewer.getAnnotationManager().hideDetachedReplies();
