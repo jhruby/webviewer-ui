@@ -29,6 +29,57 @@ const printResetStyle = `
   * {
     display: none! important;
   }
+  
+  #print-handler * {
+    display: initial !important;  
+  }
+  
+  #print-handler .page__container h1 {
+    padding: 40px 0 0 40px;
+    margin: 0;
+    color: #485056;
+  }
+
+  #print-handler .page__container .print__table {
+    display: table !important;
+    color: black;
+    margin: 40px;
+    width: calc(100% - 80px) !important;
+    border-collapse: separate !important; /*firefox border fix*/
+    border-spacing: 0;
+    font-size: 1rem;
+  }
+
+  #print-handler .page__container .print__table tr th:first-child,
+  #print-handler .page__container .print__table tr td:first-child {
+    width: 100px !important;      
+  }
+
+  #print-handler .page__container .print__table tr {
+    display: table-row !important;
+  }
+  
+  #print-handler .page__container .print__table tr td {
+    display: table-cell !important;
+    border-bottom: solid lightgrey 1px;
+    vertical-align: top;
+  }
+
+  #print-handler .page__container .print__table tr td ul {
+    display: block !important;
+    margin: 0;
+    padding-left: 30px;
+  }
+    
+  #print-handler .page__container .print__table tr td ul li {
+    display: list-item !important;
+  }
+
+  #print-handler .page__container .print__table tr th {
+    display: table-cell !important;
+    border-bottom: solid grey 1px;
+    text-align: left;
+  }
 
   @page {
     margin: 0; /* Set all margins to 0 */
