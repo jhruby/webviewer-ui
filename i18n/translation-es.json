@@ -1262,5 +1262,13 @@
       "styles": "Estilos"
     },
     "noToolSelected": "Seleccione una herramienta para ver los estilos de la herramienta"
-  }
+  },
+  "VUI": {
+    "labels": {
+      "backToPortal": "Volver a mi contenido"
+    },
+    "tooltips": {
+      "backToPortal": "Volver a mi contenido"
+    }
+  }  
 }

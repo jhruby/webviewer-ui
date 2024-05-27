@@ -1262,5 +1262,13 @@
       "styles": "风格"
     },
     "noToolSelected": "选择工具以查看工具属性"
-  }
+  },
+  "VUI": {
+    "labels": {
+      "backToPortal": "返回我的内容"
+    },
+    "tooltips": {
+      "backToPortal": "返回我的内容"
+    }
+  }  
 }

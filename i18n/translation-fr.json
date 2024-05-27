@@ -1262,5 +1262,13 @@
       "styles": "modes"
     },
     "noToolSelected": "Sélectionnez un outil pour afficher les propriétés de l'outil"
-  }
+  },
+  "VUI": {
+    "labels": {
+      "backToPortal": "Retour à Mon contenu"
+    },
+    "tooltips": {
+      "backToPortal": "Retour à Mon contenu"
+    }
+  }  
 }
