@@ -20,6 +20,7 @@ import Events from "constants/events";
 
 const PrintModal = () => {
   const [
+    featureFlags,
     isDisabled,
     isOpen,
     isApplyWatermarkDisabled,
@@ -39,6 +40,7 @@ const PrintModal = () => {
     validatePrint  
   ] = useSelector(
     (state) => [
+      selectors.getFeatureFlags(state),
       selectors.isElementDisabled(state, DataElements.PRINT_MODAL),
       selectors.isElementOpen(state, DataElements.PRINT_MODAL),
       selectors.isElementDisabled(state, 'applyWatermark'),
@@ -59,6 +61,8 @@ const PrintModal = () => {
     ],
     shallowEqual
   );
+  
+  const {printAnnotations} = featureFlags;
   const dispatch = useDispatch();
   const [t] = useTranslation();
 
@@ -387,7 +391,7 @@ const PrintModal = () => {
                   disabled={isPrinting}
                   center
                 />
-                <Choice
+                {printAnnotations && <Choice
                   dataElement="commentsPrintOption"
                   ref={includeCommentsRef}
                   id="include-comments"
@@ -398,7 +402,8 @@ const PrintModal = () => {
                   checked={includeComments}
                   center
                 />
-                <Choice
+                }
+                {printAnnotations && <Choice
                   dataElement="annotationsPrintOption"
                   id="include-annotations"
                   name="annotations"
@@ -408,6 +413,7 @@ const PrintModal = () => {
                   checked={includeAnnotations}
                   center
                 />
+                }
                 <Choice
                   dataElement="grayscalePrintOption"
                   id="print-grayscale"

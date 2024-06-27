@@ -6,6 +6,7 @@
  */
 const FEATURE_FLAGS = {
   CUSTOMIZABLE_UI: 'customizableUI',
+  PRINT_ANNOTATIONS: 'printAnnotations',
 };
 
 export default FEATURE_FLAGS;

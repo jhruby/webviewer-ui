@@ -2155,6 +2155,7 @@ export default {
   },
   featureFlags: {
     customizableUI: false,
+    printAnnotations: true
   },
   wv3dPropertiesPanel: {
     modelData: [],
