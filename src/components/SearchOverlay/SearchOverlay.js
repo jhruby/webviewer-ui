@@ -37,12 +37,36 @@ const propTypes = {
   activeDocumentViewerKey: PropTypes.number,
 };
 
+const regexSymbolWithCombiningMarks = /(<%= allExceptCombiningMarks %>)(<%= combiningMarks %>+)/g;
+const regexSurrogatePair = /([\uD800-\uDBFF])([\uDC00-\uDFFF])/g;
+
+const reverse = function(string) {
+  // Step 1: deal with combining marks and astral symbols (surrogate pairs)
+  string = string
+      // Swap symbols with their combining marks so the combining marks go first
+      .replace(regexSymbolWithCombiningMarks, function($0, $1, $2) {
+        // Reverse the combining marks so they will end up in the same order
+        // later on (after another round of reversing)
+        return reverse($2) + $1;
+      })
+      // Swap high and low surrogates so the low surrogates go first
+      .replace(regexSurrogatePair, '$2$1');
+  // Step 2: reverse the code units in the string
+  var result = [];
+  var index = string.length;
+  while (index--) {
+    result.push(string.charAt(index));
+  }
+  return result.join('');
+};
+
 function SearchOverlay(props) {
   const { t } = useTranslation();
   const { isSearchOverlayDisabled, searchResults, activeResultIndex, selectNextResult, selectPreviousResult, isProcessingSearchResults, activeDocumentViewerKey } = props;
   const { searchValue, setSearchValue, executeSearch, replaceValue, nextResultValue, setReplaceValue } = props;
   const { isCaseSensitive, setCaseSensitive, isWholeWord, setWholeWord, isWildcard, setWildcard, setSearchStatus, isSearchInProgress, setIsSearchInProgress } = props;
   const { searchStatus, isPanelOpen } = props;
+  const [isRightToLeft, setRightToLeft] = React.useState(false);
   const [isReplaceBtnDisabled, setReplaceBtnDisabled] = React.useState(true);
   const [isReplaceAllBtnDisabled, setReplaceAllBtnDisabled] = React.useState(true);
   const [isMoreOptionsOpen, setMoreOptionOpen] = React.useState(true);
@@ -76,7 +100,7 @@ function SearchOverlay(props) {
 
   useEffect(() => {
     if (searchValue && searchValue.length > 0) {
-      executeSearch(searchValue, {
+      executeSearch(isRightToLeft ? reverse(searchValue) : searchValue, {
         caseSensitive: isCaseSensitive,
         wholeWord: isWholeWord,
         wildcard: isWildcard,
@@ -84,7 +108,7 @@ function SearchOverlay(props) {
     } else {
       clearSearchResult();
     }
-  }, [isCaseSensitive, isWholeWord, isWildcard, activeDocumentViewerKey]);
+  }, [isCaseSensitive, isWholeWord, isWildcard, activeDocumentViewerKey, isRightToLeft]);
 
   useEffect(() => {
     core.addEventListener('pagesUpdated', onPagesUpdated);
@@ -105,7 +129,7 @@ function SearchOverlay(props) {
       if (isOfficeEditorMode()) {
         await core.getDocument().getOfficeEditor().updateSearchData();
       }
-      executeSearch(searchValue, {
+      executeSearch(isRightToLeft ? reverse(searchValue) : searchValue, {
         caseSensitive: isCaseSensitive,
         wholeWord: isWholeWord,
         wildcard: isWildcard,
@@ -117,12 +141,12 @@ function SearchOverlay(props) {
 
   const debouncedSearch = useCallback(
     debounce(search, waitTime),
-    [isCaseSensitive, isWholeWord, isWildcard]
+    [isCaseSensitive, isWholeWord, isWildcard, isRightToLeft]
   );
 
   const throttleSearch = useCallback(
     throttle(search, waitTime),
-    [isCaseSensitive, isWholeWord, isWildcard]
+    [isCaseSensitive, isWholeWord, isWildcard, isRightToLeft]
   );
 
   useEffect(() => {
@@ -184,6 +208,13 @@ function SearchOverlay(props) {
     function wildcardOptionOnChangeCallback(event) {
       const isChecked = event.target.checked;
       setWildcard(isChecked);
+    }, [],
+  );
+
+  const rightToLeftOptionOnChange = useCallback(
+    function rightToLeftOptionOnChangeCallback(event) {
+      const isChecked = event.target.checked;
+      setRightToLeft(isChecked);
     }, [],
   );
 
@@ -309,6 +340,14 @@ function SearchOverlay(props) {
       checked={isWildcard}
       onChange={wildcardOptionOnChange}
       label={t('option.searchPanel.wildcard')}
+      tabIndex={isPanelOpen ? 0 : -1}
+    />
+    <Choice
+      dataElement="rightToLeftSearchOption"
+      id="right-to-left-option"
+      checked={isRightToLeft}
+      onChange={rightToLeftOptionOnChange}
+      label={t('option.searchPanel.rightToLeft')}
       tabIndex={isPanelOpen ? 0 : -1}
     />
   </div>);
