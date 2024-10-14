@@ -33,22 +33,22 @@ let isStillProcessingResults = false;
 
 function buildSearchModeFlag(options = {}) {
   const SearchMode = core.getSearchMode();
-  const searchMode = [SearchMode.PAGE_STOP, SearchMode.HIGHLIGHT];
+  let searchMode = SearchMode.PAGE_STOP | SearchMode.HIGHLIGHT;
 
   if (options.caseSensitive) {
-    searchMode.push(SearchMode.CASE_SENSITIVE);
+    searchMode |= SearchMode.CASE_SENSITIVE;
   }
   if (options.wholeWord) {
-    searchMode.push(SearchMode.WHOLE_WORD);
+    searchMode |= SearchMode.WHOLE_WORD;
   }
   if (options.wildcard) {
-    searchMode.push(SearchMode.WILD_CARD);
+    searchMode |= SearchMode.WILD_CARD;
   }
   if (options.regex) {
-    searchMode.push(SearchMode.REGEX);
+    searchMode |= SearchMode.REGEX;
   }
 
-  searchMode.push(SearchMode.AMBIENT_STRING);
+  searchMode |= SearchMode.AMBIENT_STRING;
 
   return searchMode;
 }
@@ -152,6 +152,29 @@ export default (store) => (searchValue, options, isUserTriggered = true) => {
   const activeDocumentViewer = core.getDocumentViewer(activeDocumentViewerKey);
 
   activeDocumentViewer.clearSearchResults();
-  activeDocumentViewer.textSearchInit(searchValue, searchMode, textSearchInitOptions);
+  activeDocumentViewer.textSearchInit(options.rightToLeft ? reverse(searchValue) : searchValue, searchMode, textSearchInitOptions);
   activeDocumentViewer.addEventListener('searchInProgress', searchInProgressCallback);
+};
+
+const regexSymbolWithCombiningMarks = /(<%= allExceptCombiningMarks %>)(<%= combiningMarks %>+)/g;
+const regexSurrogatePair = /([\uD800-\uDBFF])([\uDC00-\uDFFF])/g;
+
+const reverse = function(string) {
+  // Step 1: deal with combining marks and astral symbols (surrogate pairs)
+  string = string
+      // Swap symbols with their combining marks so the combining marks go first
+      .replace(regexSymbolWithCombiningMarks, function($0, $1, $2) {
+        // Reverse the combining marks so they will end up in the same order
+        // later on (after another round of reversing)
+        return reverse($2) + $1;
+      })
+      // Swap high and low surrogates so the low surrogates go first
+      .replace(regexSurrogatePair, '$2$1');
+  // Step 2: reverse the code units in the string
+  var result = [];
+  var index = string.length;
+  while (index--) {
+    result.push(string.charAt(index));
+  }
+  return result.join('');
 };

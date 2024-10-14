@@ -13,7 +13,7 @@ function LeftPanelPageTabsMore() {
         dataElement={DataElements.THUMBNAILS_CONTROL_MANIPULATE_POPUP_TRIGGER}
         img="icon-tool-more"
       />
-      <div className={'indicator'} />
+        {/*<div className={'indicator'} />*/}
     </div>
   );
 }

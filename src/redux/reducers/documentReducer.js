@@ -46,6 +46,16 @@ export default (initialState) => (state = initialState, action) => {
       return { ...state, defaultPrintOptions: payload.options };
     case 'SET_LOADING_PROGRESS':
       return { ...state, loadingProgress: payload.progress };
+    case 'SET_PRINT_PAGE_LIMIT':
+      return { ...state, printPageLimit: payload.limit }
+    case 'SET_COPY_ENABLED':
+      return { ...state, copyEnabled: payload.copy }
+    case 'SET_LIMIT_ANNOTATION_HIGHLIGHT_TEXT':
+      return { ...state, limitAnnotationHighlightText: payload.limitAnnotationHighlightText }
+    case 'SET_DISABLED_PRINT_RANGE':
+      return { ...state, disabledPrintRange: payload.disabledPrintRange }
+    case 'SET_PRINT_VALIDATION':
+      return { ...state, printValidation: payload.printValidation }
     default:
       return state;
   }

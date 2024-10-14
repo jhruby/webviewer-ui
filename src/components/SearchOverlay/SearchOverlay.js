@@ -46,6 +46,7 @@ function SearchOverlay(props) {
   const { isCaseSensitive, setCaseSensitive, isWholeWord, setWholeWord, isWildcard, setWildcard, setSearchStatus, isSearchInProgress, setIsSearchInProgress } = props;
   const { searchStatus, isPanelOpen } = props;
   const [isReplaceBtnDisabled, setReplaceBtnDisabled] = useState(true);
+  const [isRightToLeft, setRightToLeft] = React.useState(false);
   const [isReplaceAllBtnDisabled, setReplaceAllBtnDisabled] = useState(true);
   const [isMoreOptionsOpen, setMoreOptionOpen] = useState(true);
   const [showReplaceSpinner, setShowReplaceSpinner] = useState(false);
@@ -92,12 +93,13 @@ function SearchOverlay(props) {
           caseSensitive: isCaseSensitive,
           wholeWord: isWholeWord,
           wildcard: isWildcard,
+          rightToLeft: isRightToLeft
         });
       }
     } else {
       clearSearchResult();
     }
-  }, [isCaseSensitive, isWholeWord, isWildcard, activeDocumentViewerKey]);
+  }, [isCaseSensitive, isWholeWord, isWildcard, activeDocumentViewerKey, isRightToLeft]);
 
   useEffect(() => {
     core.addEventListener('pagesUpdated', onPagesUpdated);
@@ -111,7 +113,7 @@ function SearchOverlay(props) {
   };
 
   const search = async (searchValue) => {
-    if (searchValue && searchValue.length > 1) {
+    if (searchValue && searchValue.length > 0) {
       setIsSearchInProgress(true);
       setSearchStatus('SEARCH_IN_PROGRESS');
 
@@ -122,6 +124,7 @@ function SearchOverlay(props) {
         caseSensitive: isCaseSensitive,
         wholeWord: isWholeWord,
         wildcard: isWildcard,
+        rightToLeft: isRightToLeft
       });
     } else if (!searchValue) {
       clearSearchResult();
@@ -130,12 +133,12 @@ function SearchOverlay(props) {
 
   const debouncedSearch = useCallback(
     debounce(search, waitTime),
-    [isCaseSensitive, isWholeWord, isWildcard]
+    [isCaseSensitive, isWholeWord, isWildcard, isRightToLeft]
   );
 
   const throttleSearch = useCallback(
     throttle(search, waitTime),
-    [isCaseSensitive, isWholeWord, isWildcard]
+    [isCaseSensitive, isWholeWord, isWildcard, isRightToLeft]
   );
 
   useEffect(() => {
@@ -197,6 +200,13 @@ function SearchOverlay(props) {
     function wildcardOptionOnChangeCallback(event) {
       const isChecked = event.target.checked;
       setWildcard(isChecked);
+    }, [],
+  );
+
+  const rightToLeftOptionOnChange = useCallback(
+    function rightToLeftOptionOnChangeCallback(event) {
+      const isChecked = event.target.checked;
+      setRightToLeft(isChecked);
     }, [],
   );
 
@@ -324,6 +334,14 @@ function SearchOverlay(props) {
       label={t('option.searchPanel.wildcard')}
       tabIndex={isPanelOpen ? 0 : -1}
     />
+    <Choice
+      dataElement="rightToLeftSearchOption"
+      id="right-to-left-option"
+      checked={isRightToLeft}
+      onChange={rightToLeftOptionOnChange}
+      label={t('option.searchPanel.rightToLeft')}
+      tabIndex={isPanelOpen ? 0 : -1}
+    />
   </div>);
 
   return (
@@ -333,7 +351,8 @@ function SearchOverlay(props) {
     })}>
       <div className='input-container'>
         {customizableUI && <Icon glyph="icon-header-search" />}
-        <input
+        <input 
+          dir={ isRightToLeft ? "rtl" : "" }
           className='search-panel-input'
           ref={searchTextInputRef}
           type="text"
