@@ -23,6 +23,7 @@ const propTypes = {
   img: PropTypes.string,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   title: PropTypes.string,
+  parameters: PropTypes.object,
   color: PropTypes.string,
   dataElement: PropTypes.string,
   className: PropTypes.string,
@@ -68,6 +69,7 @@ const Button = (props) => {
     onMouseUp,
     className,
     title,
+    parameters,
     style,
     ariaLabel,
     ariaControls,
@@ -83,7 +85,6 @@ const Button = (props) => {
     onClickAnnouncement,
   } = { ...props, ...customOverrides };
   const [t] = useTranslation();
-
   const customOverrideClasses = {};
   if (customOverrides && customOverrides.hidden && customOverrides.hidden.length) {
     for (const screenSize of customOverrides.hidden) {
@@ -91,7 +92,7 @@ const Button = (props) => {
     }
   }
 
-  const aLabel = ariaLabel || (title ? t(title) : undefined);
+  const aLabel = ariaLabel || (title ? t(title, parameters) : undefined);
   const aControls = ariaControls || '';
 
   const shortcutKey = title ? title.slice(title.indexOf('.') + 1) : undefined;
@@ -168,7 +169,7 @@ const Button = (props) => {
       {imgToShow && !isGlyph && <img src={imgToShow} />}
       {
         label && (useI18String ?
-          <span>{t(label)}</span> :
+          <span>{t(label, parameters)}</span> :
           <span>{label}</span>)
       }
     </button>
@@ -180,6 +181,7 @@ const Button = (props) => {
       hideShortcut={hideTooltipShortcut || actuallyDisabled}
       forcePosition={forceTooltipPosition}
       hideOnClick={hideOnClick}
+      parameters={parameters}
     >
       {children}
     </Tooltip>

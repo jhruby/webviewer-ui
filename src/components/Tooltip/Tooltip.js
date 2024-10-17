@@ -17,14 +17,15 @@ const propTypes = {
   content: PropTypes.string,
   hideShortcut: PropTypes.bool,
   forcePosition: PropTypes.string,
-  hideOnClick: PropTypes.bool
+  hideOnClick: PropTypes.bool,
+  parameters: PropTypes.object
 };
 
 const isMouseOverElement = (elementBoundingRect, e) => {
   return e.clientX >= elementBoundingRect.left && e.clientX <= elementBoundingRect.right && e.clientY >= elementBoundingRect.top && e.clientY <= elementBoundingRect.bottom;
 };
 
-const Tooltip = forwardRef(({ content = '', children, hideShortcut, forcePosition, hideOnClick = true }, ref) => {
+const Tooltip = forwardRef(({ content = '', children, hideShortcut, forcePosition, hideOnClick = true, parameters }, ref) => {
   const timeoutRef = useRef(null);
   const hiddenByClickRef = useRef(false);
   const childRef = useRef(null);
@@ -220,7 +221,7 @@ const Tooltip = forwardRef(({ content = '', children, hideShortcut, forcePositio
   const child = React.cloneElement(children, {
     ref: childRef,
   });
-  const translatedContent = t(content);
+  const translatedContent = t(content, parameters);
   // If shortcut.xxx exists in translation-en.json file
   // method t will return the shortcut, otherwise it will return shortcut.xxx
   let shortcutKey = content.slice(content.indexOf('.') + 1);
