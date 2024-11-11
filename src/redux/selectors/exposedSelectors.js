@@ -934,9 +934,16 @@ export const getMultiViewerSyncScrollMode = (state) => state.viewer.multiViewerS
 export const getCompareAnnotationsMap = (state) => state.viewer.compareAnnotationsMap;
 
 export const getTextSignatureQuality = (state) => state.viewer.textSignatureCanvasMultiplier;
+export const getPrintPageLimit = state => state.document.printPageLimit;
 
 export const getIsMeasurementAnnotationFilterEnabled = (state) => state.viewer.isMeasurementAnnotationFilterEnabled;
+export const getCopyEnabled = state => state.document.copyEnabled;
 
+export const getLimitAnnotationHighlightText = state => state.document.limitAnnotationHighlightText;
+
+export const getDisabledPrintRange = state => state.document.disabledPrintRange;
+
+export const getPrintValidation = state => state.document.printValidation;
 // We will need to refactor this once we have generic panels
 export const isRightPanelOpen = (state) => {
   const rightPanelElements = [
