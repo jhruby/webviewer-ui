@@ -217,7 +217,8 @@ export default {
           dataElement: 'moreButton',
           title: 'action.more',
           img: 'icon-tools-more',
-          onClick: () => {
+          onClick: (dispatch) => {
+            dispatch(actions.setActiveHeaderGroup('small-mobile-more-buttons'));
             core.setToolMode(defaultTool);
           },
           hidden: ['desktop'],
@@ -244,7 +245,8 @@ export default {
           dataElement: 'defaultHeaderButton',
           titile: 'action.close',
           img: 'ic_close_black_24px',
-          onClick: () => {
+          onClick: (dispatch) => {
+            dispatch(actions.setActiveHeaderGroup('default'));
             core.setToolMode(defaultTool);
           },
         },

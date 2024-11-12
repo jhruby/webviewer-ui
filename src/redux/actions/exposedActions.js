@@ -545,6 +545,12 @@ export const enableAllElements = () => ({
   type: 'ENABLE_ALL_ELEMENTS',
   payload: {},
 });
+
+export const setActiveHeaderGroup = (headerGroup) => ({
+  type: 'SET_ACTIVE_HEADER_GROUP',
+  payload: { headerGroup },
+});
+
 export const openElement = (dataElement) => (dispatch, getState) => {
   const state = getState();
 
