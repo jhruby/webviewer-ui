@@ -321,14 +321,6 @@ function SearchOverlay(props) {
       label={t('option.searchPanel.wildcard')}
       tabIndex={isPanelOpen ? 0 : -1}
     />
-    <Choice
-      dataElement="rightToLeftSearchOption"
-      id="right-to-left-option"
-      checked={isRightToLeft}
-      onChange={rightToLeftOptionOnChange}
-      label={t('option.searchPanel.rightToLeft')}
-      tabIndex={isPanelOpen ? 0 : -1}
-    />
   </div>);
 
   return (
