@@ -839,6 +839,14 @@ export const setPrintPageLimit = (limit) => ({
   type: 'SET_PRINT_PAGE_LIMIT',
   payload: { limit },
 });
+export const setContentUserId = (contentUserId) => ({
+  type: 'SET_CONTENT_USER_ID',
+  payload: { contentUserId },
+});
+export const setAllowRightToLeftSearch = (allowRightToLeftSearch) => ({
+  type: 'SET_RIGHT_TO_LEFT_SEARCH',
+  payload: { allowRightToLeftSearch },
+});
 export const setCopyEnabled = (copy) => ({
   type: 'SET_COPY_ENABLED',
   payload: { copy },

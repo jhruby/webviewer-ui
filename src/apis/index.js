@@ -261,6 +261,8 @@ import enableFeatureFlag from './enableFeatureFlag';
 import disableFeatureFlag from './disableFeatureFlag';
 import enterMultiViewerMode from './enterMultiViewerMode';
 import setPrintPageLimit from './setPrintPageLimit';
+import setContentUserId from "src/apis/setContentUserId";
+import setAllowRightToLeftSearch from "src/apis/setAllowRightToLeftSearch";
 import setCopyEnabled from './setCopyEnabled';
 import setLimitAnnotationHighlightText from './setLimitAnnotationHighlightText';
 import setDisabledPrintRange from './setDisabledPrintRange';
@@ -581,6 +583,8 @@ export default (store) => {
     stopTextComparison,
     closeTooltip,
     setPrintPageLimit: setPrintPageLimit(store),
+    setContentUserId: setContentUserId(store),
+    setAllowRightToLeftSearch: setAllowRightToLeftSearch(store),
     setCopyEnabled: setCopyEnabled(store),
     setLimitAnnotationHighlightText: setLimitAnnotationHighlightText(store),
     setDisabledPrintRange: setDisabledPrintRange(store),

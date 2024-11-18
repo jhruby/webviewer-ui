@@ -53,6 +53,8 @@ function SearchOverlay(props) {
   const [isReplacementRegexValid, setReplacementRegexValid] = useState(true);
   const [allowInitialSearch, setAllowInitialSearch] = useState(false);
   const isSearchAndReplaceDisabled = useSelector((state) => selectors.isElementDisabled(state, 'searchAndReplace'));
+  const rightToLeftAllowed = useSelector((state) => selectors.getAllowRightToLeftSearch(state));
+  const contentUserId = useSelector((state) => selectors.getContentUserId(state));
   const customizableUI = useSelector((state) => selectors.getFeatureFlags(state)?.customizableUI);
   const searchTextInputRef = useRef();
   const waitTime = 300; // Wait time in milliseconds
@@ -65,6 +67,15 @@ function SearchOverlay(props) {
       setReplacementRegexValid(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (localStorage){
+      const rightToLeftSearch = localStorage.getItem('rightToLeftSearch_' + contentUserId);
+      if (rightToLeftSearch === 'true') {
+        setRightToLeft(true);
+      }
+    }
+  }, [contentUserId]);
 
   useEffect(() => {
     if (numberOfResultsFound > 0) {
@@ -207,7 +218,9 @@ function SearchOverlay(props) {
     function rightToLeftOptionOnChangeCallback(event) {
       const isChecked = event.target.checked;
       setRightToLeft(isChecked);
-    }, [],
+      if (localStorage)
+        localStorage.setItem('rightToLeftSearch_' + contentUserId, isChecked);
+    }, [contentUserId],
   );
 
   const nextButtonOnClick = useCallback(
@@ -330,14 +343,14 @@ function SearchOverlay(props) {
       label={t('option.searchPanel.wildcard')}
       tabIndex={isPanelOpen ? 0 : -1}
     />
-    <Choice
-      dataElement="rightToLeftSearchOption"
-      id="right-to-left-option"
-      checked={isRightToLeft}
-      onChange={rightToLeftOptionOnChange}
-      label={t('option.searchPanel.rightToLeft')}
-      tabIndex={isPanelOpen ? 0 : -1}
-    />
+        {rightToLeftAllowed && <Choice
+          dataElement="rightToLeftSearchOption"
+          id="right-to-left-option"
+          checked={isRightToLeft}
+          onChange={rightToLeftOptionOnChange}
+          label={t('option.searchPanel.rightToLeft')}
+          tabIndex={isPanelOpen ? 0 : -1}
+        />}
   </div>);
 
   return (

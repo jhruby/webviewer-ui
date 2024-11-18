@@ -935,6 +935,8 @@ export const getCompareAnnotationsMap = (state) => state.viewer.compareAnnotatio
 
 export const getTextSignatureQuality = (state) => state.viewer.textSignatureCanvasMultiplier;
 export const getPrintPageLimit = state => state.document.printPageLimit;
+export const getContentUserId = state => state.document.contentUserId;
+export const getAllowRightToLeftSearch = state => state.document.allowRightToLeftSearch;
 
 export const getIsMeasurementAnnotationFilterEnabled = (state) => state.viewer.isMeasurementAnnotationFilterEnabled;
 export const getCopyEnabled = state => state.document.copyEnabled;
