@@ -158,8 +158,9 @@ const PrintModal = () => {
         existingWatermarksRef.current = watermark;
       });
     }
-    
-    window.addEventListener(Events.DOCUMENT_LOADED, onDocumentLoaded);
+
+    const docViewer = core.getDocumentViewer();
+    docViewer.addEventListener('documentLoaded', onDocumentLoaded);
     
     dispatch(actions.closeElements([
       DataElements.SIGNATURE_MODAL,

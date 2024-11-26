@@ -33,6 +33,7 @@ import { addDocumentViewer, setupOpenURLHandler } from 'helpers/documentViewerHe
 import setEnableAnnotationNumbering from 'helpers/setEnableAnnotationNumbering';
 import getRootNode from 'helpers/getRootNode';
 import { setItemToFlyoutStore } from 'helpers/itemToFlyoutHelper';
+import openURI from './helpers/openURI';
 
 import './index.scss';
 import importModularComponents from 'src/apis/importModularComponents';
