@@ -64,6 +64,7 @@ export default {
     tabs: [],
     activeTab: 0,
     isMultiTab: false,
+    tabNameHandler: null,
     thumbnailSelectingPages: false,
     isInDesktopOnlyMode: false,
     toolbarGroup: DataElements.ANNOTATE_TOOLBAR_GROUP,
@@ -77,6 +78,7 @@ export default {
       [DataElements.LOGO_BAR]: { disabled: true, priority: 2 },
       'comparePanelToggle': { disabled: true, priority: 2 },
     },
+    enabledRibbonsStash: [],
     selectedScale: initialScale,
     isAddingNewScale: false,
     calibrationInfo: {
@@ -1983,7 +1985,7 @@ export default {
         ? JSON.parse(window.localStorage.getItem(`${instanceId}-customColors`))
         : [],
     activeLeftPanel: 'thumbnailsPanel',
-    activeCustomPanel: '',
+    activeTabInPanel: {},
     activeToolGroup: '',
     notePopupId: '',
     isNoteEditing: false,
