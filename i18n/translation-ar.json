@@ -3,22 +3,22 @@
         "addParagraph": "إضافة فقرة",
         "add": "يضيف",
         "apply": "يتقدم",
-        "applyAll": "تطبيق جميع",
+        "applyAll": "تطبيق الكل",
         "calendar": "تقويم",
         "calibrate": "معايرة",
         "cancel": "يلغي",
         "confirm": "يتأكد",
         "currentPageIs": "الصفحة الحالية هي",
         "clear": "واضح",
-        "clearAll": "امسح الكل",
+        "clearAll": "مسح الكل",
         "close": "يغلق",
-        "undo": "الغاء التحميل",
+        "undo": "تراجع",
         "redo": "إعادة",
         "comment": "تعليق",
-        "reply": "إضافة الرد",
+        "reply": "أضف الرد",
         "copy": "ينسخ",
         "cut": "يقطع",
-        "paste": "معجون",
+        "paste": "لصق",
         "pasteWithoutFormatting": "لصق بدون تنسيق",
         "delete": "يمسح",
         "deleted": "تم الحذف",
@@ -26,16 +26,19 @@
         "ungroup": "فك التجميع",
         "download": "تحميل",
         "edit": "يحرر",
+        "collapse": "ينهار",
+        "expand": "يوسع",
         "extract": "يستخرج",
         "extractPage": "استخراج الصفحة",
         "enterFullscreen": "أدخل ملء الشاشة",
-        "exitFullscreen": "الخروج من الشاشة الكاملة",
+        "exitFullscreen": "الخروج من وضع ملء الشاشة",
         "fit": "ملائم",
-        "fitToPage": "تتناسب مع الصفحة",
-        "fitToWidth": "يصلح للعرض",
+        "fitToPage": "صالح للصفحة",
+        "fitToWidth": "تناسب العرض",
         "more": "أكثر",
         "openFile": "افتح الملف",
         "page": "صفحة",
+        "of": "ل",
         "pagePrev": "الصفحة السابقة",
         "pageNext": "الصفحة التالية",
         "pageSet": "تعيين الصفحة",
@@ -43,9 +46,10 @@
         "proceed": "يتابع",
         "name": "اسم",
         "rename": "إعادة تسمية",
+        "remove": "يزيل",
         "ok": "نعم",
         "rotate": "اتجاه الصفحة",
-        "rotate3D": "استدارة",
+        "rotate3D": "تناوب",
         "rotateClockwise": "تدوير في اتجاه عقارب الساعة",
         "rotateCounterClockwise": "تدوير عكس اتجاه عقارب الساعة",
         "rotatedClockwise": "استدارة في اتجاه عقارب الساعة",
@@ -72,6 +76,7 @@
         "type": "يكتب",
         "upload": "رفع",
         "link": "وصلة",
+        "unlink": "حذف الرابط",
         "fileAttachmentDownload": "تحميل الملف المرفق",
         "prevResult": "النتيجة السابقة",
         "nextResult": "النتيجة التالية",
@@ -82,54 +87,69 @@
         "exit": "مخرج",
         "addOption": "إضافة خيار",
         "formFieldEdit": "تحرير حقل النموذج",
+        "formFieldEditMode": "تحرير حقول النموذج",
+        "contentEditMode": "تحرير المحتوى",
         "viewShortCutKeysFor3D": "عرض مفاتيح الاختصار",
-        "markAllRead": "اشر عليها بانها قرات",
+        "markAllRead": "وضع علامة على الكل كمقروءة",
         "pageInsertion": "إدراج الصفحة",
         "insertPage": "إدراج صفحة",
         "insert": "إدراج",
         "pageManipulation": "التلاعب بالصفحة",
         "replace": "يستبدل",
         "replacePage": "استبدال الصفحة",
-        "modal": "مشروط",
+        "modal": "عاصمة",
         "isOpen": "مفتوح",
-        "setDestination": "حدد الوجهة",
+        "setDestination": "تحديد الوجهة",
         "showLess": "تظهر أقل",
         "showMore": "...أكثر",
-        "chooseFile": "اختيار ملف",
+        "chooseFile": "اختر ملفًا",
         "changeDate": "تغيير التاريخ",
-        "browse": "تصفح ملفات",
+        "browse": "تصفح الملفات",
         "selectYourOption": "حدد الخيار الخاص بك",
         "open": "يفتح",
-        "deselectAll": "الغاء تحديد الكل",
+        "deselectAll": "قم بإلغاء تحديد الكل",
         "select": "يختار",
         "moveToTop": "الانتقال إلى الأعلى",
         "moveToBottom": "الانتقال إلى الأسفل",
         "movePageToTop": "نقل الصفحة إلى الأعلى",
         "movePageToBottom": "نقل الصفحة إلى الأسفل",
+        "moveUp": "تحرك لأعلى",
+        "moveDown": "تحرك للأسفل",
+        "moveLeft": "تحرك لليسار",
+        "moveRight": "تحرك لليمين",
         "backToMenu": "العودة إلى القائمة",
         "redactPages": "تنقيح الصفحات",
         "playAudio": "تشغيل الصوت",
         "pauseAudio": "إيقاف الصوت مؤقتًا",
-        "selectAll": "اختر الكل",
+        "selectAll": "حدد الكل",
         "unselect": "قم بإلغاء التحديد",
         "addMark": "أضف مارك",
-        "viewFile": "استعراض الملف",
+        "viewFile": "عرض الملف",
         "multiReplyAnnotations": "الرد على التعليقات التوضيحية المحددة ({{count}})",
         "comparePages": "قارن الصفحات",
         "startComparison": "ابدأ المقارنة",
         "showComparison": "إظهار المقارنة",
+        "highlightChanges": "تسليط الضوء على التغييرات",
         "back": "خلف",
         "clearSignature": "توقيع واضح",
-        "newDocument": "مستند جديد",
+        "clearInitial": "مسح الأولي",
+        "readOnlySignature": "لا يمكن حذف التوقيع للقراءة فقط",
+        "newDocument": "وثيقة جديدة",
         "sideBySideView": "عرض جنبًا إلى جنب",
-        "pageNumberInput": "إدخال رقم الصفحة"
+        "pageNumberInput": "إدخال رقم الصفحة",
+        "addNewColor": "إضافة لون جديد",
+        "deleteColor": "حذف اللون المحدد",
+        "copySelectedColor": "نسخ اللون المحدد",
+        "showMoreColors": "عرض المزيد من الألوان",
+        "showLessColors": "عرض ألوان أقل",
+        "fromCustomColorPicker": "من منتقي الألوان المخصص"
     },
     "annotation": {
         "areaMeasurement": "منطقة",
         "arc": "قوس",
         "arcMeasurement": "قياس القوس",
         "arrow": "سهم",
-        "callout": "صرخ",
+        "callout": "وسيلة الشرح",
         "crop": "صفحة المحاصيل",
         "caret": "علامة الإقحام",
         "dateFreeText": "تقويم",
@@ -139,10 +159,10 @@
         "rectangularAreaMeasurement": "منطقة مستطيلة",
         "ellipseMeasurement": "منطقة القطع الناقص",
         "countMeasurement": "قياس العد",
-        "ellipse": "الشكل البيضاوي",
+        "ellipse": "القطع الناقص",
         "eraser": "ممحاة",
-        "fileattachment": "ملف مرفق",
-        "freehand": "الحرية",
+        "fileattachment": "مرفق الملف",
+        "freehand": "يد حرة",
         "freeHandHighlight": "تسليط الضوء على اليد الحرة",
         "freetext": "نص مجاني",
         "markInsertText": "إدراج نص",
@@ -154,11 +174,11 @@
         "polygon": "مضلع",
         "polygonCloud": "سحاب",
         "polyline": "متعدد الخطوط",
-        "rectangle": "مستطيل",
+        "rectangle": "المستطيل",
         "redact": "تنقيح",
         "formFillDot": "نقطة",
         "signature": "إمضاء",
-        "snipping": "أداة القص",
+        "snipping": "أداة القطع",
         "squiggly": "متعرج",
         "stamp": "ختم",
         "stickyNote": "ملحوظة",
@@ -175,14 +195,15 @@
         "comboBoxFormField": "حقل التحرير والسرد",
         "link": "وصلة",
         "other": "آخر",
-        "3D": "عد",
+        "3D": "3D",
         "sound": "صوت",
         "changeView": "تغيير العرض",
-        "newImage": "صورة جديدة"
+        "newImage": "صورة جديدة",
+        "defaultCustomStampTitle": "ختم مخصص"
     },
     "rubberStamp": {
         "Approved": "موافقة",
-        "AsIs": "كما هي",
+        "AsIs": "كما هو",
         "Completed": "مكتمل",
         "Confidential": "مؤتمن",
         "Departmental": "الإدارات",
@@ -193,16 +214,16 @@
         "ForComment": "للتعليق",
         "ForPublicRelease": "للنشر العام",
         "InformationOnly": "المعلومات فقط",
-        "NotApproved": "غير مقبول",
+        "NotApproved": "غير معتمد",
         "NotForPublicRelease": "ليس للنشر العام",
-        "PreliminaryResults": "نتائج اولية",
+        "PreliminaryResults": "النتائج الأولية",
         "Sold": "مُباع",
         "TopSecret": "سري للغاية",
         "Void": "فارغ",
         "SHSignHere": "وقع هنا",
         "SHWitness": "شاهد",
-        "SHInitialHere": "المبدئي هنا",
-        "SHAccepted": "قبلت",
+        "SHInitialHere": "الأولي هنا",
+        "SHAccepted": "مقبول",
         "SBRejected": "مرفوض"
     },
     "component": {
@@ -213,13 +234,14 @@
         "searchPanel": "يبحث",
         "menuOverlay": "قائمة طعام",
         "notesPanel": "تعليقات",
+        "indexPanel": "لوحة الفهرس",
         "outlinePanel": "الخطوط العريضة",
         "outlinesPanel": "الخطوط العريضة",
         "newOutlineTitle": "عنوان المخطط التفصيلي الجديد",
         "outlineTitle": "عنوان المخطط التفصيلي",
         "destination": "وجهة",
         "bookmarkPanel": "إشارة مرجعية",
-        "bookmarksPanel": "إشارات مرجعية",
+        "bookmarksPanel": "الإشارات المرجعية",
         "bookmarkTitle": "عنوان الإشارة المرجعية",
         "bookmarkPage": "صفحة",
         "signaturePanel": "التوقيعات",
@@ -227,17 +249,20 @@
         "thumbnailsPanel": "الصور المصغرة",
         "toolsButton": "أدوات",
         "redaction": "التنقيح",
-        "viewControlsOverlay": "عرض عناصر التحكم",
+        "viewControls": "عرض عناصر التحكم",
+        "pageControls": "ضوابط الصفحة",
         "calibration": "معايرة",
         "zoomOverlay": "تراكب التكبير",
         "textPopup": "النص المنبثق",
         "createStampButton": "إنشاء ختم جديد",
-        "filter": "منقي",
+        "filter": "فلتر",
         "multiSelectButton": "تحديد متعدد",
         "pageReplaceModalTitle": "استبدال الصفحة",
         "files": "ملفات",
+        "file": "ملف",
         "editText": "تحرير النص",
         "redactionPanel": "لوحة التنقيح",
+        "tabLabel": "فاتورة غير مدفوعة",
         "noteGroupSection": {
             "open": "عرض جميع التعليقات التوضيحية",
             "close": "إغلاق كافة التعليقات التوضيحية"
@@ -246,12 +271,12 @@
         "watermarkPanel": "لوحة العلامة المائية"
     },
     "message": {
-        "showMore": "أظهر المزيد",
+        "showMore": "عرض المزيد",
         "showLess": "عرض أقل",
         "toolsOverlayNoPresets": "لا الإعدادات المسبقة",
         "badDocument": "فشل تحميل المستند. المستند إما تالف أو غير صالح.",
         "customPrintPlaceholder": "على سبيل المثال ح، ح-10",
-        "encryptedAttemptsExceeded": "فشل تحميل المستند المشفر. محاولات كثيرة.",
+        "encryptedAttemptsExceeded": "فشل تحميل المستند المشفر. محاولات كثيرة جدًا.",
         "encryptedUserCancelled": "فشل تحميل المستند المشفر. تم إلغاء إدخال كلمة المرور.",
         "enterPassword": "هذه الوثيقة محمية بكلمة مرور. الرجاء إدخال كلمة المرور",
         "incorrectPassword": "كلمة المرور غير صحيحة، المحاولات المتبقية: {{ ResultAttempts }}",
@@ -262,9 +287,9 @@
         "noOutlines": "لا الخطوط العريضة المتاحة",
         "noAttachments": "هذه الوثيقة لا تحتوي على مرفقات.",
         "noResults": "لم يتم العثور على نتائج.",
-        "numResultsFound": "العثور على نتائج",
+        "numResultsFound": "تم العثور على النتائج",
         "loadError": "حدث خطأ أثناء تحميل المستند",
-        "notSupported": "صيغة الملف غير مدعومة.",
+        "notSupported": "نوع الملف هذا غير مدعوم.",
         "passwordRequired": "كلمة المرور مطلوبة",
         "enterPasswordPlaceholder": "أدخل كلمة المرور",
         "preparingToPrint": "جاري التحضير للطباعة...",
@@ -273,28 +298,31 @@
         "printTotalPageCount": "الإجمالي: {{count}} صفحة",
         "printTotalPageCount_plural": "الإجمالي: {{count}} صفحة",
         "processing": "يعالج...",
-        "searching": "يبحث...",
+        "searching": "جارٍ البحث...",
         "searchCommentsPlaceholder": "بحث في التعليقات",
         "searchDocumentPlaceholder": "وثيقة البحث",
+        "searchSettingsPlaceholder": "إعدادات البحث",
+        "searchSuggestionsPlaceholder": "اقتراحات البحث",
         "signHere": "وقع هنا",
         "insertTextHere": "أدخل النص هنا",
         "imageSignatureAcceptedFileTypes": "يتم قبول {{acceptedFileTypes}} فقط",
+        "signatureRequired": "مطلوب التوقيع والأحرف الأولى للمتابعة",
         "enterMeasurement": "أدخل القياس بين النقطتين",
         "errorEnterMeasurement": "الرقم الذي أدخلته غير صالح، يمكنك إدخال قيم مثل 7.5 أو 7 1/2",
         "linkURLorPage": "رابط URL أو الصفحة",
         "warning": "تحذير",
         "svgMalicious": "تم تجاهل البرنامج النصي SVG لأسباب أمنية",
-        "enterContentEditingMode": "أنت على وشك الدخول في وضع تحرير المحتوى.",
-        "existingAnnotationWarning": "قد لا تتطابق التعليقات التوضيحية الموجودة مع النص بعد تحريره.",
-        "changesCannotBeUndone": "لا يمكن التراجع عن أي تغييرات تم إجراؤها.",
-        "doNotShowAgain": "لا ترني هذا مجددا",
-        "doNotAskAgain": "لا تسأل مجددا",
+        "doNotShowAgain": "لا تريني هذا مرة أخرى",
+        "doNotAskAgain": "لا تسأل مرة أخرى",
         "enterReplacementText": "أدخل النص الذي تريد استبداله",
-        "sortBy": "نوع",
+        "sort": "نوع",
+        "sortBy": "الترتيب حسب",
         "emptyCustomStampInput": "لا يمكن أن يكون نص الختم فارغًا",
         "unpostedComment": "تعليق غير منشور",
         "lockedLayer": "الطبقة مقفلة",
         "layerVisibililtyNoChange": "لا يمكن تغيير رؤية الطبقة",
+        "noLayers": "لا تحتوي هذه الوثيقة على طبقات.",
+        "noSignatureFields": "لا تحتوي هذه الوثيقة على حقول التوقيع.",
         "untitled": "بدون عنوان",
         "selectHowToLoadFile": "حدد كيفية تحميل المستند الخاص بك",
         "openFileByUrl": "فتح الملف عن طريق URL:",
@@ -303,34 +331,36 @@
         "selectFile": "حدد الملف",
         "selectPageToReplace": "حدد الصفحات الموجودة في المستند الذي تريد استبداله.",
         "embeddedFiles": "الملفات المضمنة",
-        "pageNum": "رقم الصفحة",
+        "pageNum": "صفحة",
         "viewBookmark": "عرض الإشارة المرجعية على الصفحة",
         "error": "خطأ",
         "errorPageNumber": "رقم الصفحة غير صالح. الحد هو",
-        "errorLoadingDocument": "حدثت مشكلة أثناء قراءة هذا المستند وقد لا يتم عرض بعض الصفحات. يشير هذا إلى أن المستند قد يكون تالفًا. إجمالي عدد الصفحات هو {{totalPageCount}} وعدد الصفحات المعروضة هو {{displayedPageCount}}."
+        "errorBlankPageNumber": "يرجى تحديد رقم الصفحة",
+        "errorLoadingDocument": "حدثت مشكلة أثناء قراءة هذا المستند وقد لا يتم عرض بعض الصفحات. يشير هذا إلى أن المستند قد يكون تالفًا. إجمالي عدد الصفحات هو {{totalPageCount}} وعدد الصفحات المعروضة هو {{displayedPageCount}}.",
+        "noRevisions": "لا تحتوي هذه الوثيقة على أي مراجعات."
     },
     "option": {
         "type": {
             "caret": "علامة الإقحام",
             "custom": "مخصص",
-            "ellipse": "الشكل البيضاوي",
-            "fileattachment": "ملف مرفق",
-            "freehand": "الحرية",
-            "callout": "صرخ",
+            "ellipse": "القطع الناقص",
+            "fileattachment": "مرفق الملف",
+            "freehand": "يد حرة",
+            "callout": "وسيلة الشرح",
             "freetext": "نص مجاني",
             "line": "خط",
             "polygon": "مضلع",
             "polyline": "متعدد الخطوط",
-            "rectangle": "مستطيل",
+            "rectangle": "المستطيل",
             "redact": "تنقيح",
             "signature": "إمضاء",
             "stamp": "ختم",
-            "stickyNote": "ملاحظة خفيفة",
+            "stickyNote": "ملاحظة لاصقة",
             "highlight": "تسليط الضوء",
             "strikeout": "الضربة القاضية",
             "underline": "تسطير",
             "squiggly": "متعرج",
-            "3D": "عد",
+            "3D": "3D",
             "other": "آخر",
             "initials": "الأحرف الأولى",
             "saved": "أنقذ"
@@ -344,10 +374,11 @@
             "type": "يكتب",
             "color": "لون",
             "createdDate": "تاريخ الإنشاء",
-            "modifiedDate": "تاريخ معدل"
+            "modifiedDate": "تاريخ التعديل"
         },
         "toolbarGroup": {
             "dropdownLabel": "مجموعات شريط الأدوات",
+            "flyoutLabel": "الشريط",
             "toolbarGroup-View": "منظر",
             "toolbarGroup-Annotate": "علق",
             "toolbarGroup-Shapes": "الأشكال",
@@ -356,8 +387,11 @@
             "toolbarGroup-Edit": "يحرر",
             "toolbarGroup-EditText": "تحرير النص",
             "toolbarGroup-FillAndSign": "ملء وتوقيع",
-            "toolbarGroup-Forms": "نماذج",
-            "toolbarGroup-Redact": "تنقيح"
+            "toolbarGroup-Forms": "النماذج",
+            "toolbarGroup-Redact": "تنقيح",
+            "toolbarGroup-oe-Home": "بيت",
+            "toolbarGroup-oe-Insert": "إدراج",
+            "toolbarGroup-oe-Review": "مراجعة"
         },
         "annotationColor": {
             "StrokeColor": "سكتة دماغية",
@@ -366,6 +400,10 @@
         },
         "colorPalette": {
             "colorLabel": "لون"
+        },
+        "colorPalettePicker": {
+            "addColor": "أضف لونًا جديدًا",
+            "selectColor": "اختر اللون"
         },
         "displayMode": {
             "layout": "تخطيط الصفحة",
@@ -395,7 +433,8 @@
             "noteContent": {
                 "noName": "(بدون اسم)",
                 "noDate": "(بدون تاريخ)"
-            }
+            },
+            "toggleMultiSelect": "تبديل التحديد المتعدد للتعليق التوضيحي"
         },
         "pageTransition": {
             "continuous": "صفحة مستمرة",
@@ -404,7 +443,7 @@
         },
         "print": {
             "all": "الجميع",
-            "current": "الصفحه الحاليه",
+            "current": "الصفحة الحالية",
             "pages": "صفحات للطباعة",
             "specifyPages": "تحديد الصفحات",
             "view": "العرض الحالي",
@@ -414,7 +453,8 @@
             "includeAnnotations": "تضمين التعليقات التوضيحية",
             "includeComments": "تضمين التعليقات",
             "printSettings": "إعدادات الطباعة",
-            "printGrayscale": "طباعة تدرج الرمادي"
+            "printGrayscale": "طباعة تدرج الرمادي",
+            "printCurrentDisabled": "العرض الحالي متاح فقط عند عرض صفحة واحدة."
         },
         "printInfo": {
             "author": "مؤلف",
@@ -426,7 +466,7 @@
         },
         "searchPanel": {
             "caseSensitive": "حساسية الموضوع",
-            "wholeWordOnly": "الكلمة بالكامل",
+            "wholeWordOnly": "كلمة كاملة",
             "wildcard": "حرف البدل",
             "replace": "يستبدل",
             "replaceAll": "استبدال الكل",
@@ -459,13 +499,18 @@
             "typeInitial": "اكتب الأحرف الأولى*",
             "drawSignature": "رسم التوقيع*",
             "drawInitial": "رسم الأحرف الأولى*",
+            "imageSignature": "توقيع الصورة",
+            "imageInitial": "الأحرف الأولى من الصورة",
             "pickInitialsFile": "اختر الأحرف الأولى",
             "noSignatures": "لا يوجد حاليا أي التوقيعات المحفوظة.",
-            "fontStyle": "نوع الخط"
+            "fontStyle": "نمط الخط",
+            "textSignature": {
+                "dropdownLabel": "عائلة الخطوط"
+            }
         },
         "pageReplacementModal": {
             "yourFiles": "ملفاتك",
-            "chooseFile": "اختيار ملف",
+            "chooseFile": "اختر ملفًا",
             "localFile": "رفع",
             "pageReplaceInputLabel": "استبدال الصفحة",
             "pageReplaceInputFromSource": "مع الصفحة (الصفحات)",
@@ -485,12 +530,12 @@
             "filterDocument": "تصفية الوثيقة ولوحة التعليقات"
         },
         "state": {
-            "accepted": "قبلت",
+            "accepted": "مقبول",
             "rejected": "مرفوض",
             "completed": "مكتمل",
-            "cancelled": "ألغيت",
+            "cancelled": "تم الإلغاء",
             "set": "تعيين الحالة:",
-            "setBy": "التي وضعتها",
+            "setBy": "تم تعيينه بواسطة",
             "none": "لا أحد",
             "marked": "ملحوظ",
             "unmarked": "غير مميزة"
@@ -508,10 +553,17 @@
             "countMeasurement": "قياس العد",
             "radius": "نصف القطر",
             "count": "عدد",
-            "length": "طول"
+            "length": "طول",
+            "xAxis": "المحور السيني",
+            "yAxis": "المحور ص"
+        },
+        "freeTextOption": {
+            "autoSizeFont": "قم بقياس حجم الخط ديناميكيًا"
         },
         "measurementOption": {
-            "scale": "حجم"
+            "scale": "حجم",
+            "selectScale": "حدد مقياس",
+            "selectScaleDropdown": "حدد القائمة المنسدلة للمقياس"
         },
         "measurement": {
             "scaleModal": {
@@ -519,11 +571,12 @@
                 "custom": "مخصص",
                 "fractionalUnits": "الوحدات الكسرية",
                 "precision": "دقة",
-                "preset": "المعد مسبقا",
+                "preset": "محددة مسبقا",
                 "paperUnits": "وحدات الورق",
                 "displayUnits": "وحدات العرض",
                 "fractionUnitsTooltip": "تنطبق وحدات الكسر فقط على in وft-in",
-                "incorrectSyntax": "بناء جملة غير صحيح"
+                "incorrectSyntax": "بناء جملة غير صحيح",
+                "units": "الوحدات"
             },
             "scaleOverlay": {
                 "addNewScale": "إضافة مقياس جديد",
@@ -537,11 +590,12 @@
                 "page-delete-info": "صفحة",
                 "appliedTo-delete-info": "وتطبيقها على",
                 "measurement": "قياس",
-                "measurements": "قياسات",
+                "measurements": "القياسات",
                 "deletionIs": "الحذف هو",
                 "irreversible": "لا رجعة فيه",
                 "willDeleteMeasurement": "وسيتم حذف القياسات المرتبطة بها.",
                 "confirmDelete": "هل أنت متأكد أنك تريد حذف هذا المقياس؟",
+                "thisCantBeUndone": "لا يمكن التراجع عن هذا.",
                 "ifChangeScale": "إذا قمت بتغيير مقياس القياس أو الأداة المحددة، فقم بالقياس",
                 "notUsedWillDelete": "لن يتم استخدام أي قياسات أو أدوات بعد الآن وسيتم حذفها. الحذف لا رجعة فيه.",
                 "ifToContinue": "هل أنت متأكد أنك تريد الاستمرار؟"
@@ -572,7 +626,7 @@
         "slider": {
             "opacity": "العتامة",
             "thickness": "سكتة دماغية",
-            "text": "حجم الخط"
+            "text": "حجم النص"
         },
         "shared": {
             "page": "صفحة",
@@ -580,20 +634,20 @@
             "enableSnapping": "تمكين الالتقاط لأدوات القياس"
         },
         "watermark": {
-            "title": "علامة مائية",
+            "title": "العلامة المائية",
             "addWatermark": "أضف علامة مائية",
             "size": "مقاس",
             "location": "اختر موقعًا لتحرير العلامات المائية",
             "text": "نص",
             "style": "أسلوب",
-            "resetAllSettings": "امسح كل الاعدادت",
+            "resetAllSettings": "إعادة ضبط كافة الإعدادات",
             "font": "الخط",
-            "addNew": "اضف جديد",
+            "addNew": "أضف جديد",
             "locations": {
                 "center": "مركز",
                 "topLeft": "أعلى اليسار",
-                "topRight": "اعلى اليمين",
-                "topCenter": "مركز أعلى",
+                "topRight": "أعلى اليمين",
+                "topCenter": "أعلى المركز",
                 "bottomLeft": "أسفل اليسار",
                 "bottomRight": "أسفل اليمين",
                 "bottomCenter": "مركز القاع"
@@ -607,7 +661,9 @@
             "rotatePageCounterClockwise": "تدوير الصفحة عكس اتجاه عقارب الساعة",
             "moreOptions": "المزيد من الخيارات",
             "moreOptionsMenu": "قائمة خيارات المزيد من الصور المصغرة",
-            "enterPageNumbers": "أدخل أرقام الصفحات للاختيار"
+            "enterPageNumbers": "أدخل أرقام الصفحات للاختيار",
+            "multiSelectPages": "صفحات متعددة التحديد",
+            "multiSelectPagesExample": "على سبيل المثال 1، ح، 5-10"
         },
         "thumbnailsControlOverlay": {
             "move": "نقل الصفحات"
@@ -632,25 +688,26 @@
             "Username": "اسم المستخدم",
             "Date": "تاريخ",
             "Time": "وقت",
-            "fontStyle": "نوع الخط",
-            "dateFormat": "صيغة التاريخ",
+            "fontStyle": "نمط الخط",
+            "dateFormat": "تنسيق التاريخ",
             "month": "شهر",
             "day": "يوم",
             "year": "سنة",
             "hour": "ساعة",
             "minute": "دقيقة",
             "second": "ثانية",
-            "textColor": "لون الخط",
-            "backgroundColor": "لون الخلفية"
+            "textColor": "لون النص",
+            "backgroundColor": "لون الخلفية",
+            "dateToolTipLabel": "مزيد من المعلومات حول تنسيق التاريخ",
+            "previewCustomStamp": "معاينة"
         },
         "pageRedactModal": {
             "addMark": "أضف مارك",
             "pageSelection": "اختيار الصفحة",
-            "current": "الصفحه الحاليه",
+            "current": "الصفحة الحالية",
             "specify": "تحديد الصفحات",
             "odd": "الصفحات الفردية فقط",
-            "even": "حتى صفحات فقط",
-            "header": "وضع علامة على تنقيح الصفحات"
+            "even": "حتى الصفحات فقط"
         },
         "lineStyleOptions": {
             "title": "أسلوب"
@@ -663,8 +720,8 @@
             "theme": "سمة",
             "darkMode": "الوضع المظلم",
             "lightMode": "وضع الضوء",
-            "advancedSetting": "إعدادات متقدمة",
-            "viewing": "المعاينة",
+            "advancedSetting": "الإعداد المتقدم",
+            "viewing": "المشاهدة",
             "disableFadePageNavigationComponent": "تعطيل مكون التنقل في صفحة التلاشي",
             "disableFadePageNavigationComponentDesc": "احتفظ دائمًا بمكون التنقل في الصفحة على الشاشة. السلوك الافتراضي هو تلاشيه بعد فترة معينة من عدم النشاط.",
             "disableNativeScrolling": "تعطيل التمرير الأصلي",
@@ -702,12 +759,14 @@
             "redoChange": "إعادة تغيير التعليق التوضيحي",
             "openFile": "افتح منتقي الملفات",
             "openSearch": "افتح تراكب البحث",
+            "zoomOptions": "خيارات التكبير",
             "zoomIn": "تكبير",
             "zoomOut": "تصغير",
+            "setHeaderFocus": "يضبط التركيز على الرأس",
             "fitScreenWidth": "قم بملاءمة المستند مع عرض الشاشة في شاشة صغيرة (<640 بكسل)، وإلا قم بملاءمته مع حجمه الأصلي",
             "print": "مطبعة",
             "bookmarkOpenPanel": "قم بوضع إشارة مرجعية على الصفحة بسرعة وافتح لوحة الإشارات المرجعية",
-            "goToPreviousPage": "اذهب الى الصفحة السابقة",
+            "goToPreviousPage": "انتقل إلى الصفحة السابقة",
             "goToNextPage": "انتقل إلى الصفحة التالية",
             "goToPreviousPageArrowUp": "الانتقال إلى الصفحة السابقة في وضع التخطيط الفردي (ArrowUp)",
             "goToNextPageArrowDown": "انتقل إلى الصفحة التالية في وضع التخطيط الفردي (ArrowDown)",
@@ -731,15 +790,16 @@
             "selectCreateTextStrikeoutTool": "حدد أداة AnnotationCreateTextStrikeout",
             "selectCreateTextUnderlineTool": "حدد أداة AnnotationCreateTextUnderline",
             "editKeyboardShorcut": "تحرير اختصار لوحة المفاتيح",
-            "setShorcut": "تعيين الاختصار",
-            "pressKeyToSet": "اضغط على المفتاح أو المفاتيح لتعيين اختصار جديد.",
-            "shortcutAlreadyExists": "اختصار لوحة المفاتيح أعلاه موجود بالفعل."
+            "setShortcut": "تعيين الاختصار",
+            "editShortcut": "تحرير الاختصار",
+            "shortcutAlreadyExists": "اختصار لوحة المفاتيح أعلاه موجود بالفعل.",
+            "close": "إغلاق تلميح الأداة"
         }
     },
     "warning": {
         "deletePage": {
             "deleteTitle": "حذف الصفحة",
-            "deleteMessage": "هل أنت متأكد أنك تريد حذف الصفحة (الصفحات) المحددة؟ لا يمكن التراجع عن هذا",
+            "deleteMessage": "هل أنت متأكد أنك تريد حذف الصفحة (الصفحات) المحددة؟ لا يمكن التراجع عن هذا.",
             "deleteLastPageMessage": "لا يمكنك حذف كافة الصفحات في المستند."
         },
         "extractPage": {
@@ -750,7 +810,7 @@
         },
         "redaction": {
             "applyTile": "تطبيق التنقيح",
-            "applyMessage": "سيؤدي هذا الإجراء إلى إزالة كافة العناصر المحددة للتنقيح نهائيًا. لا يمكن التراجع."
+            "applyMessage": "سيؤدي هذا الإجراء إلى إزالة كافة العناصر المحددة للتنقيح نهائيًا. لا يمكن التراجع عنه."
         },
         "deleteBookmark": {
             "title": "هل تريد حذف الإشارة المرجعية؟",
@@ -768,9 +828,12 @@
             "deleteTitle": "حذف اللون المخصص",
             "deleteMessage": "هل تريد حذف اللون المخصص المحدد؟ ستتم إزالته من لوحة الألوان الخاصة بك."
         },
+        "colorPalettePicker": {
+            "deleteTitle": "حذف اللون المخصص"
+        },
         "multiDeleteAnnotation": {
             "title": "هل تريد حذف التعليقات التوضيحية؟",
-            "message": "سيؤدي الحذف إلى إزالة جميع التعليقات والردود والتجميع ولا يمكن التراجع عنه. هل أنت متأكد أنك تريد حذف هذه التعليقات التوضيحية؟"
+            "message": "سيؤدي الحذف إلى إزالة جميع التعليقات والردود والتجميع ولا يمكن التراجع عنه. \n\n هل أنت متأكد أنك تريد حذف هذه التعليقات التوضيحية؟"
         },
         "closeFile": {
             "title": "هل تغلق بدون تنزيل؟",
@@ -778,8 +841,8 @@
             "rejectDownloadButton": "اغلاق بدون تحميل"
         },
         "connectToURL": {
-            "title": "تحذير الأمان",
-            "message": "يحاول هذا المستند الاتصال بـ:\n\n{{- أوري}}\n\n إذا كنت تثق بهذا المستند، فانقر فوق تأكيد لفتحه."
+            "title": "تحذير أمني",
+            "message": "يحاول هذا المستند الاتصال بـ: \n\n{{- أوري}}\n\n إذا كنت تثق بهذا المستند، فانقر فوق تأكيد لفتحه."
         }
     },
     "shortcut": {
@@ -787,9 +850,9 @@
         "callout": "(ج)",
         "copy": "(السيطرة ج)",
         "delete": "(التابع)",
-        "ellipse": "(س)",
+        "ellipse": "(ال)",
         "eraser": "(و)",
-        "freehand": "(F)",
+        "freehand": "(و)",
         "freetext": "(ت)",
         "highlight": "(ح)",
         "line": "(ل)",
@@ -821,7 +884,8 @@
     "tool": {
         "pan": "مِقلاة",
         "select": "يختار",
-        "Marquee": "التكبير سرادق",
+        "selectAnOption": "حدد خيارًا",
+        "Marquee": "تكبير الشاشة الاسمية",
         "Link": "رابط URL أو الصفحة",
         "Standard": "معيار",
         "Custom": "مخصص"
@@ -830,7 +894,10 @@
         "url": "عنوان URL",
         "page": "صفحة",
         "enterurl": "أدخل عنوان URL الذي ترغب في الارتباط به",
-        "enterpage": "حدد رقم الصفحة التي ترغب في الارتباط بها",
+        "enterUrlAlt": "أدخل عنوان URL",
+        "insertLink": "أدخل الرابط",
+        "insertLinkOrPage": "أدخل رابطًا أو صفحة",
+        "enterpage": "أدخل رقم الصفحة التي ترغب في الارتباط بها",
         "urlLink": "رابط URL"
     },
     "Model3D": {
@@ -844,14 +911,15 @@
         "enterUrl": "أدخل عنوان URL للملف",
         "extension": "امتداد الملف",
         "existingFile": "الملف مفتوح بالفعل",
-        "addTab": "إضافة علامة تبويب"
+        "addTab": "إضافة علامة تبويب",
+        "newTab": "علامة تبويب جديدة"
     },
     "datePicker": {
-        "previousMonth": "الشهر الماضى",
-        "nextMonth": "الشهر القادم",
+        "previousMonth": "الشهر السابق",
+        "nextMonth": "الشهر المقبل",
         "months": [
             "يناير",
-            "شهر فبراير",
+            "فبراير",
             "يمشي",
             "أبريل",
             "يمكن",
@@ -859,8 +927,8 @@
             "يوليو",
             "أغسطس",
             "سبتمبر",
-            "اكتوبر",
-            "شهر نوفمبر",
+            "أكتوبر",
+            "نوفمبر",
             "ديسمبر"
         ],
         "monthsShort": [
@@ -899,21 +967,28 @@
         "invalidDateTime": "التاريخ/الوقت غير صالح: يجب أن يتطابق الإدخال مع التنسيق"
     },
     "formField": {
+        "indexPanel": {
+            "formFieldList": "قائمة حقول النموذج",
+            "notFields": "لا تحتوي هذه الوثيقة على حقول نموذج"
+        },
         "formFieldPopup": {
             "fieldName": "اسم الحقل",
             "fieldValue": "القيمة الافتراضية",
-            "readOnly": "يقرأ فقط",
+            "readOnly": "قراءة فقط",
             "multiSelect": "تحديد متعدد",
             "required": "مطلوب",
             "multiLine": "متعدد الأسطر",
             "apply": "يتقدم",
             "cancel": "يلغي",
             "flags": "أعلام الميدان",
+            "fieldSize": "حجم الحقل",
             "options": "خيارات",
+            "properties": "ملكيات",
             "radioGroups": "ستنتمي أزرار الاختيار التي تحمل نفس اسم الحقل إلى نفس المجموعة.",
             "nameRequired": "اسم الحقل مطلوب",
             "fieldIndicator": "المؤشرات الميدانية",
             "documentFieldIndicator": "مؤشرات حقل الوثيقة",
+            "includeFieldIndicator": "تضمين مؤشر الحقل",
             "indicatorPlaceHolders": {
                 "TextFormField": "أدخل النص هنا",
                 "CheckBoxFormField": "يفحص",
@@ -922,7 +997,7 @@
                 "ComboBoxFormField": "يختار",
                 "SignatureFormField": {
                     "fullSignature": "وقع هنا",
-                    "initialsSignature": "المبدئي هنا"
+                    "initialsSignature": "الأولي هنا"
                 }
             },
             "size": "مقاس",
@@ -933,6 +1008,14 @@
                 "empty": "لا يمكن أن يكون اسم الحقل فارغًا"
             }
         },
+        "formFieldPanel": {
+            "SignatureFormField": "التعليق التوضيحي لحقل التوقيع",
+            "CheckBoxFormField": "التعليق التوضيحي لحقل خانة الاختيار",
+            "RadioButtonFormField": "شرح حقل زر الاختيار",
+            "ListBoxFormField": "شرح حقل مربع القائمة",
+            "ComboBoxFormField": "التعليق التوضيحي لحقل مربع التحرير والسرد",
+            "TextFormField": "شرح حقل النص"
+        },
         "apply": "تطبيق الحقول",
         "type": "نوع الحقل",
         "types": {
@@ -941,8 +1024,21 @@
             "checkbox": "خانة الاختيار",
             "radio": "زر الراديو",
             "listbox": "مربع القائمة",
-            "combobox": "صندوق التحرير"
+            "combobox": "مربع التحرير والسرد",
+            "button": "زر"
         }
+    },
+    "alignmentPopup": {
+        "alignment": "محاذاة",
+        "alignLeft": "محاذاة لليسار",
+        "alignHorizontalCenter": "محاذاة المركز الأفقي",
+        "alignVerticalCenter": "محاذاة المركز العمودي",
+        "alignRight": "محاذاة لليمين",
+        "alignTop": "محاذاة الأعلى",
+        "alignBottom": "محاذاة القاع",
+        "distribute": "توزيع",
+        "distributeHorizontal": "توزيع أفقيا",
+        "distributeVertical": "توزيع عموديا"
     },
     "digitalSignatureModal": {
         "certification": "شهادة",
@@ -1058,28 +1154,29 @@
     "cropPopUp": {
         "title": "صفحات للاقتصاص",
         "allPages": "الجميع",
-        "singlePage": "الصفحه الحاليه",
+        "singlePage": "الصفحة الحالية",
         "multiPage": "تحديد الصفحة",
         "cropDimensions": "أبعاد المحاصيل",
         "dimensionInput": {
             "unitOfMeasurement": "وحدة",
-            "autoTrim": "الإعدادات المسبقة"
+            "autoTrim": "الإعدادات المسبقة",
+            "autoTrimCustom": "مخصص"
         },
         "cropModal": {
             "applyTitle": "تطبيق المحاصيل؟",
-            "applyMessage": "سيؤدي هذا الإجراء إلى اقتصاص جميع الصفحات المحددة بشكل دائم. لا يمكن التراجع.",
+            "applyMessage": "سيؤدي هذا الإجراء إلى اقتصاص جميع الصفحات المحددة بشكل دائم. لا يمكن التراجع عنه.",
             "cancelTitle": "هل تريد إلغاء الاقتصاص؟",
             "cancelMessage": "هل أنت متأكد أنك تريد إلغاء اقتصاص كافة الصفحات المحددة؟"
         }
     },
     "snippingPopUp": {
-        "title": "أداة القص",
+        "title": "أداة القطع",
         "clipboard": "نسخ إلى الحافظة",
         "download": "تحميل",
         "cropAndRemove": "اقتصاص وإزالة",
         "snippingModal": {
             "applyTitle": "تطبيق القص؟",
-            "applyMessage": "سيؤدي هذا الإجراء إلى قطع المنطقة المحددة نهائيًا وإزالة الصفحات الأخرى. لا يمكن التراجع.",
+            "applyMessage": "سيؤدي هذا الإجراء إلى قطع المنطقة المحددة نهائيًا وإزالة الصفحات الأخرى. لا يمكن التراجع عنه.",
             "cancelTitle": "هل تريد إلغاء القص؟",
             "cancelMessage": "هل أنت متأكد أنك تريد التوقف عن القص؟"
         }
@@ -1090,10 +1187,11 @@
     },
     "redactionPanel": {
         "noMarkedRedactions": "ابدأ التنقيح عن طريق وضع علامة على النص أو المناطق أو الصفحات أو إجراء بحث.",
-        "redactionSearchPlaceholder": "أضف عن طريق البحث عن الكلمات الرئيسية أو الأنماط",
+        "redactionSearchPlaceholder": "تنقيح بواسطة لوحة المفاتيح أو الأنماط",
         "redactionCounter": "تم وضع علامة للتنقيح",
         "clearMarked": "واضح",
         "redactAllMarked": "تنقيح الكل",
+        "redactionItems": "عناصر التنقيح",
         "redactionItem": {
             "regionRedaction": "تنقيح المنطقة",
             "fullPageRedaction": "تنقيح الصفحة بالكامل",
@@ -1107,10 +1205,10 @@
         "searchResults": "نتائج البحث",
         "search": {
             "creditCards": "بطاقة إئتمان",
-            "phoneNumbers": "أرقام الهواتف",
+            "phoneNumbers": "أرقام الهاتف",
             "images": "الصور",
             "emails": "رسائل البريد الإلكتروني",
-            "pattern": "نمط",
+            "pattern": "أنماط",
             "start": "ابدأ في إجراء بحثك"
         }
     },
@@ -1121,7 +1219,7 @@
     },
     "watermarkPanel": {
         "textWatermark": "العلامة المائية النصية",
-        "uploadImage": "تحميل الصور",
+        "uploadImage": "تحميل الصورة",
         "browse": "تصفح",
         "watermarkOptions": "خيارات العلامة المائية",
         "watermarks": "العلامات المائية"
@@ -1131,44 +1229,104 @@
         "uploadFiles": "تحميل الملفات",
         "uploadFolder": "تحميل المجلد",
         "addFiles": "إضافة ملفات",
-        "addFile": "اضف ملف",
-        "addFolder": "أضف المجلد",
-        "createFolder": "أنشئ مجلد",
+        "addFile": "إضافة ملف",
+        "addFolder": "إضافة مجلد",
+        "createFolder": "إنشاء مجلد",
         "portfolioPanelTitle": "محفظة PDF",
-        "portfolioNewFolder": "ملف جديد",
-        "portfolioFolderPlaceholder": "إسم الملف",
+        "portfolioNewFolder": "مجلد جديد",
+        "portfolioDocumentTitle": "عنوان الوثيقة",
+        "portfolioFolderPlaceholder": "اسم المجلد",
         "portfolioFilePlaceholder": "اسم الملف",
         "folderNameAlreadyExists": "اسم المجلد موجود بالفعل",
         "fileNameAlreadyExists": "اسم الملف موجود بالفعل",
-        "openFile": "فتح في علامة تبويب جديدة",
+        "openFile": "افتح في علامة تبويب جديدة",
         "fileAlreadyExists": "الملف موجود بالفعل",
         "fileAlreadyExistsMessage": "الملف \"{{fileName}}\" موجود بالفعل في المحفظة.",
         "deletePortfolio": "هل أنت متأكد أنك تريد حذف \"{{fileName}}\"؟",
         "reselect": "إعادة التحديد"
     },
     "languageModal": {
-        "selectLanguage": "اختار اللغة"
+        "selectLanguage": "اختر اللغة"
     },
     "officeEditor": {
         "bold": "عريض",
         "italic": "مائل",
         "underline": "تسطير",
-        "textColor": "لون الخط",
+        "textColor": "لون النص",
         "leftAlign": "محاذاة لليسار",
         "centerAlign": "محاذاة للوسط",
         "rightAlign": "محاذاة إلى اليمين",
         "justify": "يبرر",
         "lineSpacing": "تباعد الأسطر والفقرات",
+        "lineSpacingMenu": "تباعد الأسطر",
         "bulletList": "قائمة نقطية",
         "numberList": "قائمة مرقمة",
-        "decreaseIndent": "انخفاض المسافة البادئة",
+        "decreaseIndent": "إنقاص المسافة البادئة",
         "increaseIndent": "زيادة المسافة البادئة",
         "insertLink": "أدخل الرابط",
-        "insertImage": "إدراج صورة",
-        "notSupportedOnMobile": "تحرير Office غير مدعوم على الأجهزة المحمولة."
+        "insertImage": "أدخل الصورة",
+        "image": "صورة",
+        "table": "طاولة",
+        "insertRowAbove": "إدراج صف أعلاه",
+        "insertRowBelow": "إدراج صف أدناه",
+        "insertColumnRight": "إدراج عمود لليمين",
+        "insertColumnLeft": "إدراج العمود الأيسر",
+        "deleteRow": "حذف الصف",
+        "deleteColumn": "حذف العمود",
+        "deleteTable": "حذف الجدول",
+        "deleted": "تم حذفه:",
+        "added": "تمت الإضافة:",
+        "editing": "التحرير",
+        "editingDescription": "تحرير المستند",
+        "pageBreak": "فاصل الصفحة",
+        "reviewing": "مراجعة",
+        "reviewingDescription": "تقديم اقتراحات",
+        "viewOnly": "المشاهدة",
+        "viewOnlyDescription": "عرض بدون اقتراحات",
+        "notSupportedOnMobile": "تحرير Office غير مدعوم على الأجهزة المحمولة.",
+        "previewAllChanges": "معاينة كافة التغييرات",
+        "accept": "يقبل",
+        "reject": "يرفض",
+        "pastingTitle": "اللصق غير متوفر",
+        "pastingMessage": "اللصق غير مدعوم في متصفحك. وبدلاً من ذلك، يمكنك استخدام اختصار لوحة المفاتيح",
+        "pastingWithoutFormatTitle": "اللصق بدون تنسيق غير متوفر",
+        "pastingWithoutFormatMessage": "اللصق بدون تنسيق غير مدعوم في متصفحك. وبدلاً من ذلك، يمكنك استخدام اختصار لوحة المفاتيح",
+        "lineSpacingOptions": {
+		  "single": "أعزب",
+		  "115": "1.15",
+		  "15": "1.5",
+		  "double": "مزدوج",
+		  "custom": "مخصص"
+		},
+        "numberDropdown": {
+		  "dropdownLabel": "الإعدادات المسبقة للترقيم",
+		  "6": "الرقم اللاتيني الروماني 1",
+		  "7": "الرقم العشري",
+		  "8": "الرقم اللاتيني الروماني 2",
+		  "10": "الرومانية اللاتينية",
+		  "11": "الرقم اللاتيني الروماني"
+		},
+		"bulletDropdown": {
+		  "dropdownLabel": "الإعدادات المسبقة للرصاصة",
+		  "0": "رصاصة",
+		  "1": "ساحة الرصاصة",
+		  "2": "رصاصة مربعة",
+		  "3": "الماس",
+		  "4": "يفحص",
+		  "5": "سهم"
+		},
+        "fontSize": {
+            "dropdownLabel": "حجم الخط"
+        },
+        "fontStyles": {
+            "dropdownLabel": "أنماط الخطوط"
+        },
+        "fontFamily": {
+            "dropdownLabel": "عائلة الخطوط"
+        }
     },
     "insertPageModal": {
-        "title": "إضافة صفحة جديدة",
+        "title": "إدراج صفحة جديدة",
         "tabs": {
             "blank": "فارغ",
             "upload": "رفع"
@@ -1197,7 +1355,7 @@
             },
             "units": "الوحدات"
         },
-        "browse": "تصفح ملفات",
+        "browse": "تصفح الملفات",
         "fileSelected": {
             "title": "حدد الصفحات المراد إضافتها"
         },
@@ -1212,14 +1370,14 @@
     "multiViewer": {
         "dragAndDrop": "قم بسحب وإسقاط ملفك هنا للمقارنة",
         "or": "أو",
-        "browse": "تصفح ملفات",
+        "browse": "تصفح الملفات",
         "startSync": "ابدأ المزامنة",
         "stopSync": "إيقاف المزامنة",
         "closeDocument": "إغلاق المستند",
         "save": "حفظ المستند",
         "comparePanel": {
             "Find": "البحث في الوثيقة",
-            "changesList": "قائمة التغييرات",
+            "changesList": "قائمة التغيير",
             "change": "يتغير",
             "old": "قديم",
             "new": "جديد",
@@ -1236,20 +1394,20 @@
         "general": "عام",
         "fileName": "اسم الملف",
         "fileType": "نوع الملف",
-        "fileLocation": "مكان الملف",
+        "fileLocation": "موقع الملف",
         "browse": "تصفح",
         "pageRange": "نطاق الصفحة",
         "all": "الجميع",
         "currentView": "العرض الحالي",
-        "currentPage": "الصفحه الحاليه",
+        "currentPage": "الصفحة الحالية",
         "specifyPage": "تحديد الصفحة",
         "properties": "ملكيات",
         "includeAnnotation": "تضمين التعليقات التوضيحية",
         "includeComments": "تضمين التعليقات",
-        "watermark": "علامة مائية",
+        "watermark": "العلامة المائية",
         "addWatermark": "أضف علامة مائية",
-        "save": "احفظ الملف",
-        "pageError": "صفحة غير صالحة. نطاقات الصفحات الصالحة تتراوح بين 1 -",
+        "save": "حفظ الملف",
+        "pageError": "الرجاء إدخال نطاق بين 1 -",
         "fileNameCannotBeEmpty": "لا يمكن أن يكون اسم الملف فارغًا"
     },
     "filePicker": {
@@ -1259,8 +1417,56 @@
     },
     "stylePanel": {
         "headings": {
-            "styles": "الأنماط"
+            "styles": "الأنماط",
+            "annotation": "تعليق توضيحي",
+            "annotations": "الشروح",
+            "tool": "أداة",
+            "textStyles": "أنماط النص",
+            "currentColor": "اللون الحالي",
+            "customColors": "ألوان مخصصة",
+            "redactionTextLabel": "إضافة تسمية نصية",
+            "redactionMarkOutline": "مارك الخطوط العريضة",
+            "redactionFill": "لون التنقيح",
+            "redactionTextPlaceholder": "أدخل تسمية النص",
+            "contentEdit": "تحرير المحتوى"
         },
-        "noToolSelected": "حدد أداة لعرض خصائص الأداة"
+        "lineStyles": {
+            "startLineStyleLabel": "بداية نمط الخط",
+            "middleLineStyleLabel": "نمط الخط الأوسط",
+            "endLineStyleLabel": "نمط خط النهاية"
+        },
+        "addColorToCustom": "أضف إلى الألوان المخصصة",
+        "noToolSelected": "حدد أداة لعرض خصائص الأداة",
+        "noToolStyle": "لا تحتوي الأداة على أي خصائص التصميم.",
+        "lineEnding": {
+            "start": {
+                "dropdownLabel": "بداية الخط"
+            },
+            "end": {
+                "dropdownLabel": "نهاية الخط"
+            },
+            "middle": {
+                "dropdownLabel": "الخط الأوسط"
+            }
+        },
+        "borderStyle": {
+            "dropdownLabel": "حدود"
+        }
+    },
+    "signatureListPanel": {
+        "header": "قائمة التوقيع",
+        "newSignature": "التوقيع الجديد",
+        "newSignatureAndInitial": "إنشاء توقيع جديد والأحرف الأولى",
+        "signatureList": {
+            "signature": "إمضاء",
+            "initials": "الأحرف الأولى"
+        }
+    },
+    "rubberStampPanel": {
+        "header": "الطوابع",
+        "standard": "الطوابع القياسية"
+    },
+    "colorPickerModal": {
+        "modalTitle": "منتقي الألوان"
     }
 }
