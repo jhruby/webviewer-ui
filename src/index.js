@@ -33,7 +33,6 @@ import { addDocumentViewer, setupOpenURLHandler } from 'helpers/documentViewerHe
 import setEnableAnnotationNumbering from 'helpers/setEnableAnnotationNumbering';
 import getRootNode from 'helpers/getRootNode';
 import { setItemToFlyoutStore } from 'helpers/itemToFlyoutHelper';
-import openURI from './helpers/openURI';
 
 import './index.scss';
 import importModularComponents from 'src/apis/importModularComponents';
@@ -165,9 +164,16 @@ if (window.CanvasRenderingContext2D) {
   logDebugInfo();
   const documentViewer = addDocumentViewer(1);
   
+  let timeout = null;
   documentViewer.setOpenURIHandler((uri, isOpenInNewWindow) => {
-    // VA-9465 We do not want to display a Security Warning dialog when opening a link.
-    openURI(uri, isOpenInNewWindow);
+    //VA-11351 prevent opening multiple tabs when clicking on a link
+    if (!timeout) {
+      timeout = setTimeout(() => {
+        // VA-9465 We do not want to display a Security Warning dialog when opening a link.
+        core.openURI(uri, isOpenInNewWindow);
+        timeout = null;
+      }, 100);
+    }
   });
 
   if (getHashParameters('hideDetachedReplies', false)) {
