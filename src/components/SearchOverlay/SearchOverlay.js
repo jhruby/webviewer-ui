@@ -352,6 +352,8 @@ function SearchOverlay(props) {
           tabIndex={isPanelOpen ? 0 : -1}
         />}
   </div>);
+  
+  const className = 'search-panel-input' + (isRightToLeft ? ' right-to-left' : '');
 
   return (
     <div className={classNames({
@@ -361,8 +363,7 @@ function SearchOverlay(props) {
       <div className='input-container'>
         {customizableUI && <Icon glyph="icon-header-search" />}
         <input 
-          dir={ isRightToLeft ? "rtl" : "" }
-          className='search-panel-input'
+          className={className}
           ref={searchTextInputRef}
           type="text"
           autoComplete="off"
