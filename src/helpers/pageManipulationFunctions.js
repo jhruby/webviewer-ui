@@ -34,16 +34,16 @@ const canRotateLoadedDocument = () => {
 };
 
 const rotatePages = (pageNumbers, counterClockwise) => {
-  if (canRotateLoadedDocument()) {
+  /*if (canRotateLoadedDocument()) {
     const rotation = counterClockwise ? window.Core.PageRotation.E_270 : window.Core.PageRotation.E_90;
     core.rotatePages(pageNumbers, rotation);
-  } else {
+  } else {*/
     const docViewer = core.getDocumentViewer();
     const currentRotations = docViewer.getPageRotations();
     for (const page of pageNumbers) {
       docViewer.setRotation(getNewRotation(currentRotations[page], counterClockwise), page);
     }
-  }
+  //}
 };
 
 const rotateClockwise = (pageNumbers) => {

@@ -32,25 +32,25 @@ import { getSearchListeners } from 'helpers/search';
 
 function buildSearchModeFlag(options = {}) {
   const SearchMode = core.getSearchMode();
-  const searchMode = [SearchMode.PAGE_STOP, SearchMode.HIGHLIGHT];
+  let searchMode = SearchMode.PAGE_STOP | SearchMode.HIGHLIGHT;
 
   if (options.caseSensitive) {
-    searchMode.push(SearchMode.CASE_SENSITIVE);
+    searchMode |= SearchMode.CASE_SENSITIVE;
   }
   if (options.wholeWord) {
-    searchMode.push(SearchMode.WHOLE_WORD);
+    searchMode |= SearchMode.WHOLE_WORD;
   }
   if (options.wildcard) {
-    searchMode.push(SearchMode.WILD_CARD);
+    searchMode |= SearchMode.WILD_CARD;
   }
   if (options.regex) {
-    searchMode.push(SearchMode.REGEX);
+    searchMode |= SearchMode.REGEX;
   }
   if (options.searchUp) {
-    searchMode.push(SearchMode.SEARCH_UP);
+    searchMode |= SearchMode.SEARCH_UP;
   }
   if (options.ambientString) {
-    searchMode.push(SearchMode.AMBIENT_STRING);
+    searchMode |= SearchMode.AMBIENT_STRING;
   }
   return searchMode;
 }

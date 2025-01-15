@@ -33,22 +33,22 @@ let isStillProcessingResults = false;
 
 function buildSearchModeFlag(options = {}) {
   const SearchMode = core.getSearchMode();
-  const searchMode = [SearchMode.PAGE_STOP, SearchMode.HIGHLIGHT];
+  let searchMode = SearchMode.PAGE_STOP | SearchMode.HIGHLIGHT;
 
   if (options.caseSensitive) {
-    searchMode.push(SearchMode.CASE_SENSITIVE);
+    searchMode |= SearchMode.CASE_SENSITIVE;
   }
   if (options.wholeWord) {
-    searchMode.push(SearchMode.WHOLE_WORD);
+    searchMode |= SearchMode.WHOLE_WORD;
   }
   if (options.wildcard) {
-    searchMode.push(SearchMode.WILD_CARD);
+    searchMode |= SearchMode.WILD_CARD;
   }
   if (options.regex) {
-    searchMode.push(SearchMode.REGEX);
+    searchMode |= SearchMode.REGEX;
   }
 
-  searchMode.push(SearchMode.AMBIENT_STRING);
+  searchMode |= SearchMode.AMBIENT_STRING;
 
   return searchMode;
 }
@@ -152,6 +152,13 @@ export default (store) => (searchValue, options, isUserTriggered = true) => {
   const activeDocumentViewer = core.getDocumentViewer(activeDocumentViewerKey);
 
   activeDocumentViewer.clearSearchResults();
-  activeDocumentViewer.textSearchInit(searchValue, searchMode, textSearchInitOptions);
+  activeDocumentViewer.textSearchInit(options.rightToLeft ? reverse(searchValue) : searchValue, searchMode, textSearchInitOptions);
   activeDocumentViewer.addEventListener('searchInProgress', searchInProgressCallback);
 };
+
+const reverse = function(str) {
+  const segmenter = new Intl.Segmenter("ar", {granularity: 'grapheme'});
+  const segitr = segmenter.segment(str);
+  const segarr = Array.from(segitr, ({segment}) => segment).reverse();
+  return segarr.join('');
+}

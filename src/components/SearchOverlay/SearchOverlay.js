@@ -46,12 +46,15 @@ function SearchOverlay(props) {
   const { isCaseSensitive, setCaseSensitive, isWholeWord, setWholeWord, isWildcard, setWildcard, setSearchStatus, isSearchInProgress, setIsSearchInProgress } = props;
   const { searchStatus, isPanelOpen } = props;
   const [isReplaceBtnDisabled, setReplaceBtnDisabled] = useState(true);
+  const [isRightToLeft, setRightToLeft] = React.useState(false);
   const [isReplaceAllBtnDisabled, setReplaceAllBtnDisabled] = useState(true);
   const [isMoreOptionsOpen, setMoreOptionOpen] = useState(true);
   const [showReplaceSpinner, setShowReplaceSpinner] = useState(false);
   const [isReplacementRegexValid, setReplacementRegexValid] = useState(true);
   const [allowInitialSearch, setAllowInitialSearch] = useState(false);
   const isSearchAndReplaceDisabled = useSelector((state) => selectors.isElementDisabled(state, 'searchAndReplace'));
+  const rightToLeftAllowed = useSelector((state) => selectors.getAllowRightToLeftSearch(state));
+  const contentUserId = useSelector((state) => selectors.getContentUserId(state));
   const customizableUI = useSelector((state) => selectors.getFeatureFlags(state)?.customizableUI);
   const searchTextInputRef = useRef();
   const waitTime = 300; // Wait time in milliseconds
@@ -64,6 +67,15 @@ function SearchOverlay(props) {
       setReplacementRegexValid(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (localStorage){
+      const rightToLeftSearch = localStorage.getItem('rightToLeftSearch_' + contentUserId);
+      if (rightToLeftSearch === 'true') {
+        setRightToLeft(true);
+      }
+    }
+  }, [contentUserId]);
 
   useEffect(() => {
     if (numberOfResultsFound > 0) {
@@ -92,12 +104,13 @@ function SearchOverlay(props) {
           caseSensitive: isCaseSensitive,
           wholeWord: isWholeWord,
           wildcard: isWildcard,
+          rightToLeft: isRightToLeft
         });
       }
     } else {
       clearSearchResult();
     }
-  }, [isCaseSensitive, isWholeWord, isWildcard, activeDocumentViewerKey]);
+  }, [isCaseSensitive, isWholeWord, isWildcard, activeDocumentViewerKey, isRightToLeft]);
 
   useEffect(() => {
     core.addEventListener('pagesUpdated', onPagesUpdated);
@@ -111,7 +124,7 @@ function SearchOverlay(props) {
   };
 
   const search = async (searchValue) => {
-    if (searchValue && searchValue.length > 1) {
+    if (searchValue && searchValue.length > 0) {
       setIsSearchInProgress(true);
       setSearchStatus('SEARCH_IN_PROGRESS');
 
@@ -122,6 +135,7 @@ function SearchOverlay(props) {
         caseSensitive: isCaseSensitive,
         wholeWord: isWholeWord,
         wildcard: isWildcard,
+        rightToLeft: isRightToLeft
       });
     } else if (!searchValue) {
       clearSearchResult();
@@ -130,12 +144,12 @@ function SearchOverlay(props) {
 
   const debouncedSearch = useCallback(
     debounce(search, waitTime),
-    [isCaseSensitive, isWholeWord, isWildcard]
+    [isCaseSensitive, isWholeWord, isWildcard, isRightToLeft]
   );
 
   const throttleSearch = useCallback(
     throttle(search, waitTime),
-    [isCaseSensitive, isWholeWord, isWildcard]
+    [isCaseSensitive, isWholeWord, isWildcard, isRightToLeft]
   );
 
   useEffect(() => {
@@ -198,6 +212,15 @@ function SearchOverlay(props) {
       const isChecked = event.target.checked;
       setWildcard(isChecked);
     }, [],
+  );
+
+  const rightToLeftOptionOnChange = useCallback(
+    function rightToLeftOptionOnChangeCallback(event) {
+      const isChecked = event.target.checked;
+      setRightToLeft(isChecked);
+      if (localStorage)
+        localStorage.setItem('rightToLeftSearch_' + contentUserId, isChecked);
+    }, [contentUserId],
   );
 
   const nextButtonOnClick = useCallback(
@@ -320,7 +343,17 @@ function SearchOverlay(props) {
       label={t('option.searchPanel.wildcard')}
       tabIndex={isPanelOpen ? 0 : -1}
     />
+        {rightToLeftAllowed && <Choice
+          dataElement="rightToLeftSearchOption"
+          id="right-to-left-option"
+          checked={isRightToLeft}
+          onChange={rightToLeftOptionOnChange}
+          label={t('option.searchPanel.rightToLeft')}
+          tabIndex={isPanelOpen ? 0 : -1}
+        />}
   </div>);
+  
+  const className = 'search-panel-input' + (isRightToLeft ? ' right-to-left' : '');
 
   return (
     <div className={classNames({
@@ -329,8 +362,8 @@ function SearchOverlay(props) {
     })}>
       <div className='input-container'>
         {customizableUI && <Icon glyph="icon-header-search" />}
-        <input
-          className='search-panel-input'
+        <input 
+          className={className}
           ref={searchTextInputRef}
           type="text"
           autoComplete="off"

@@ -289,6 +289,17 @@ export const setToolbarGroup = (toolbarGroup, pickTool = true, toolGroup = '') =
     return firstTool;
   };
 
+  function returnIfValid(state, toolbarGroup) {
+    const toolGroupName = state.viewer.lastPickedToolGroup[toolbarGroup];
+    if (!toolGroupName) return '';
+
+    const toolGroupElement = Object.values(state.viewer.headers[toolbarGroup]).find(({ toolGroup }) => toolGroup === toolGroupName)?.dataElement;
+    if (toolGroupElement != null && !isElementDisabled(state, toolGroupElement) && !allButtonsInGroupDisabled(state, toolGroupName))
+      return toolGroupName;
+    
+    return '';    
+  }
+
   if (toolbarGroup === 'toolbarGroup-View') {
     dispatch({
       type: 'SET_ACTIVE_TOOL_GROUP',
@@ -301,7 +312,7 @@ export const setToolbarGroup = (toolbarGroup, pickTool = true, toolGroup = '') =
     }
     const state = getState();
     const lastPickedToolGroup =
-      toolGroup || state.viewer.lastPickedToolGroup[toolbarGroup] || getFirstToolGroupForToolbarGroup(state, toolbarGroup);
+      toolGroup || returnIfValid(state, toolbarGroup) || getFirstToolGroupForToolbarGroup(state, toolbarGroup);
     const lastPickedToolName =
       state.viewer.lastPickedToolForGroup[lastPickedToolGroup] || getFirstToolNameForGroup(state, lastPickedToolGroup);
     if (pickTool) {
@@ -489,6 +500,7 @@ export const enableAllElements = () => ({
   type: 'ENABLE_ALL_ELEMENTS',
   payload: {},
 });
+
 export const openElement = (dataElement) => (dispatch, getState) => {
   const state = getState();
 

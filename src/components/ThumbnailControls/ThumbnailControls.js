@@ -57,7 +57,7 @@ const ThumbnailControls = ({ index }) => {
 
   const BUTTONS_MAP = {
     'thumbRotateClockwise': <Button
-      className="rotate-button"
+      //className="rotate-button"
       img="icon-header-page-manipulation-page-rotation-clockwise-line"
       onClick={() => rotateClockwise(pageNumbers)}
       title="option.thumbnailPanel.rotatePageClockwise"

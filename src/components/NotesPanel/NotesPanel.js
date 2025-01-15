@@ -401,7 +401,7 @@ const NotesPanel = ({
     style = { width: `${currentWidth}px`, minWidth: `${currentWidth}px` };
   }
 
-  const showNotePanel = !isDisabled && (isOpen || notesInLeftPanel || isCustomPanel);
+  const showNotePanel = !isDisabled;
 
   return !showNotePanel ? null : (
     <div
