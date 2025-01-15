@@ -37,6 +37,7 @@
         "fitToWidth": "تناسب العرض",
         "more": "أكثر",
         "openFile": "افتح الملف",
+        "showMoreFiles": "عرض المزيد من الملفات",
         "page": "صفحة",
         "of": "ل",
         "pagePrev": "الصفحة السابقة",
@@ -142,7 +143,8 @@
         "copySelectedColor": "نسخ اللون المحدد",
         "showMoreColors": "عرض المزيد من الألوان",
         "showLessColors": "عرض ألوان أقل",
-        "fromCustomColorPicker": "من منتقي الألوان المخصص"
+        "fromCustomColorPicker": "من منتقي الألوان المخصص",
+        "newSheetDocument": "جدول بيانات جديد"
     },
     "annotation": {
         "areaMeasurement": "منطقة",
@@ -268,7 +270,8 @@
             "close": "إغلاق كافة التعليقات التوضيحية"
         },
         "comparePanel": "لوحة المقارنة",
-        "watermarkPanel": "لوحة العلامة المائية"
+        "watermarkPanel": "لوحة العلامة المائية",
+        "mainMenu": "القائمة الرئيسية"
     },
     "message": {
         "showMore": "عرض المزيد",
@@ -1263,6 +1266,7 @@
         "numberList": "قائمة مرقمة",
         "decreaseIndent": "إنقاص المسافة البادئة",
         "increaseIndent": "زيادة المسافة البادئة",
+        "nonPrintingCharacters": "أحرف غير مطبوعة",
         "insertLink": "أدخل الرابط",
         "insertImage": "أدخل الصورة",
         "image": "صورة",
@@ -1468,5 +1472,14 @@
     },
     "colorPickerModal": {
         "modalTitle": "منتقي الألوان"
+    },
+    "accessibility": {
+        "landmarks": {
+            "topHeader": "رأس أعلى",
+            "leftHeader": "الرأس الأيسر",
+            "rightHeader": "الرأس الأيمن",
+            "bottomHeader": "رأس سفلي",
+            "documentContent": "محتوى الوثيقة"
+        }
     }
 }
