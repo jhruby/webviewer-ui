@@ -41,9 +41,27 @@ const propTypes = {
 
 function SearchOverlay(props) {
   const { t } = useTranslation();
-  const { isSearchOverlayDisabled, searchResults, activeResultIndex, selectNextResult, selectPreviousResult, isProcessingSearchResults, activeDocumentViewerKey } = props;
+  const {
+    isSearchOverlayDisabled,
+    searchResults,
+    activeResultIndex,
+    selectNextResult,
+    selectPreviousResult,
+    isProcessingSearchResults,
+    activeDocumentViewerKey,
+  } = props;
   const { searchValue, setSearchValue, executeSearch, replaceValue, nextResultValue, setReplaceValue } = props;
-  const { isCaseSensitive, setCaseSensitive, isWholeWord, setWholeWord, isWildcard, setWildcard, setSearchStatus, isSearchInProgress, setIsSearchInProgress } = props;
+  const {
+    isCaseSensitive,
+    setCaseSensitive,
+    isWholeWord,
+    setWholeWord,
+    isWildcard,
+    setWildcard,
+    setSearchStatus,
+    isSearchInProgress,
+    setIsSearchInProgress,
+  } = props;
   const { searchStatus, isPanelOpen } = props;
   const [isReplaceBtnDisabled, setReplaceBtnDisabled] = useState(true);
   const [isRightToLeft, setRightToLeft] = React.useState(false);
@@ -52,24 +70,24 @@ function SearchOverlay(props) {
   const [showReplaceSpinner, setShowReplaceSpinner] = useState(false);
   const [isReplacementRegexValid, setReplacementRegexValid] = useState(true);
   const [allowInitialSearch, setAllowInitialSearch] = useState(false);
-  const isSearchAndReplaceDisabled = useSelector((state) => selectors.isElementDisabled(state, 'searchAndReplace'));
-  const rightToLeftAllowed = useSelector((state) => selectors.getAllowRightToLeftSearch(state));
-  const contentUserId = useSelector((state) => selectors.getContentUserId(state));
-  const customizableUI = useSelector((state) => selectors.getFeatureFlags(state)?.customizableUI);
+  const isSearchAndReplaceDisabled = useSelector(state => selectors.isElementDisabled(state, 'searchAndReplace'));
+  const rightToLeftAllowed = useSelector(state => selectors.getAllowRightToLeftSearch(state));
+  const contentUserId = useSelector(state => selectors.getContentUserId(state));
+  const customizableUI = useSelector(state => selectors.getFeatureFlags(state)?.customizableUI);
   const searchTextInputRef = useRef();
   const waitTime = 300; // Wait time in milliseconds
 
   useEffect(() => {
     try {
       // eslint-disable-next-line no-unused-vars
-      const replacementRegex = new RegExp('(?<!<\/?[^>]*|&[^;]*)');
+      const replacementRegex = new RegExp('(?<!</?[^>]*|&[^;]*)');
     } catch (error) {
       setReplacementRegexValid(false);
     }
   }, []);
 
   useEffect(() => {
-    if (localStorage){
+    if (localStorage) {
       const rightToLeftSearch = localStorage.getItem('rightToLeftSearch_' + contentUserId);
       if (rightToLeftSearch === 'true') {
         setRightToLeft(true);
@@ -104,7 +122,7 @@ function SearchOverlay(props) {
           caseSensitive: isCaseSensitive,
           wholeWord: isWholeWord,
           wildcard: isWildcard,
-          rightToLeft: isRightToLeft
+          rightToLeft: isRightToLeft,
         });
       }
     } else {
@@ -123,7 +141,7 @@ function SearchOverlay(props) {
     search(searchValue);
   };
 
-  const search = async (searchValue) => {
+  const search = async searchValue => {
     if (searchValue && searchValue.length > 0) {
       setIsSearchInProgress(true);
       setSearchStatus('SEARCH_IN_PROGRESS');
@@ -131,26 +149,31 @@ function SearchOverlay(props) {
       if (isOfficeEditorMode()) {
         await core.getDocument().getOfficeEditor().updateSearchData();
       }
+
       executeSearch(searchValue, {
         caseSensitive: isCaseSensitive,
         wholeWord: isWholeWord,
         wildcard: isWildcard,
-        rightToLeft: isRightToLeft
+        rightToLeft: isRightToLeft,
       });
     } else if (!searchValue) {
       clearSearchResult();
     }
   };
 
-  const debouncedSearch = useCallback(
-    debounce(search, waitTime),
-    [isCaseSensitive, isWholeWord, isWildcard, isRightToLeft]
-  );
+  const debouncedSearch = useCallback(debounce(search, waitTime), [
+    isCaseSensitive,
+    isWholeWord,
+    isWildcard,
+    isRightToLeft,
+  ]);
 
-  const throttleSearch = useCallback(
-    throttle(search, waitTime),
-    [isCaseSensitive, isWholeWord, isWildcard, isRightToLeft]
-  );
+  const throttleSearch = useCallback(throttle(search, waitTime), [
+    isCaseSensitive,
+    isWholeWord,
+    isWildcard,
+    isRightToLeft,
+  ]);
 
   useEffect(() => {
     const onOfficeDocumentEdited = () => {
@@ -166,7 +189,7 @@ function SearchOverlay(props) {
     };
   }, [searchValue]);
 
-  const textInputOnChange = (event) => {
+  const textInputOnChange = event => {
     setSearchValue(event.target.value);
     debouncedSearch(event.target.value);
 
@@ -176,7 +199,7 @@ function SearchOverlay(props) {
     }
   };
 
-  const replaceTextInputOnChange = (event) => {
+  const replaceTextInputOnChange = event => {
     setReplaceValue(event.target.value);
     if (event.target.value && searchValue) {
       setReplaceBtnDisabled(false);
@@ -193,34 +216,28 @@ function SearchOverlay(props) {
     setReplaceAllBtnDisabled(true);
   }
 
-  const caseSensitiveSearchOptionOnChange = useCallback(
-    function caseSensitiveSearchOptionOnChangeCallback(event) {
-      const isChecked = event.target.checked;
-      setCaseSensitive(isChecked);
-    }, [],
-  );
+  const caseSensitiveSearchOptionOnChange = useCallback(function caseSensitiveSearchOptionOnChangeCallback(event) {
+    const isChecked = event.target.checked;
+    setCaseSensitive(isChecked);
+  }, []);
 
-  const wholeWordSearchOptionOnChange = useCallback(
-    function wholeWordSearchOptionOnChangeCallback(event) {
-      const isChecked = event.target.checked;
-      setWholeWord(isChecked);
-    }, [],
-  );
+  const wholeWordSearchOptionOnChange = useCallback(function wholeWordSearchOptionOnChangeCallback(event) {
+    const isChecked = event.target.checked;
+    setWholeWord(isChecked);
+  }, []);
 
-  const wildcardOptionOnChange = useCallback(
-    function wildcardOptionOnChangeCallback(event) {
-      const isChecked = event.target.checked;
-      setWildcard(isChecked);
-    }, [],
-  );
+  const wildcardOptionOnChange = useCallback(function wildcardOptionOnChangeCallback(event) {
+    const isChecked = event.target.checked;
+    setWildcard(isChecked);
+  }, []);
 
   const rightToLeftOptionOnChange = useCallback(
     function rightToLeftOptionOnChangeCallback(event) {
       const isChecked = event.target.checked;
       setRightToLeft(isChecked);
-      if (localStorage)
-        localStorage.setItem('rightToLeftSearch_' + contentUserId, isChecked);
-    }, [contentUserId],
+      if (localStorage) localStorage.setItem('rightToLeftSearch_' + contentUserId, isChecked);
+    },
+    [contentUserId],
   );
 
   const nextButtonOnClick = useCallback(
@@ -254,7 +271,7 @@ function SearchOverlay(props) {
       });
       setShowReplaceSpinner(false);
     },
-    [replaceValue]
+    [replaceValue],
   );
 
   const toggleMoreOptionsBtn = () => {
@@ -277,7 +294,7 @@ function SearchOverlay(props) {
 
       setShowReplaceSpinner(false);
     },
-    [replaceValue, nextResultValue, isReplaceBtnDisabled]
+    [replaceValue, nextResultValue, isReplaceBtnDisabled],
   );
 
   const dispatch = useDispatch();
@@ -316,53 +333,59 @@ function SearchOverlay(props) {
   const numberOfResultsFound = searchResults ? searchResults.length : 0;
 
   const isSearchDoneAndNotProcessingResults = searchStatus === 'SEARCH_DONE' && !isProcessingSearchResults;
-  const showSpinner = (!isSearchDoneAndNotProcessingResults || isSearchInProgress) ? <Spinner /> : null;
+  const showSpinner = !isSearchDoneAndNotProcessingResults || isSearchInProgress ? <Spinner /> : null;
 
-  const searchOptionsComponents = (<div className="options">
-    <Choice
-      dataElement="caseSensitiveSearchOption"
-      id="case-sensitive-option"
-      checked={isCaseSensitive}
-      onChange={caseSensitiveSearchOptionOnChange}
-      label={t('option.searchPanel.caseSensitive')}
-      tabIndex={isPanelOpen ? 0 : -1}
-    />
-    <Choice
-      dataElement="wholeWordSearchOption"
-      id="whole-word-option"
-      checked={isWholeWord}
-      onChange={wholeWordSearchOptionOnChange}
-      label={t('option.searchPanel.wholeWordOnly')}
-      tabIndex={isPanelOpen ? 0 : -1}
-    />
-    <Choice
-      dataElement="wildCardSearchOption"
-      id="wild-card-option"
-      checked={isWildcard}
-      onChange={wildcardOptionOnChange}
-      label={t('option.searchPanel.wildcard')}
-      tabIndex={isPanelOpen ? 0 : -1}
-    />
-        {rightToLeftAllowed && <Choice
+  const searchOptionsComponents = (
+    <div className="options">
+      <Choice
+        dataElement="caseSensitiveSearchOption"
+        id="case-sensitive-option"
+        checked={isCaseSensitive}
+        onChange={caseSensitiveSearchOptionOnChange}
+        label={t('option.searchPanel.caseSensitive')}
+        tabIndex={isPanelOpen ? 0 : -1}
+      />
+      <Choice
+        dataElement="wholeWordSearchOption"
+        id="whole-word-option"
+        checked={isWholeWord}
+        onChange={wholeWordSearchOptionOnChange}
+        label={t('option.searchPanel.wholeWordOnly')}
+        tabIndex={isPanelOpen ? 0 : -1}
+      />
+      <Choice
+        dataElement="wildCardSearchOption"
+        id="wild-card-option"
+        checked={isWildcard}
+        onChange={wildcardOptionOnChange}
+        label={t('option.searchPanel.wildcard')}
+        tabIndex={isPanelOpen ? 0 : -1}
+      />
+      {rightToLeftAllowed && (
+        <Choice
           dataElement="rightToLeftSearchOption"
           id="right-to-left-option"
           checked={isRightToLeft}
           onChange={rightToLeftOptionOnChange}
           label={t('option.searchPanel.rightToLeft')}
           tabIndex={isPanelOpen ? 0 : -1}
-        />}
-  </div>);
-  
+        />
+      )}
+    </div>
+  );
+
   const className = 'search-panel-input' + (isRightToLeft ? ' right-to-left' : '');
 
   return (
-    <div className={classNames({
-      'SearchOverlay': true,
-      'modular-ui': customizableUI
-    })}>
-      <div className='input-container'>
+    <div
+      className={classNames({
+        'SearchOverlay': true,
+        'modular-ui': customizableUI,
+      })}
+    >
+      <div className="input-container">
         {customizableUI && <Icon glyph="icon-header-search" />}
-        <input 
+        <input
           className={className}
           ref={searchTextInputRef}
           type="text"
@@ -374,7 +397,7 @@ function SearchOverlay(props) {
           id="SearchPanel__input"
           tabIndex={isPanelOpen ? 0 : -1}
         />
-        {(searchValue !== undefined) && searchValue.length > 0 && (
+        {searchValue !== undefined && searchValue.length > 0 && (
           <button
             className="clearSearch-button"
             onClick={clearSearchResult}
@@ -382,50 +405,67 @@ function SearchOverlay(props) {
           >
             <Icon glyph="icon-close" />
           </button>
-        )
-        }
+        )}
       </div>
-      {
-        (isSearchAndReplaceDisabled || !isReplacementRegexValid) ? null :
-          (isMoreOptionsOpen)
-            ? <div className="extra-options">
-              <button className='Button' onClick={toggleMoreOptionsBtn}>{t('option.searchPanel.lessOptions')} <Icon glyph="icon-chevron-up" /></button>
+      {isSearchAndReplaceDisabled || !isReplacementRegexValid ? null : isMoreOptionsOpen ? (
+        <div className="extra-options">
+          <button className="Button" onClick={toggleMoreOptionsBtn}>
+            {t('option.searchPanel.lessOptions')} <Icon glyph="icon-chevron-up" />
+          </button>
+        </div>
+      ) : (
+        <div className="extra-options">
+          <button className="Button" onClick={toggleMoreOptionsBtn}>
+            {t('option.searchPanel.moreOptions')} <Icon glyph="icon-chevron-down" />
+          </button>
+        </div>
+      )}
+      {!isMoreOptionsOpen ? (
+        searchOptionsComponents
+      ) : (
+        <div>
+          {searchOptionsComponents}
+          {isSearchAndReplaceDisabled || !isReplacementRegexValid ? null : (
+            <div data-element="searchAndReplace" className="replace-options">
+              <p className="search-and-replace-title">{t('option.searchPanel.replace')}</p>
+              <div className="input-container">
+                <input
+                  type={'text'}
+                  aria-label={t('option.searchPanel.replace')}
+                  onChange={replaceTextInputOnChange}
+                  value={replaceValue}
+                />
+              </div>
+              <div className="replace-buttons">
+                {showReplaceSpinner ? <Spinner width={25} height={25} /> : null}
+                <button
+                  className="Button btn-replace-all"
+                  disabled={isReplaceAllBtnDisabled}
+                  onClick={replaceAllConfirmationWarning}
+                >
+                  {t('option.searchPanel.replaceAll')}
+                </button>
+                <button
+                  className="Button btn-replace"
+                  disabled={isReplaceBtnDisabled || !nextResultValue || !core.getActiveSearchResult()}
+                  onClick={replaceOneConfirmationWarning}
+                >
+                  {t('option.searchPanel.replace')}
+                </button>
+              </div>
             </div>
-            : <div className="extra-options">
-              <button className='Button' onClick={toggleMoreOptionsBtn}>{t('option.searchPanel.moreOptions')} <Icon glyph="icon-chevron-down" /></button>
-            </div>
-      }
-      {
-        (!isMoreOptionsOpen) ? searchOptionsComponents :
-          <div>
-            {searchOptionsComponents}
-            {
-              (isSearchAndReplaceDisabled || !isReplacementRegexValid) ? null :
-                <div data-element="searchAndReplace" className='replace-options'>
-                  <p className="search-and-replace-title">{t('option.searchPanel.replace')}</p>
-                  <div className='input-container'>
-                    <input type={'text'}
-                      aria-label={t('option.searchPanel.replace')}
-                      onChange={replaceTextInputOnChange}
-                      value={replaceValue}
-                    />
-                  </div>
-                  <div className='replace-buttons'>
-                    {(showReplaceSpinner) ? <Spinner width={25} height={25} /> : null}
-                    <button className='Button btn-replace-all' disabled={isReplaceAllBtnDisabled}
-                      onClick={replaceAllConfirmationWarning}>{t('option.searchPanel.replaceAll')}</button>
-                    <button className='Button btn-replace' disabled={isReplaceBtnDisabled || !nextResultValue || !core.getActiveSearchResult()}
-                      onClick={replaceOneConfirmationWarning}>{t('option.searchPanel.replace')}</button>
-                  </div>
-                </div>
-            }
-          </div>
-      }
+          )}
+        </div>
+      )}
 
       <div className="divider" />
       <div className="footer">
         {searchStatus === 'SEARCH_NOT_INITIATED' || '' ? null : showSpinner}
-        <p className="no-margin" aria-live="assertive">{isSearchDoneAndNotProcessingResults && !isSearchInProgress ? `${numberOfResultsFound} ${t('message.numResultsFound')}` : undefined}</p>
+        <p className="no-margin" aria-live="assertive">
+          {isSearchDoneAndNotProcessingResults && !isSearchInProgress
+            ? `${numberOfResultsFound} ${t('message.numResultsFound')}`
+            : undefined}
+        </p>
         {numberOfResultsFound > 0 && (
           <div className="buttons">
             <button className="button" onClick={previousButtonOnClick} aria-label={t('action.prevResult')}>
