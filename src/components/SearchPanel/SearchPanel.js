@@ -10,6 +10,7 @@ import { addSearchListener, removeSearchListener } from 'helpers/search';
 
 import './SearchPanel.scss';
 import useSearch from 'hooks/useSearch';
+import { useSelector } from 'react-redux';
 
 const propTypes = {
   isOpen: PropTypes.bool,
@@ -24,7 +25,7 @@ const propTypes = {
   isCustomPanel: PropTypes.bool,
 };
 
-function noop() { }
+function noop() {}
 
 function SearchPanel(props) {
   const {
@@ -45,20 +46,26 @@ function SearchPanel(props) {
   const { t } = useTranslation();
   const { searchStatus, searchResults, activeSearchResultIndex, setSearchStatus } = useSearch(activeDocumentViewerKey);
 
-  const onCloseButtonClick = React.useCallback(function onCloseButtonClick() {
-    if (closeSearchPanel) {
-      closeSearchPanel();
-    }
-  }, [closeSearchPanel]);
+  const onCloseButtonClick = React.useCallback(
+    function onCloseButtonClick() {
+      if (closeSearchPanel) {
+        closeSearchPanel();
+      }
+    },
+    [closeSearchPanel],
+  );
 
-  const onClickResult = React.useCallback(function onClickResult(resultIndex, result, activeDocumentViewerKey) {
-    setActiveResult(result, activeDocumentViewerKey);
-    if (!isInDesktopOnlyMode && isMobile) {
-      closeSearchPanel();
-    }
+  const onClickResult = React.useCallback(
+    function onClickResult(resultIndex, result, activeDocumentViewerKey) {
+      setActiveResult(result, activeDocumentViewerKey);
+      if (!isInDesktopOnlyMode && isMobile) {
+        closeSearchPanel();
+      }
 
-    setNextResultValue(result);
-  }, [closeSearchPanel, isMobile]);
+      setNextResultValue(result);
+    },
+    [closeSearchPanel, isMobile],
+  );
 
   const [isSearchInProgress, setIsSearchInProgress] = React.useState(false);
 
@@ -85,25 +92,14 @@ function SearchPanel(props) {
   }
 
   return (
-    <DataElementWrapper
-      className={className}
-      dataElement={dataElement}
-      style={style}
-    >
-      {!isInDesktopOnlyMode && isMobile &&
-        <div
-          className="close-container"
-        >
-          <button
-            className="close-icon-container"
-            onClick={onCloseButtonClick}
-          >
-            <Icon
-              glyph="ic_close_black_24px"
-              className="close-icon"
-            />
+    <DataElementWrapper className={className} dataElement={dataElement} style={style}>
+      {!isInDesktopOnlyMode && isMobile && (
+        <div className="close-container">
+          <button className="close-icon-container" onClick={onCloseButtonClick}>
+            <Icon glyph="ic_close_black_24px" className="close-icon" />
           </button>
-        </div>}
+        </div>
+      )}
       <SearchOverlay
         searchStatus={searchStatus}
         setSearchStatus={setSearchStatus}

@@ -13,7 +13,7 @@ const SearchResultListSeparatorPropTypes = {
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   t: PropTypes.func.isRequired,
   pageLabels: PropTypes.arrayOf(PropTypes.any).isRequired,
-  isProcessingSearchResults: PropTypes.bool
+  isProcessingSearchResults: PropTypes.bool,
 };
 
 function SearchResultListSeparator(props) {
@@ -44,12 +44,15 @@ const SearchResultListItemPropTypes = {
   currentResultIndex: PropTypes.number.isRequired,
   activeResultIndex: PropTypes.number.isRequired,
   onSearchResultClick: PropTypes.func,
-  activeDocumentViewerKey: PropTypes.number
+  activeDocumentViewerKey: PropTypes.number,
+  isRightToLeft: PropTypes.bool,
 };
 
 function SearchResultListItem(props) {
-  const [customizableUI] = useSelector((state) => [state.featureFlags.customizableUI]);
-  const { result, currentResultIndex, activeResultIndex, onSearchResultClick, activeDocumentViewerKey } = props;
+  const [customizableUI] = useSelector(state => [state.featureFlags.customizableUI]);
+  const { result, currentResultIndex, activeResultIndex, onSearchResultClick, activeDocumentViewerKey, isRightToLeft } =
+    props;
+
   const { ambientStr, resultStrStart, resultStrEnd, resultStr } = result;
   const textBeforeSearchValue = ambientStr.slice(0, resultStrStart);
   const searchValue = ambientStr === '' ? resultStr : ambientStr.slice(resultStrStart, resultStrEnd);
@@ -59,8 +62,9 @@ function SearchResultListItem(props) {
       role="cell"
       className={classNames({
         'SearchResult': true,
+        'right-to-left': isRightToLeft,
         'selected': currentResultIndex === activeResultIndex,
-        'modular-ui': customizableUI
+        'modular-ui': customizableUI,
       })}
       onClick={() => {
         if (onSearchResultClick) {
@@ -70,9 +74,7 @@ function SearchResultListItem(props) {
       aria-current={currentResultIndex === activeResultIndex}
     >
       {textBeforeSearchValue}
-      <span className='search-value'>
-        {searchValue}
-      </span>
+      <span className="search-value">{searchValue}</span>
       {textAfterSearchValue}
     </button>
   );
@@ -88,11 +90,22 @@ const SearchResultPropTypes = {
   t: PropTypes.func.isRequired,
   onClickResult: PropTypes.func,
   pageLabels: PropTypes.arrayOf(PropTypes.any),
-  activeDocumentViewerKey: PropTypes.number
+  activeDocumentViewerKey: PropTypes.number,
 };
 
 function SearchResult(props) {
-  const { height, searchStatus, searchResults, activeResultIndex, t, onClickResult, pageLabels, isProcessingSearchResults, isSearchInProgress, activeDocumentViewerKey } = props;
+  const {
+    height,
+    searchStatus,
+    searchResults,
+    activeResultIndex,
+    t,
+    onClickResult,
+    pageLabels,
+    isProcessingSearchResults,
+    isSearchInProgress,
+    activeDocumentViewerKey,
+  } = props;
   const cellMeasureCache = React.useMemo(() => {
     return new CellMeasurerCache({ defaultHeight: 50, fixedWidth: true });
   }, []);
@@ -110,38 +123,36 @@ function SearchResult(props) {
     setListSize(searchResults.length);
     cellMeasureCache.clearAll();
   }
-
-  const rowRenderer = React.useCallback(function rowRendererCallback(rendererOptions) {
-    const { index, key, parent, style } = rendererOptions;
-    const result = searchResults[index];
-    return (
-      <CellMeasurer
-        cache={cellMeasureCache}
-        columnIndex={0}
-        key={key}
-        parent={parent}
-        rowIndex={index}
-      >
-        {({ registerChild }) => (
-          <div role="row" ref={registerChild} style={style}>
-            <SearchResultListSeparator
-              currentResultIndex={index}
-              searchResults={searchResults}
-              pageLabels={pageLabels}
-              t={t}
-            />
-            <SearchResultListItem
-              result={result}
-              currentResultIndex={index}
-              activeResultIndex={activeResultIndex}
-              onSearchResultClick={onClickResult}
-              activeDocumentViewerKey={activeDocumentViewerKey}
-            />
-          </div>
-        )}
-      </CellMeasurer>
-    );
-  }, [cellMeasureCache, searchResults, activeResultIndex, t, pageLabels]);
+  const isRightToLeft = useSelector(state => state.search.isRightToLeft);
+  const rowRenderer = React.useCallback(
+    function rowRendererCallback(rendererOptions) {
+      const { index, key, parent, style } = rendererOptions;
+      const result = searchResults[index];
+      return (
+        <CellMeasurer cache={cellMeasureCache} columnIndex={0} key={key} parent={parent} rowIndex={index}>
+          {({ registerChild }) => (
+            <div role="row" ref={registerChild} style={style}>
+              <SearchResultListSeparator
+                currentResultIndex={index}
+                searchResults={searchResults}
+                pageLabels={pageLabels}
+                t={t}
+              />
+              <SearchResultListItem
+                result={result}
+                currentResultIndex={index}
+                activeResultIndex={activeResultIndex}
+                onSearchResultClick={onClickResult}
+                activeDocumentViewerKey={activeDocumentViewerKey}
+                isRightToLeft={isRightToLeft}
+              />
+            </div>
+          )}
+        </CellMeasurer>
+      );
+    },
+    [cellMeasureCache, searchResults, activeResultIndex, t, pageLabels],
+  );
 
   React.useEffect(() => {
     if (listRef) {
@@ -149,24 +160,24 @@ function SearchResult(props) {
     }
   }, [activeResultIndex]);
 
-  if (height == null) { // eslint-disable-line eqeqeq
+  if (height == null) {
+    // eslint-disable-line eqeqeq
     // VirtualizedList requires width and height of the component which is calculated by withContentRect HOC.
     // On first render when HOC haven't yet set these values, both are undefined, thus having this check here
     // and skip rendering if values are missing
     return null;
   }
 
-  if (searchStatus === 'SEARCH_DONE'
-    && searchResults.length === 0
-    && !isProcessingSearchResults) {
+  if (searchStatus === 'SEARCH_DONE' && searchResults.length === 0 && !isProcessingSearchResults) {
     if (isSearchInProgress) {
       return null;
     }
     return (
-      <div className="info"><p className="no-margin">{t('message.noResults')}</p></div>
+      <div className="info">
+        <p className="no-margin">{t('message.noResults')}</p>
+      </div>
     );
   }
-
 
   return (
     <VirtualizedList
@@ -196,15 +207,12 @@ function SearchResultWithContentRectHOC(props) {
 }
 SearchResultWithContentRectHOC.propTypes = {
   contentRect: PropTypes.object,
-  measureRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.any })
-  ])
+  measureRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
 };
 
 const SearchResultWithContentRectHOCAndBounds = withContentRect('bounds')(SearchResultWithContentRectHOC);
 
-const SearchResultsContainer = (props) => {
-  return (<SearchResultWithContentRectHOCAndBounds {...props} />);
+const SearchResultsContainer = props => {
+  return <SearchResultWithContentRectHOCAndBounds {...props} />;
 };
 export default SearchResultsContainer;

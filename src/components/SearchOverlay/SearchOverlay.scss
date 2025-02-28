@@ -36,6 +36,11 @@
     input.search-panel-input.right-to-left {
       text-align: right;
     }
+
+    input.search-panel-input{
+      unicode-bidi: bidi-override !important;
+      direction: unset !important;
+    }
     
     input {
       width: 100%;

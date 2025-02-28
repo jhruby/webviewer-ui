@@ -221,7 +221,7 @@ export default {
           dataElement: 'moreButton',
           title: 'action.more',
           img: 'icon-tools-more',
-          onClick: (dispatch) => {
+          onClick: dispatch => {
             dispatch(actions.setActiveHeaderGroup('small-mobile-more-buttons'));
             core.setToolMode(defaultTool);
           },
@@ -243,13 +243,13 @@ export default {
           img: 'icon-header-chat-line',
           title: 'component.notesPanel',
         },
-       // { type: 'spacer' },
+        // { type: 'spacer' },
         {
           type: 'actionButton',
           dataElement: 'defaultHeaderButton',
           titile: 'action.close',
           img: 'ic_close_black_24px',
-          onClick: (dispatch) => {
+          onClick: dispatch => {
             dispatch(actions.setActiveHeaderGroup('default'));
             core.setToolMode(defaultTool);
           },
@@ -433,7 +433,7 @@ export default {
           title: 'action.redactPages',
           showColor: 'never',
           img: 'icon-tool-page-redact',
-          onClick: (dispatch) => dispatch(actions.openElement(DataElements.PAGE_REDACT_MODAL)),
+          onClick: dispatch => dispatch(actions.openElement(DataElements.PAGE_REDACT_MODAL)),
         },
         { type: 'divider' },
         {
@@ -777,7 +777,7 @@ export default {
       { dataElement: 'annotationDeleteButton' },
       { dataElement: 'shortCutKeysFor3D' },
       { dataElement: 'playSoundButton' },
-      { dataElement: 'openAlignmentButton' }
+      { dataElement: 'openAlignmentButton' },
     ],
     textPopup: [
       { dataElement: 'copyTextButton' },
@@ -834,7 +834,11 @@ export default {
       //{ type: 'divider' },
       { dataElement: 'leftPanelPageTabsMoreSmall' },
     ],
-    thumbnailControlMenu: [{ dataElement: 'thumbRotateCounterClockwise' }, { dataElement: 'thumbRotateClockwise' }, { dataElement: 'thumbDelete' }],
+    thumbnailControlMenu: [
+      { dataElement: 'thumbRotateCounterClockwise' },
+      { dataElement: 'thumbRotateClockwise' },
+      { dataElement: 'thumbDelete' },
+    ],
     toolButtonObjects: {
       AnnotationCreateCountMeasurement: {
         dataElement: 'countMeasurementToolButton',
@@ -1754,7 +1758,11 @@ export default {
         showColor: 'never',
       },
       TextSelect: { dataElement: 'textSelectButton', img: 'icon-header-select-line', showColor: 'never' },
-      OfficeEditorContentSelect: { dataElement: 'textSelectButton', img: 'icon-header-select-line', showColor: 'never' },
+      OfficeEditorContentSelect: {
+        dataElement: 'textSelectButton',
+        img: 'icon-header-select-line',
+        showColor: 'never',
+      },
       MarqueeZoomTool: {
         dataElement: 'marqueeToolButton',
         showColor: 'never',
@@ -1976,7 +1984,7 @@ export default {
       savedSignatures: DataElements.SAVED_SIGNATURES_PANEL_BUTTON,
       openFileModal: 'urlInputPanelButton',
       insertPageModal: 'insertBlankPagePanelButton',
-      [DataElements.CREATE_PORTFOLIO_MODAL]: DataElements.PORTFOLIO_UPLOAD_FILES_TAB
+      [DataElements.CREATE_PORTFOLIO_MODAL]: DataElements.PORTFOLIO_UPLOAD_FILES_TAB,
     },
     customElementOverrides: {},
     activeHeaderGroup: 'default',
@@ -2028,8 +2036,10 @@ export default {
     colorMap: copyMapWithDataProperties('currentStyleTab', 'iconColor'),
     warning: {},
     customNoteFilter: null,
-    inlineCommentFilter: (annot) => {
-      const isAnnotationInstanceOf = defaultToolsWithInlineComment.some((annotationInstance) => annot instanceof annotationInstance);
+    inlineCommentFilter: annot => {
+      const isAnnotationInstanceOf = defaultToolsWithInlineComment.some(
+        annotationInstance => annot instanceof annotationInstance,
+      );
       return isAnnotationInstanceOf;
     },
     zoomList: defaultZoomList,
@@ -2130,11 +2140,11 @@ export default {
     fixedGroupedItems: [],
     modularHeadersHeight: {
       topHeaders: 49,
-      bottomHeaders: 32
+      bottomHeaders: 32,
     },
     modularHeadersWidth: {
       rightHeader: 0,
-      leftHeader: 0
+      leftHeader: 0,
     },
     customElementSizes: {},
     floatingContainersDimensions: {
@@ -2172,6 +2182,7 @@ export default {
     isRegex: false,
     isSearchUp: false,
     isAmbientString: false,
+    isRightToLeft: false,
     clearSearchPanelOnClose: false,
     results: [],
     redactionSearchPatterns: {
@@ -2185,7 +2196,8 @@ export default {
         label: 'redactionPanel.search.phoneNumbers',
         icon: 'redact-icons-phone-number',
         type: redactionTypeMap['PHONE'],
-        regex: /\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4,5}/,
+        regex:
+          /\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4,5}/,
       },
       emails: {
         label: 'redactionPanel.search.emails',
@@ -2231,7 +2243,7 @@ export default {
   },
   featureFlags: {
     customizableUI: false,
-    printAnnotations: true
+    printAnnotations: true,
   },
   wv3dPropertiesPanel: {
     modelData: [],
@@ -2255,7 +2267,7 @@ export default {
     },
     availableFontFaces,
     cssFontValues,
-    editMode: OfficeEditorEditMode.EDITING
+    editMode: OfficeEditorEditMode.EDITING,
   },
   digitalSignatureValidation: {
     validationModalWidgetName: '',

@@ -153,20 +153,6 @@ export default store =>
     const activeDocumentViewer = core.getDocumentViewer(activeDocumentViewerKey);
 
     activeDocumentViewer.clearSearchResults();
-    activeDocumentViewer.textSearchInit(
-      options.rightToLeft ? reverse(searchValue) : searchValue,
-      searchMode,
-      textSearchInitOptions,
-    );
+    activeDocumentViewer.textSearchInit(searchValue, searchMode, textSearchInitOptions);
     activeDocumentViewer.addEventListener('searchInProgress', searchInProgressCallback);
   };
-
-const reverse = function (str) {
-  console.log('reversing string: ', str, str.length);
-  const segmenter = new Intl.Segmenter('ar', { granularity: 'grapheme' });
-  const segitr = segmenter.segment(str);
-  const segarr = Array.from(segitr, ({ segment }) => segment).reverse();
-  const result = segarr.join('');
-  console.log('reversed string: ', result, result.length);
-  return result;
-};
