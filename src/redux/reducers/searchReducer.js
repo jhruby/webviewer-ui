@@ -4,7 +4,7 @@ export default (initialState) => (state = initialState, action) => {
   switch (type) {
     case 'SEARCH_TEXT': {
       const { searchValue, replaceValue, options = {} } = payload;
-      const { caseSensitive, wholeWord, wildcard, regex, searchUp, ambientString } = options;
+      const { caseSensitive, wholeWord, wildcard, regex, searchUp, ambientString, rightToLeft } = options;
       return {
         ...state,
         value: searchValue,
@@ -17,11 +17,12 @@ export default (initialState) => (state = initialState, action) => {
         isRegex: regex || false,
         isSearchUp: searchUp || false,
         isAmbientString: ambientString || false,
+        isRightToLeft: rightToLeft || false,
       };
     }
     case 'SEARCH_TEXT_FULL': {
       const { searchValue, options = {} } = payload;
-      const { caseSensitive, wholeWord, wildcard, regex } = options;
+      const { caseSensitive, wholeWord, wildcard, regex, rightToLeft } = options;
       return {
         ...state,
         value: searchValue,
@@ -31,6 +32,7 @@ export default (initialState) => (state = initialState, action) => {
         isRegex: regex || false,
         isSearchUp: false,
         isAmbientString: true,
+        isRightToLeft: rightToLeft || false,
       };
     }
     case 'SET_SEARCH_VALUE': {

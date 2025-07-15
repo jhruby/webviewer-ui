@@ -17,6 +17,7 @@ import loadDocument from 'helpers/loadDocument';
 import { isOfficeEditorMode } from 'helpers/officeEditor';
 
 import './MenuOverlay.scss';
+import {isIE} from "helpers/device";
 
 const InitialMenuOverLayItem = ({ dataElement, children }) => {
   const items = useSelector((state) => selectors.getMenuOverlayItems(state, dataElement), shallowEqual);
@@ -63,8 +64,11 @@ function MenuOverlay() {
   const isFullScreen = useSelector((state) => selectors.isFullScreen(state));
   const timezone = useSelector((state) => selectors.getTimezone(state));
   const isCreatePortfolioButtonEnabled = !useSelector((state) => selectors.isElementDisabled(state, DataElements.CREATE_PORTFOLIO_BUTTON)) && core.isFullPDFEnabled();
+  const activeTheme = useSelector(selectors.getActiveTheme);
 
   const closeMenuOverlay = useCallback(() => dispatch(actions.closeElements([DataElements.MENU_OVERLAY])), [dispatch]);
+  const setActiveLightTheme = useCallback(() => dispatch(actions.setActiveTheme('light')), [dispatch]);
+  const setActiveDarkTheme = useCallback(() => dispatch(actions.setActiveTheme('dark')), [dispatch]);
 
   useEffect(() => {
     const onDocumentLoaded = () => {
@@ -179,6 +183,17 @@ function MenuOverlay() {
           role="option"
           onClick={handlePrintButtonClick}
         />
+        {!isIE && (
+            <ActionButton
+                dataElement="themeChangeButton"
+                className="row"
+                img={`icon - header - mode - ${activeTheme === 'dark' ? 'day' : 'night'}`}
+                label={activeTheme === 'dark' ? t('option.settings.lightMode') : t('option.settings.darkMode')}
+                ariaLabel={activeTheme === 'dark' ? t('option.settings.lightMode') : t('option.settings.darkMode')}
+                role="option"
+                onClick={activeTheme === 'dark' ? setActiveLightTheme : setActiveDarkTheme}
+            />
+        )}
       </InitialMenuOverLayItem>
       <div className="divider"></div>
       {isCreatePortfolioButtonEnabled && (
