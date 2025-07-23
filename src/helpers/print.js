@@ -345,10 +345,16 @@ export const creatingPages = async (originalPagesToPrint, pagesToPrint, includeC
   return createdPages;
 };
 
+function getNonce() {
+  const element = window.parent.document.head.querySelector("meta[name='nonce']");
+  return element.attributes.getNamedItem("content").value;
+}
+
 const getResetPrintStyle = () => {
   const style = document.createElement('style');
   style.id = 'print-handler-css';
   style.textContent = printResetStyle;
+  style.nonce = getNonce();
   return style;
 };
 
