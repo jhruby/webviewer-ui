@@ -44,12 +44,13 @@ const SearchResultListItemPropTypes = {
   currentResultIndex: PropTypes.number.isRequired,
   activeResultIndex: PropTypes.number.isRequired,
   onSearchResultClick: PropTypes.func,
-  activeDocumentViewerKey: PropTypes.number
+  activeDocumentViewerKey: PropTypes.number,
+  isRightToLeft: PropTypes.bool
 };
 
 function SearchResultListItem(props) {
   const [customizableUI] = useSelector((state) => [state.featureFlags.customizableUI]);
-  const { result, currentResultIndex, activeResultIndex, onSearchResultClick, activeDocumentViewerKey } = props;
+  const { result, currentResultIndex, activeResultIndex, onSearchResultClick, activeDocumentViewerKey, isRightToLeft } = props;
   const { ambientStr, resultStrStart, resultStrEnd, resultStr } = result;
   const textBeforeSearchValue = ambientStr.slice(0, resultStrStart);
   const searchValue = ambientStr === '' ? resultStr : ambientStr.slice(resultStrStart, resultStrEnd);
@@ -59,6 +60,7 @@ function SearchResultListItem(props) {
       role="cell"
       className={classNames({
         'SearchResult': true,
+        'right-to-left': isRightToLeft,
         'selected': currentResultIndex === activeResultIndex,
         'modular-ui': customizableUI
       })}
@@ -111,6 +113,7 @@ function SearchResult(props) {
     cellMeasureCache.clearAll();
   }
 
+  const isRightToLeft = useSelector(state => state.search.isRightToLeft);
   const rowRenderer = React.useCallback(function rowRendererCallback(rendererOptions) {
     const { index, key, parent, style } = rendererOptions;
     const result = searchResults[index];
@@ -136,6 +139,7 @@ function SearchResult(props) {
               activeResultIndex={activeResultIndex}
               onSearchResultClick={onClickResult}
               activeDocumentViewerKey={activeDocumentViewerKey}
+              isRightToLeft={isRightToLeft}
             />
           </div>
         )}
