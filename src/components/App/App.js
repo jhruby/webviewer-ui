@@ -448,7 +448,7 @@ const App = ({ removeEventHandlers }) => {
       case panelNames.REDACTION:
         return <LazyLoadWrapper Component={LazyLoadComponents.RedactionPanel} dataElement={dataElement} redactionAnnotationsList={redactionAnnotationsList} isCustomPanel={true} />;
       case panelNames.SEARCH:
-        return <LazyLoadWrapper Component={LazyLoadComponents.SearchPanel} dataElement={dataElement} />;
+        return <SearchPanel />;
       case panelNames.NOTES:
         return <LazyLoadWrapper Component={LazyLoadComponents.NotesPanel} dataElement={dataElement} isCustomPanel={true} />;
       case panelNames.INDEX:
@@ -519,7 +519,10 @@ const App = ({ removeEventHandlers }) => {
           {(customizableUI || !isOfficeEditorMode) && panels}
           {window?.ResizeObserver && <MultiViewer />}
           {!customizableUI && <RightPanel dataElement={DataElements.SEARCH_PANEL} onResize={(width) => dispatch(actions.setSearchPanelWidth(width))}>
-            <SearchPanel />
+            <LazyLoadWrapper
+              Component={LazyLoadComponents.SearchPanel}
+              dataElement={DataElements.SEARCH_PANEL}
+            />
           </RightPanel>}
           {!customizableUI && <RightPanel dataElement={DataElements.NOTES_PANEL} onResize={(width) => dispatch(actions.setNotesPanelWidth(width))}>
             {!notesInLeftPanel && <LazyLoadWrapper
