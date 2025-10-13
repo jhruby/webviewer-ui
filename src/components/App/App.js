@@ -71,6 +71,8 @@ import { defaultOfficeEditorPanels } from '../../redux/officeEditorModularCompon
 import setLanguage from 'src/apis/setLanguage';
 import { loadDefaultFonts } from 'src/helpers/loadFont';
 import './App.scss';
+import FilterAnnotModal from "components/FilterAnnotModal";
+import PrintModal from "components/PrintModal";
 import LayersPanel from 'components/LayersPanel';
 import MultiViewerWrapper from 'components/MultiViewer/MultiViewerWrapper';
 import FeatureFlags from 'constants/featureFlags';
@@ -366,7 +368,7 @@ const App = ({ removeEventHandlers, initialDirection }) => {
 
     // Only sync Redux → i18n if we're *not* in an overridden RTL mode
     if (initialDirection !== 'rtl') {
-      setLanguage(store)(store.getState().viewer.currentLanguage);
+      //setLanguage(store)(store.getState().viewer.currentLanguage);
     }
 
     hotkeysManager.initialize(store);
@@ -657,7 +659,6 @@ const App = ({ removeEventHandlers, initialDirection }) => {
         />
         <LazyLoadWrapper Component={LazyLoadComponents.ContentEditLinkModal} dataElement={DataElements.CONTENT_EDIT_LINK_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.SignatureModal} dataElement={DataElements.SIGNATURE_MODAL} />
-        <LazyLoadWrapper Component={LazyLoadComponents.PrintModal} dataElement={DataElements.PRINT_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.ErrorModal} dataElement={DataElements.ERROR_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.PasswordModal} dataElement={DataElements.PASSWORD_MODAL} />
         <LazyLoadWrapper
@@ -673,7 +674,6 @@ const App = ({ removeEventHandlers, initialDirection }) => {
           dataElement={DataElements.LINK_MODAL}
           onOpenHook={useOnRightClickAnnotation}
         />
-        <LazyLoadWrapper Component={LazyLoadComponents.FilterAnnotModal} dataElement={DataElements.FILTER_MODAL} />
         <LazyLoadWrapper
           Component={LazyLoadComponents.PageRedactionModal}
           dataElement={DataElements.PAGE_REDACT_MODAL}
@@ -683,6 +683,7 @@ const App = ({ removeEventHandlers, initialDirection }) => {
         <LazyLoadWrapper Component={LazyLoadComponents.SaveModal} dataElement={DataElements.SAVE_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.InsertPageModal} dataElement={DataElements.INSERT_PAGE_MODAL} />
         <LazyLoadWrapper Component={LazyLoadComponents.LoadingModal} dataElement={DataElements.LOADING_MODAL} />
+        <FilterAnnotModal />
 
         {
           /*
@@ -701,6 +702,7 @@ const App = ({ removeEventHandlers, initialDirection }) => {
           Component={LazyLoadComponents.ColorPickerModal}
           dataElement={DataElements.COLOR_PICKER_MODAL}
         />
+        <PrintModal />
         <LazyLoadWrapper Component={LazyLoadComponents.OpenFileModal} dataElement={DataElements.OPEN_FILE_MODAL} />
         {customModals.length > 0 && (
           <LazyLoadWrapper Component={LazyLoadComponents.CustomModal} dataElement={DataElements.CUSTOM_MODAL} />

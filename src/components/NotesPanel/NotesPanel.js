@@ -412,7 +412,7 @@ const NotesPanel = ({
     style = { width: `${currentWidth}px`, minWidth: `${currentWidth}px` };
   }
 
-  const showNotePanel = !isDisabled && (isOpen || notesInLeftPanel || isCustomPanel);
+  const showNotePanel = !isDisabled;
   const showPlaceHolder = isMultiSelectMode && !isDocumentReadOnly;
   const placeHolder = showMultiReply ? MultiReplyPlaceHolder : MultiSelectPlaceHolder;
   const showMultiSelectControls = isMultiSelectMode && !isDocumentReadOnly;
