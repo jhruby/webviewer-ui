@@ -153,6 +153,13 @@ export default (store) => (searchValue, options, isUserTriggered = true) => {
   throttleResults = [];
 
   activeDocumentViewer.clearSearchResults();
-  activeDocumentViewer.textSearchInit(searchValue, searchMode, textSearchInitOptions);
+  activeDocumentViewer.textSearchInit(options.rightToLeft ? reverse(searchValue) : searchValue, searchMode, textSearchInitOptions);
   activeDocumentViewer.addEventListener('searchInProgress', searchInProgressCallback);
 };
+
+const reverse = function(str) {
+  const segmenter = new Intl.Segmenter("ar", {granularity: 'grapheme'});
+  const segitr = segmenter.segment(str);
+  const segarr = Array.from(segitr, ({segment}) => segment).reverse();
+  return segarr.join('');
+}

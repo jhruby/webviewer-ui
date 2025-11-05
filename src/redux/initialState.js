@@ -2124,6 +2124,7 @@ export default {
     isSearchUp: false,
     isSearchInProgress: false,
     isAmbientString: false,
+    isRightToLeft: false,
     clearSearchPanelOnClose: false,
     results: [],
     redactionSearchPatterns: {

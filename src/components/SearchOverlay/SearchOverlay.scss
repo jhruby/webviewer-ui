@@ -71,6 +71,15 @@
       justify-content: flex-start;
     }
 
+    input.search-panel-input.right-to-left {
+      text-align: right;
+    }
+
+    input.search-panel-input{
+      unicode-bidi: bidi-override !important;
+      direction: unset !important;
+    }
+    
     input {
       width: 100%;
       padding-inline-end: 26px;
@@ -300,6 +309,10 @@
         @include mobile {
           font-size: 13px;
         }
+      }
+
+      .search-panel-input.with-value {
+        padding-inline-end: 23px;
       }
     }
   }
