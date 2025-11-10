@@ -179,11 +179,11 @@ const PrintModal = () => {
   const onChange = () => {
     let pagesToPrint = [];
 
-    if (allPages.current.checked) {
+    if (allPages.current && allPages.current.checked) {
       for (let i = 1; i <= core.getTotalPages(); i++) {
         pagesToPrint.push(i);
       }
-    } else if (currentPageRef.current.checked) {
+    } else if (currentPageRef.current && currentPageRef.current.checked) {
       const pageCount = core.getTotalPages();
 
       // when displaying 2 pages, "Current" should print both of them
@@ -219,10 +219,10 @@ const PrintModal = () => {
           pagesToPrint.push(currentPage);
           break;
       }
-    } else if (customPages.current.checked) {
+    } else if (customPages.current && customPages.current.checked) {
       const customInput = customInputRef.current.value.replace(/\s+/g, '');
       pagesToPrint = getPageArrayFromString(customInput, pageLabels);
-    } else if (currentView.current.checked) {
+    } else if (currentView.current && currentView.current.checked) {
       pagesToPrint = [currentPage];
     }
 

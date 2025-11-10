@@ -1302,7 +1302,7 @@ const hasPanelInItems = (items, panelType) => {
       }
     }
 
-    if (typeof item === 'object' && item.render === panelType) {
+    if (typeof item === 'object' && item && item.render === panelType) {
       return true;
     }
 
