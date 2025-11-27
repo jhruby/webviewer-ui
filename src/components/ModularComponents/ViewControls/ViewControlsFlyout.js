@@ -8,7 +8,7 @@ import actions from 'actions';
 import toggleFullscreen from 'helpers/toggleFullscreen';
 import { isIE11, isIOS, isIOSFullScreenSupported } from 'helpers/device';
 import DataElements from 'constants/dataElement';
-import {FLYOUT_ITEM_TYPES, PRESET_BUTTON_TYPES} from 'src/constants/customizationVariables';
+import { PRESET_BUTTON_TYPES } from 'src/constants/customizationVariables';
 
 const ViewControlsFlyout = () => {
   const store = useStore();
@@ -158,11 +158,11 @@ const ViewControlsFlyout = () => {
     }
     if (!isReaderMode) {
       viewControlsFlyoutItems = [...viewControlsFlyoutItems,
-        {label: "action.rotate", dataElement: 'actionRotateLabel', type: FLYOUT_ITEM_TYPES.LABEL},
+        'action.rotate',
         rotateClockwiseButton,
         rotateCounterClockwiseButton,
         divider,
-        {label: "option.displayMode.layout", dataElement: 'displayModeLayoutLabel', type: FLYOUT_ITEM_TYPES.LABEL},
+        'option.displayMode.layout',
         singleLayoutButton,
         doubleLayoutButton,
         coverLayoutButton
