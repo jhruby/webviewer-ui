@@ -211,7 +211,7 @@ export default {
           element: 'searchPanel',
           img: 'icon-header-search',
           title: 'component.searchPanel',
-          hidden: ['small-mobile', 'mobile', 'tablet'],
+          hidden: ['small-mobile'],
         },
         {
           type: 'toggleElementButton',
@@ -219,7 +219,7 @@ export default {
           img: 'icon-header-chat-line',
           title: 'component.notesPanel',
           element: 'notesPanel',
-          hidden: ['small-mobile', 'mobile', 'tablet'],
+          hidden: ['small-mobile'],
         },
         {
           type: 'actionButton',
@@ -230,7 +230,7 @@ export default {
             dispatch(actions.setActiveHeaderGroup('small-mobile-more-buttons'));
             core.setToolMode(defaultTool);
           },
-          hidden: ['desktop'],
+          hidden: ['mobile', 'tablet', 'desktop'],
         },
       ],
       'small-mobile-more-buttons': [
@@ -248,7 +248,7 @@ export default {
           img: 'icon-header-chat-line',
           title: 'component.notesPanel',
         },
-       // { type: 'spacer' },
+        { type: 'spacer' },
         {
           type: 'actionButton',
           dataElement: 'defaultHeaderButton',
@@ -781,7 +781,7 @@ export default {
       { type: 'divider' },
       { dataElement: 'leftPanelPageTabsMore' },
     ],
-    thumbnailControlMenu: [{ dataElement: 'thumbRotateCounterClockwise' }, { dataElement: 'thumbRotateClockwise' }, { dataElement: 'thumbDelete' }],
+    thumbnailControlMenu: [{ dataElement: 'thumbRotateClockwise' }, { dataElement: 'thumbDelete' }],
     toolButtonObjects: {
       AnnotationCreateCountMeasurement: {
         dataElement: 'countMeasurementToolButton',
