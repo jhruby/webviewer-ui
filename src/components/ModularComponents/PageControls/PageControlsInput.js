@@ -100,7 +100,8 @@ const PageControlsInput = forwardRef((props, ref) => {
   //}
 
   const formInput =
-    <form
+    <form 
+      action=''
       className="page-controls-input-form"
       onSubmit={onSubmit}
     >
