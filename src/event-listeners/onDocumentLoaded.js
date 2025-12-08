@@ -228,10 +228,17 @@ export const updateOutlines = (dispatch, documentViewerKey) => () => {
     }
   });
   
-  setTimeout(()=>{
+  let counter = 0;
+  const outlineInterval = setInterval(()=>{
+    // stop trying to load outlines after 20 tries (1 minute)
+    if (counter >= 20 || outlinesLoaded) {
+      clearInterval(outlineInterval);
+    }
+    
     if (!outlinesLoaded) {
       loadOutlines();
     }
+    ++counter;
   }, 3000);
   
   outlineUtils.setDoc(core.getDocument(documentViewerKey));
