@@ -81,6 +81,7 @@ module.exports = {
               '@babel/plugin-proposal-throw-expressions',
               '@babel/plugin-proposal-class-properties',
               '@babel/plugin-proposal-optional-chaining',
+			  '@babel/plugin-transform-runtime',
             ],
           },
         },
@@ -207,5 +208,5 @@ module.exports = {
       minSize: 0,
     },
   },
-  devtool: 'source-map',
+  devtool: false,
 };

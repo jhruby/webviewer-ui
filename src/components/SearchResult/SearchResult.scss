@@ -7,6 +7,9 @@
   width: calc(100% - 4px);
   text-align: start;
 
+  unicode-bidi: bidi-override !important;
+  direction: unset !important;
+
   @include mobile {
     font-size: 13px;
   }
@@ -66,5 +69,9 @@
 
   @media (max-width: 640px) {
     margin-block-end: 2em;
+  }
+
+  &.right-to-left {
+    text-align: right;
   }
 }

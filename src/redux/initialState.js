@@ -211,7 +211,7 @@ export default {
           element: 'searchPanel',
           img: 'icon-header-search',
           title: 'component.searchPanel',
-          hidden: ['small-mobile'],
+          hidden: ['small-mobile', 'mobile', 'tablet'],
         },
         {
           type: 'toggleElementButton',
@@ -219,7 +219,7 @@ export default {
           img: 'icon-header-chat-line',
           title: 'component.notesPanel',
           element: 'notesPanel',
-          hidden: ['small-mobile'],
+          hidden: ['small-mobile', 'mobile', 'tablet'],
         },
         {
           type: 'actionButton',
@@ -230,7 +230,7 @@ export default {
             dispatch(actions.setActiveHeaderGroup('small-mobile-more-buttons'));
             core.setToolMode(defaultTool);
           },
-          hidden: ['mobile', 'tablet', 'desktop'],
+          hidden: ['desktop'],
         },
       ],
       'small-mobile-more-buttons': [
@@ -248,7 +248,7 @@ export default {
           img: 'icon-header-chat-line',
           title: 'component.notesPanel',
         },
-        { type: 'spacer' },
+       // { type: 'spacer' },
         {
           type: 'actionButton',
           dataElement: 'defaultHeaderButton',
@@ -781,7 +781,7 @@ export default {
       { type: 'divider' },
       { dataElement: 'leftPanelPageTabsMore' },
     ],
-    thumbnailControlMenu: [{ dataElement: 'thumbRotateClockwise' }, { dataElement: 'thumbDelete' }],
+    thumbnailControlMenu: [{ dataElement: 'thumbRotateCounterClockwise' }, { dataElement: 'thumbRotateClockwise' }, { dataElement: 'thumbDelete' }],
     toolButtonObjects: {
       AnnotationCreateCountMeasurement: {
         dataElement: 'countMeasurementToolButton',
@@ -1918,7 +1918,7 @@ export default {
       pageReplacementModal: 'urlInputPanelButton',
       linkModal: 'URLPanelButton',
       rubberStampTab: 'standardStampPanelButton',
-      filterAnnotModal: DataElements.ANNOTATION_USER_FILTER_PANEL_BUTTON,
+      filterAnnotModal: DataElements.ANNOTATION_COLOR_FILTER_PANEL_BUTTON,
       [DataElements.SETTINGS_MODAL]: DataElements.SETTINGS_GENERAL_BUTTON,
       savedSignatures: DataElements.SAVED_SIGNATURES_PANEL_BUTTON,
       openFileModal: 'urlInputPanelButton',
@@ -2126,6 +2126,7 @@ export default {
     isSearchUp: false,
     isSearchInProgress: false,
     isAmbientString: false,
+    isRightToLeft: false,
     clearSearchPanelOnClose: false,
     results: [],
     redactionSearchPatterns: {
@@ -2185,6 +2186,7 @@ export default {
   },
   featureFlags: {
     customizableUI: false,
+    printAnnotations: true
   },
   wv3dPropertiesPanel: {
     modelData: [],

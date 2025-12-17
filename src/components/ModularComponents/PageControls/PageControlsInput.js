@@ -93,14 +93,15 @@ const PageControlsInput = forwardRef((props, ref) => {
   };
 
   const style = {};
-  if (isFocused) {
+  //if (isFocused) {
     style.width = inputWidth;
-  } else {
-    style.width = inputWidth - 10;
-  }
+  //} else {
+    //style.width = inputWidth - 10;
+  //}
 
   const formInput =
-    <form
+    <form 
+      action=''
       className="page-controls-input-form"
       onSubmit={onSubmit}
     >
