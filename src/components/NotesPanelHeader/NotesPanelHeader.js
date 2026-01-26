@@ -208,6 +208,9 @@ function NotesPanelHeader({
             ariaPressed={filterEnabled}
           />
         </div>
+        <div className="sort-row-last">
+          {(filterEnabled) ? <span>{t('message.filterApplied')}</span> : <span></span>}
+        </div>
       </DataElementWrapper>
     </DataElementWrapper>
   );

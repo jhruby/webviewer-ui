@@ -9,6 +9,7 @@ import actions from 'actions';
 import classNames from 'classnames';
 import { PANEL_SIZES, panelNames } from 'constants/panel';
 import useResizeObserver from 'hooks/useResizeObserver';
+import Icon from "components/Icon";
 
 const propTypes = {
   children: PropTypes.node,
@@ -148,7 +149,18 @@ const MobilePanelWrapper = ({ children }) => {
           <div className="swipe-indicator" />
         </div>
       </Swipeable>
-      <div className="mobile-panel-body" style={wrapperBodyStyle}>
+      <div className={`mobile-panel-body ${contentElement}`} style={wrapperBodyStyle}>
+        { contentElement === "stylePanel" &&<div className="close-container">
+          <div
+              className="close-icon-container"
+              onClick={() => {
+                closePanel();
+              }}
+          >
+            <Icon glyph="ic_close_black_24px" className="close-icon" />
+          </div>
+        </div>
+        }
         {React.Children.map(children, (child) => React.cloneElement(child, { panelSize: mobilePanelSize }))}
       </div>
     </div>

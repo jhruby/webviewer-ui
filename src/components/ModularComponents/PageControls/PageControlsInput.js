@@ -23,7 +23,7 @@ const PageControlsInput = forwardRef((props, ref) => {
   const totalPages = useSelector(selectors.getTotalPages);
   const pageLabels = useSelector(selectors.getPageLabels, shallowEqual);
   const allowPageNavigation = useSelector(selectors.getAllowPageNavigation);
-  const currentPageLabel = useSelector(selectors.getCurrentPageLabel);
+  const currentPageLabel = useSelector(selectors.getCurrentPage);
 
   const [isFocused, setIsFocused] = useState(false);
   const [input, setInput] = useState(currentPageLabel);
@@ -83,9 +83,9 @@ const PageControlsInput = forwardRef((props, ref) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const isValidInput = input === '' || pageLabels.includes(input);
+    const isValidInput = /^[1-9]\d*$/.test(input);
     if (isValidInput) {
-      const pageToGo = pageLabels.indexOf(input) + 1;
+      const pageToGo = parseInt(input);
       core.setCurrentPage(pageToGo);
     } else {
       inputRef.current.blur();
@@ -93,14 +93,15 @@ const PageControlsInput = forwardRef((props, ref) => {
   };
 
   const style = {};
-  if (isFocused) {
+  //if (isFocused) {
     style.width = inputWidth;
-  } else {
-    style.width = inputWidth - 10;
-  }
+  //} else {
+    //style.width = inputWidth - 10;
+  //}
 
   const formInput =
-    <form
+    <form 
+      action=''
       className="page-controls-input-form"
       onSubmit={onSubmit}
     >

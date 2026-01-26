@@ -204,7 +204,7 @@ const dataElementToLabel = (dataElement) => {
 };
 
 export const getIconDOMElement = (currentItem, allItems = [currentItem], disabled = false) => {
-  const areAllitemsWithoutIcons = allItems.every((item) => !item.icon && !item.img && !item.toolName);
+  const areAllitemsWithoutIcons = allItems.every((item) => item && !item.icon && !item.img && !item.toolName);
   const currentItemIconWithoutIcon = !currentItem.icon && !currentItem.img && !currentItem.toolName;
   if (currentItemIconWithoutIcon && areAllitemsWithoutIcons) {
     return null;

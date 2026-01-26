@@ -31,7 +31,7 @@ class LocalStorageManager {
         window.localStorage.setItem(key, value);
         resolve();
       } else {
-        console.warn('Local storage is disabled. Cannot set item:', key);
+        //console.warn('Local storage is disabled. Cannot set item:', key);
         resolve();
       }
     });
@@ -48,7 +48,7 @@ class LocalStorageManager {
     if (this.localStorageEnabled) {
       window.localStorage.setItem(key, value);
     } else {
-      console.warn('Local storage is disabled. Cannot set item:', key);
+      //console.warn('Local storage is disabled. Cannot set item:', key);
     }
   }
 
@@ -63,7 +63,7 @@ class LocalStorageManager {
       if (this.localStorageEnabled) {
         resolve(window.localStorage.getItem(key));
       } else {
-        console.warn('Local storage is disabled. Cannot get item:', key);
+        //console.warn('Local storage is disabled. Cannot get item:', key);
         resolve(null);
       }
     });
@@ -79,7 +79,7 @@ class LocalStorageManager {
     if (this.localStorageEnabled) {
       return window.localStorage.getItem(key);
     } else {
-      console.warn('Local storage is disabled. Cannot get item:', key);
+      //console.warn('Local storage is disabled. Cannot get item:', key);
       return null;
     }
   }
@@ -96,7 +96,7 @@ class LocalStorageManager {
         window.localStorage.removeItem(key);
         resolve();
       } else {
-        console.warn('Local storage is disabled. Cannot remove item:', key);
+        //console.warn('Local storage is disabled. Cannot remove item:', key);
         resolve();
       }
     });
@@ -112,7 +112,7 @@ class LocalStorageManager {
     if (this.localStorageEnabled) {
       window.localStorage.removeItem(key);
     } else {
-      console.warn('Local storage is disabled. Cannot remove item:', key);
+      //console.warn('Local storage is disabled. Cannot remove item:', key);
     }
   }
 
