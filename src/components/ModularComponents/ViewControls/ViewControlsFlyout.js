@@ -8,7 +8,7 @@ import actions from 'actions';
 import toggleFullscreen from 'helpers/toggleFullscreen';
 import { isIE11, isIOS, isIOSFullScreenSupported } from 'helpers/device';
 import DataElements from 'constants/dataElement';
-import { PRESET_BUTTON_TYPES } from 'src/constants/customizationVariables';
+import { FLYOUT_ITEM_TYPES, PRESET_BUTTON_TYPES } from 'src/constants/customizationVariables';
 
 const ViewControlsFlyout = () => {
   const store = useStore();
@@ -158,11 +158,11 @@ const ViewControlsFlyout = () => {
     }
     if (!isReaderMode) {
       viewControlsFlyoutItems = [...viewControlsFlyoutItems,
-        'action.rotate',
+        {label: "action.rotate", dataElement: 'actionRotateLabel', type: FLYOUT_ITEM_TYPES.LABEL},
         rotateClockwiseButton,
         rotateCounterClockwiseButton,
         divider,
-        'option.displayMode.layout',
+        {label: "option.displayMode.layout", dataElement: 'displayModeLayoutLabel', type: FLYOUT_ITEM_TYPES.LABEL},
         singleLayoutButton,
         doubleLayoutButton,
         coverLayoutButton
@@ -193,7 +193,7 @@ const ViewControlsFlyout = () => {
     }
 
     if (isAccessibleMode) {
-      const accessibilityLabel = 'accessibility.label';
+      const accessibilityLabel = {label: "accessibility.label", dataElement: 'accessibilityModeLabel', type: FLYOUT_ITEM_TYPES.LABEL};
       const toggleAccessibilityModeButton = {
         icon: 'icon-accessibility-mode',
         label: 'accessibility.accessibilityMode',
