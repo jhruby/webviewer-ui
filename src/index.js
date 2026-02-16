@@ -175,10 +175,11 @@ if (window.CanvasRenderingContext2D) {
     //VA-11351 prevent opening multiple tabs when clicking on a link
     if (!timeout) {
       timeout = setTimeout(() => {
-        // VA-9465 We do not want to display a Security Warning dialog when opening a link.
-        core.openURI(uri, isOpenInNewWindow);
         timeout = null;
-      }, 100);
+      }, 500);
+      
+      // VA-9465 We do not want to display a Security Warning dialog when opening a link.
+      core.openURI(uri, isOpenInNewWindow);
     }
   });
 
