@@ -72,9 +72,13 @@ const PageControlsInput = forwardRef((props, ref) => {
       setIsFocused(true);
     }
   };
+  
+  const isValidInput = (value) => {
+    return /^[1-9]\d*$/.test(value);
+  };
 
   const onChange = (e) => {
-    if (!pageLabels?.some((p) => p.startsWith(e.target.value))) {
+    if (e.target.value && e.target.value.length > 0 && (!isValidInput(e.target.value) || parseInt(e.target.value) > totalPages)) {
       return;
     }
     setInput(e.target.value);
@@ -83,8 +87,8 @@ const PageControlsInput = forwardRef((props, ref) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const isValidInput = /^[1-9]\d*$/.test(input);
-    if (isValidInput) {
+    const validInput = isValidInput(input);
+    if (validInput) {
       const pageToGo = parseInt(input);
       core.setCurrentPage(pageToGo);
     } else {
