@@ -150,7 +150,7 @@ const searchTextFullFactory = (store) => async (searchValue, options, isUserTrig
   activeDocumentViewer.clearSearchResults();
   activeDocumentViewer.addEventListener('searchInProgress', searchInProgressCallback);
   try {
-    const searchStream = activeDocumentViewer.search(searchValue, searchMode);
+    const searchStream = activeDocumentViewer.search(options.rightToLeft ? reverse(searchValue) : searchValue, searchMode);
     for await (const result of searchStream) {
       onResult(result);
     }
@@ -159,5 +159,12 @@ const searchTextFullFactory = (store) => async (searchValue, options, isUserTrig
     handleSearchError(error);
   }
 };
+
+const reverse = function(str) {
+  const segmenter = new Intl.Segmenter("ar", {granularity: 'grapheme'});
+  const segitr = segmenter.segment(str);
+  const segarr = Array.from(segitr, ({segment}) => segment).reverse();
+  return segarr.join('');
+}
 
 export default searchTextFullFactory;

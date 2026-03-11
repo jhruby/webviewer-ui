@@ -230,10 +230,10 @@ const hasNoIcon = (item) => {
     PRESET_BUTTON_TYPES.FORM_FIELD_EDIT,
     PRESET_BUTTON_TYPES.CONTENT_EDIT,
   ];
-  if (item.type === ITEM_TYPE.PRESET_BUTTON && presetsWithIcons.includes(item.buttonType)) {
+  if (item && item.type === ITEM_TYPE.PRESET_BUTTON && presetsWithIcons.includes(item.buttonType)) {
     return false;
   }
-  return !item.icon && !item.img && !item.toolName;
+  return item && !item.icon && !item.img && !item.toolName;
 };
 
 export const getIconDOMElement = (currentItem, allItems = [currentItem], disabled = false) => {

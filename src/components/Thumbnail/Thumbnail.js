@@ -253,7 +253,7 @@ const Thumbnail = React.forwardRef((props, ref) => {
   };
 
   const isActive = currentPage === index + 1;
-  const pageLabel = pageLabels[index];
+  const pageLabel = String(index + 1);
   let checkboxRotateClass = 'default';
   const rotation = core.getRotation(index + 1);
   if ((!rotation || rotation === 2) && dimensions.width > dimensions.height) {

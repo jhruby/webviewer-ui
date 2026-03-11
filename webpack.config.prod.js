@@ -13,9 +13,9 @@ module.exports = (env = {}) => {
   // Use --env UI_BUILD flag to determine which mini-css-extract-plugin to use
   // UI_BUILD flag means building from src/ui with webpack 5 (use local plugin v0.8.0)
   // Otherwise, building from root with webpack 4 (use root plugin ^0.4.4)
-  const MiniCssExtractPlugin = env.UI_BUILD
-    ? require('mini-css-extract-plugin')
-    : require(require.resolve('mini-css-extract-plugin', { paths: [path.resolve(__dirname, '..')] }));
+  //const MiniCssExtractPlugin = env.UI_BUILD
+    //? require('mini-css-extract-plugin')
+    //: require(require.resolve('mini-css-extract-plugin', { paths: [path.resolve(__dirname, '..')] }));
 
   const jsonpKey = env.UI_BUILD ? 'chunkLoadingGlobal' : 'jsonpFunction';
 
@@ -50,10 +50,10 @@ module.exports = (env = {}) => {
         },
       ]),
       ...(NodePolyfillPlugin ? [new NodePolyfillPlugin()] : []),
-      new MiniCssExtractPlugin({
-        filename: 'style.css',
-        chunkFilename: 'chunks/[name].chunk.css',
-      }),
+      //new MiniCssExtractPlugin({
+        //filename: 'style.css',
+        //chunkFilename: 'chunks/[name].chunk.css',
+      //}),
       // new BundleAnalyzerPlugin()
     ],
     module: {
@@ -90,6 +90,7 @@ module.exports = (env = {}) => {
                 '@babel/plugin-proposal-throw-expressions',
                 '@babel/plugin-proposal-class-properties',
                 '@babel/plugin-proposal-optional-chaining',
+			  '@babel/plugin-transform-runtime',
               ],
             },
           },
@@ -101,27 +102,80 @@ module.exports = (env = {}) => {
         },
         {
           test: /\.scss$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            'css-loader',
-            {
-              loader: 'postcss-loader',
-              options: {
-                ident: 'postcss',
-                plugins: (loader) => [
-                  require('postcss-import')({ root: loader.resourcePath }),
-                  require('postcss-preset-env')({
-                    features: {
-                      'logical-properties-and-values': false, // ⛔ disable polyfill!
-                    },
-                  }),
-                  require('cssnano')(),
-                ],
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              insert: function (styleTag) {
+                function findNestedWebComponents(tagName, root = document) {
+                  const elements = [];
+
+                  // Check direct children
+                  root.querySelectorAll(tagName).forEach((el) => elements.push(el));
+
+                  // Check shadow DOMs
+                  root.querySelectorAll('*').forEach((el) => {
+                    if (el.shadowRoot) {
+                      elements.push(...findNestedWebComponents(tagName, el.shadowRoot));
+                    }
+                  });
+
+                  return elements;
+                }
+                if (!window.isApryseWebViewerWebComponent) {
+                  document.head.appendChild(styleTag);
+                  return;
+                }
+
+                let webComponents;
+                // First we see if the webcomponent is at the document level
+                webComponents = document.getElementsByTagName('apryse-webviewer');
+                // If not, we check have to check if it is nested in another webcomponent
+                if (!webComponents.length) {
+                  webComponents = findNestedWebComponents('apryse-webviewer');
+                }
+                // Now we append the style tag to each webcomponent
+                const clonedStyleTags = [];
+                for (let i = 0; i < webComponents.length; i++) {
+                  const webComponent = webComponents[i];
+                  if (i === 0) {
+                    webComponent.shadowRoot.appendChild(styleTag);
+                    styleTag.onload = function () {
+                      if (clonedStyleTags.length > 0) {
+                        clonedStyleTags.forEach((styleNode) => {
+                          // eslint-disable-next-line no-unsanitized/property
+                          styleNode.innerHTML = styleTag.innerHTML;
+                        });
+                      }
+                    };
+                  } else {
+                    const styleNode = styleTag.cloneNode(true);
+                    webComponent.shadowRoot.appendChild(styleNode);
+                    clonedStyleTags.push(styleNode);
+                  }
+                }
               },
             },
-            'sass-loader',
-          ],
-          include: path.resolve(__dirname, 'src'),
+          },
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: (loader) => [
+                require('postcss-import')({ root: loader.resourcePath }),
+                require('postcss-preset-env')({
+                  features: {
+                    'logical-properties-and-values': false, // ⛔ disable polyfill!
+                  },
+                }),
+                require('cssnano')(),
+              ],
+            },
+          },
+          'sass-loader',
+        ],
+        include: path.resolve(__dirname, 'src'),
         },
         {
           test: /\.svg$/,
@@ -163,7 +217,7 @@ module.exports = (env = {}) => {
         minSize: 0,
       },
     },
-    devtool: 'source-map',
+  devtool: false,
   };
 };
 

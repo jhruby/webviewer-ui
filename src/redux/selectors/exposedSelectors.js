@@ -1229,9 +1229,17 @@ export const getMultiViewerSyncScrollMode = (state) => state.viewer.multiViewerS
 export const getCompareAnnotationsMap = (state) => state.viewer.compareAnnotationsMap;
 
 export const getTextSignatureQuality = (state) => state.viewer.textSignatureCanvasMultiplier;
+export const getPrintPageLimit = state => state.document.printPageLimit;
+export const getContentUserId = state => state.document.contentUserId;
 
 export const getIsMeasurementAnnotationFilterEnabled = (state) => state.viewer.isMeasurementAnnotationFilterEnabled;
+export const getCopyEnabled = state => state.document.copyEnabled;
 
+export const getLimitAnnotationHighlightText = state => state.document.limitAnnotationHighlightText;
+
+export const getDisabledPrintRange = state => state.document.disabledPrintRange;
+
+export const getPrintValidation = state => state.document.printValidation;
 export const isRightPanelOpen = (state) => {
   const openRightPanel = getOpenGenericPanel(state, PANEL_LOCATION.RIGHT);
   return openRightPanel?.length > 0;
@@ -1356,7 +1364,7 @@ export const hasPanelInItems = (items, panelType) => {
       }
     }
 
-    if (typeof item === 'object' && item.render === panelType) {
+    if (typeof item === 'object' && item && item.render === panelType) {
       return true;
     }
 

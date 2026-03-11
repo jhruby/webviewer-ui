@@ -264,6 +264,13 @@ import FeatureFlags from 'constants/featureFlags';
 import enableFeatureFlag from './enableFeatureFlag';
 import disableFeatureFlag from './disableFeatureFlag';
 import enterMultiViewerMode from './enterMultiViewerMode';
+import setPrintPageLimit from './setPrintPageLimit';
+import setContentUserId from "src/apis/setContentUserId";
+import setCopyEnabled from './setCopyEnabled';
+import setLimitAnnotationHighlightText from './setLimitAnnotationHighlightText';
+import setDisabledPrintRange from './setDisabledPrintRange';
+import setAnnotationFilters from './setAnnotationFilters';
+import setPrintValidation from './setPrintValidation';
 import exitMultiViewerMode from './exitMultiViewerMode';
 import getActiveDocumentViewerKey from './getActiveDocumentViewerKey';
 import setActiveDocumentViewerKey from './setActiveDocumentViewerKey';
@@ -612,6 +619,13 @@ export default (store) => {
     startTextComparison: startTextComparison(store),
     stopTextComparison,
     closeTooltip,
+    setPrintPageLimit: setPrintPageLimit(store),
+    setContentUserId: setContentUserId(store),
+    setCopyEnabled: setCopyEnabled(store),
+    setLimitAnnotationHighlightText: setLimitAnnotationHighlightText(store),
+    setDisabledPrintRange: setDisabledPrintRange(store),
+    setAnnotationFilters: setAnnotationFilters(store),
+    setPrintValidation: setPrintValidation(store)
   };
   const documentViewer = core.getDocumentViewer(1);
 

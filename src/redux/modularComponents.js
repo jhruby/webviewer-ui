@@ -27,9 +27,7 @@ const defaultModularHeaders = {
     items: [
       'groupedLeftHeaderButtons',
       'default-ribbon-group',
-      'comparePanelToggle',
-      'searchPanelToggle',
-      'notesPanelToggle',
+      'groupedRightHeaderButtons'
     ]
   },
   'tools-header': {
@@ -190,7 +188,21 @@ const defaultModularComponents = {
     grow: 1,
     gap: 12,
     alwaysVisible: true,
-    style: {},
+    style: {"flex-basis":"0" },
+  },
+  groupedRightHeaderButtons: {
+    dataElement: 'groupedRightHeaderButtons',
+    items: [
+      'comparePanelToggle',
+      'searchPanelToggle',
+      'notesPanelToggle'
+    ],
+    type: 'groupedItems',
+    grow: 1,
+    gap: 12,
+    alwaysVisible: true,
+    justifyContent: 'end',
+    style: {"flex-basis":"0" }
   },
   'toolbarGroup-View': {
     title: 'View',
@@ -276,8 +288,8 @@ const defaultModularComponents = {
       'toolbarGroup-Forms',
     ],
     type: 'ribbonGroup',
-    justifyContent: 'start',
-    grow: 2,
+    justifyContent: 'center',
+    grow: 1,
     gap: 12,
     alwaysVisible: false,
     style: {},

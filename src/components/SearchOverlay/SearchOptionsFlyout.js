@@ -11,9 +11,11 @@ import './SearchOptionsFlyout.scss';
 const SearchOptionsFlyout = ({
   isPanelOpen,
   isCaseSensitive,
+  isRightToLeft,
   isWholeWord,
   isWildcard,
   onCaseSensitiveSearchOptionChange,
+  onRightToLeftOptionChange,
   wholeWordSearchOptionOnChange,
   wildcardOptionOnChange,
 }) => {
@@ -67,6 +69,19 @@ const SearchOptionsFlyout = ({
             />
           ),
         },
+        {
+          type: 'customElement',
+          render: () => (
+            <Choice
+              dataElement="rightToLeftSearchOption"
+              id="right-to-left-option"
+              checked={isRightToLeft}
+              onChange={onRightToLeftOptionChange}
+              label={t('option.searchPanel.rightToLeft')}
+              tabIndex={isPanelOpen ? 0 : -1}
+            />
+          ),
+        },
       ],
     };
 
@@ -75,7 +90,7 @@ const SearchOptionsFlyout = ({
     } else {
       dispatch(actions.updateFlyout(searchOptionsFlyout.dataElement, searchOptionsFlyout));
     }
-  }, [isCaseSensitive, isWholeWord, isWildcard, isPanelOpen, onCaseSensitiveSearchOptionChange, wholeWordSearchOptionOnChange, wildcardOptionOnChange]);
+  }, [isCaseSensitive, isWholeWord, isWildcard, isPanelOpen, onCaseSensitiveSearchOptionChange, wholeWordSearchOptionOnChange, wildcardOptionOnChange, isRightToLeft]);
 
   return null;
 };
@@ -83,6 +98,7 @@ const SearchOptionsFlyout = ({
 SearchOptionsFlyout.propTypes = {
   isCaseSensitive: PropTypes.bool.isRequired,
   isWholeWord: PropTypes.bool.isRequired,
+  isRightToLeft: PropTypes.bool.isRequired,
   isWildcard: PropTypes.bool.isRequired,
   isPanelOpen: PropTypes.bool,
   onCaseSensitiveSearchOptionChange: PropTypes.func.isRequired,
