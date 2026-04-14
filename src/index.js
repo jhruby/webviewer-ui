@@ -170,7 +170,19 @@ if (window.CanvasRenderingContext2D) {
 
   logDebugInfo();
   const documentViewer = addDocumentViewer(1);
-  setupOpenURLHandler(documentViewer, store);
+  
+  let timeout = null;
+  documentViewer.setOpenURIHandler((uri, isOpenInNewWindow) => {
+    //VA-11351 prevent opening multiple tabs when clicking on a link
+    if (!timeout) {
+      timeout = setTimeout(() => {
+        timeout = null;
+      }, 500);
+      
+      // VA-9465 We do not want to display a Security Warning dialog when opening a link.
+      core.openURI(uri, isOpenInNewWindow);
+    }
+  });
 
   if (getHashParameters('hideDetachedReplies', false)) {
     documentViewer.getAnnotationManager().hideDetachedReplies();

@@ -216,6 +216,8 @@ const dataElementToLabel = (dataElement) => {
 };
 
 const hasNoIcon = (item) => {
+  if (!item) return true;
+  
   const presetsWithIcons = [
     ...Object.values(CHANGE_DISPLAY_BUTTONS),
     ...Object.values(ROTATE_DOCUMENT_BUTTONS),

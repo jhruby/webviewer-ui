@@ -95,7 +95,7 @@ const DesktopPanel = ({ children }) => {
         <ResizeBar minWidth={panelMinWidth} dataElement={`${dataElement}ResizeBar`} onResize={onResize}
           leftDirection={true} />}
       <div className={`ModularPanel-container ${dataElement}`} css={containerCss}>
-        {!isInDesktopOnlyMode && isMobile && (
+        {dataElement === "stylePanel" && (
           <div className="close-container">
             <div
               className="close-icon-container"

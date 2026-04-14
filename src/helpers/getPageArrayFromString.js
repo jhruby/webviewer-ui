@@ -54,14 +54,13 @@ const addRangeOfPagesTo = (pagesToPrint, range, pageLabels, totalPages) => {
 };
 
 const getPageNumber = (character, pageLabels, totalPages) => {
-  const pageIndex = pageLabels?.indexOf(character.trim());
-  if (pageIndex === -1) {
-    const isValidInteger = !isNaN(character) && character?.indexOf('.') === -1 && +character > 0 && +character <= totalPages;
-    if (isValidInteger) {
-      return +character;
-    } else {
-      console.warn(`${character} is not a valid page label`);
-    }
+  if ( !isNaN(character) && +character > 0 && +character <= totalPages) {
+    pageNumber = +character;
   }
-  return pageIndex + 1;
+
+  if (!pageNumber) {
+    console.warn(`${character} is not a valid page number`);
+  }
+
+  return pageNumber;
 };

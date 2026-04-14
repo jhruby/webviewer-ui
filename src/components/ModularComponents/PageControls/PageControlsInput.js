@@ -26,7 +26,7 @@ const PageControlsInput = forwardRef((props, ref) => {
   const activeDocumentViewerKey = useSelector(selectors.getActiveDocumentViewerKey);
   const totalPages = useSelector((state) => selectors.getTotalPages(state, activeDocumentViewerKey));
   const pageLabels = useSelector((state) => selectors.getPageLabels(state, activeDocumentViewerKey), shallowEqual);
-  const currentPageLabel = useSelector((state) => selectors.getCurrentPageLabel(state, activeDocumentViewerKey));
+  const currentPageLabel = useSelector(selectors.getCurrentPage);
 
   const { t } = useTranslation();
   const isMobile = isMobileSize();
@@ -70,9 +70,13 @@ const PageControlsInput = forwardRef((props, ref) => {
       setIsFocused(true);
     }
   };
+  
+  const isValidInput = (value) => {
+    return /^[1-9]\d*$/.test(value);
+  };
 
   const onChange = (e) => {
-    if (!pageLabels?.some((p) => p.startsWith(e.target.value))) {
+    if (e.target.value && e.target.value.length > 0 && (!isValidInput(e.target.value) || parseInt(e.target.value) > totalPages)) {
       return;
     }
     setInput(e.target.value);
@@ -81,9 +85,9 @@ const PageControlsInput = forwardRef((props, ref) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const isValidInput = input === '' || pageLabels.includes(input);
-    if (isValidInput) {
-      const pageToGo = pageLabels.indexOf(input) + 1;
+    const validInput = isValidInput(input);
+    if (validInput) {
+      const pageToGo = parseInt(input);
       core.setCurrentPage(pageToGo);
     } else {
       inputRef.current.blur();
@@ -91,14 +95,15 @@ const PageControlsInput = forwardRef((props, ref) => {
   };
 
   const style = {};
-  if (isFocused) {
+  //if (isFocused) {
     style.width = inputWidth;
-  } else {
-    style.width = inputWidth - 10;
-  }
+  //} else {
+    //style.width = inputWidth - 10;
+  //}
 
   const formInput =
-    <form
+    <form 
+      action=''
       className="page-controls-input-form"
       onSubmit={onSubmit}
     >

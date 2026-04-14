@@ -171,7 +171,7 @@ module.exports = (env = {}) => {
         minSize: 0,
       },
     },
-    devtool: 'source-map',
+    devtool: false,
   };
 };
 

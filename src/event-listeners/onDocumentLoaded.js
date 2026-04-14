@@ -218,16 +218,38 @@ export const checkDocumentForTools = (dispatch) => () => {
 
 export const updateOutlines = (dispatch, documentViewerKey) => () => {
   const doc = core.getDocument(documentViewerKey);
-  const updateOutlinesInRedux = () => {
-    core.getOutlines(
-      (outlines, documentViewerKey) => {
-        dispatch(actions.setOutlines(outlines, documentViewerKey));
-      },
-      documentViewerKey,
-    );
-  };
-  doc.addEventListener('bookmarksUpdated', updateOutlinesInRedux);
-  outlineUtils.setDoc(doc, documentViewerKey);
+  let outlinesLoaded = false;
+
+  function loadOutlines() {
+    core.getOutlines((outlines) => {
+      if (!outlinesLoaded && outlines && outlines.length > 0) {
+        outlinesLoaded = true;
+        dispatch(actions.setOutlines(outlines));
+      }
+    }, documentViewerKey);
+  }
+
+  loadOutlines();
+  
+  doc.addEventListener('bookmarksUpdated', () => {
+    if (!outlinesLoaded) {
+      loadOutlines();
+    }
+  });
+  
+  let counter = 0;
+  const outlineInterval = setInterval(()=>{
+    // stop trying to load outlines after 20 tries (1 minute)
+    if (counter >= 20 || outlinesLoaded) {
+      clearInterval(outlineInterval);
+    }
+    
+    if (!outlinesLoaded) {
+      loadOutlines();
+    }
+    ++counter;
+  }, 3000);
+  
 };
 
 export const setNextActivePanelDueToEmptyCurrentPanel = (currentActivePanel, store) => {

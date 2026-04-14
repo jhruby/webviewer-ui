@@ -58,7 +58,7 @@ const Flyout = () => {
   const [maxHeightValue, setMaxHeightValue] = useState(window.innerHeight - horizontalHeadersUsedHeight);
 
   const itemsToRender = items.filter((item) => !item.hidden);
-  const activeChildren = activeItem ? activeItem.children.filter((child) => !child.hidden) : [];
+  const activeChildren = activeItem ? activeItem.children.filter((child) => child && !child.hidden) : [];
 
   const getElementDOMRef = (dataElement) => {
     return getRootNode().querySelector(`[data-element="${dataElement}"]`);

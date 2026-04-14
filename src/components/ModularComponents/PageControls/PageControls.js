@@ -38,7 +38,7 @@ function PageControls(props) {
     setCurrentPageOfTotal(label);
   }, [totalPages, currentPage, isCustomPageLabelsEnabled]);
 
-  return (
+  return (totalPages && currentPage ?
     <div className={classNames({ PageControlsWrapper: true, [className]: true })}
       data-element={dataElement}
       style={{ flexDirection: headerDirection }}
@@ -67,7 +67,7 @@ function PageControls(props) {
       <span className="visually-hidden">
         <output aria-live="assertive">{t('action.currentPageIs')} {currentPage}</output>
       </span>
-    </div>
+    </div> : <></>
   );
 }
 
