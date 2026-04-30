@@ -54,6 +54,8 @@ const addRangeOfPagesTo = (pagesToPrint, range, pageLabels, totalPages) => {
 };
 
 const getPageNumber = (character, pageLabels, totalPages) => {
+  let pageNumber;
+  
   if ( !isNaN(character) && +character > 0 && +character <= totalPages) {
     pageNumber = +character;
   }
